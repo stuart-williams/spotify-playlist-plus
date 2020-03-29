@@ -3,13 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "tslint -c tslint.json 'src/**/*.tsx?'",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.3.2",
+    "axios": "^0.19.2",
+    "next": "^9.3.2",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.5",
+    "@types/react": "^16.9.27",
+    "dotenv": "^8.2.0",
+    "nookies": "^2.2.1",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
   }
 }
