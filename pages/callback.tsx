@@ -1,55 +1,27 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import axios from "axios";
-import { stringify } from "querystring";
 import { setCookie } from "nookies";
+import { fetchToken } from "../common/fetch";
+import redirect from "../common/redirect";
+import * as debug from "../common/debug";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { error, code } = ctx.query;
-
   try {
+    const { error, code } = ctx.query;
+
     if (error) {
       throw new Error(String(error));
     }
 
-    const { status, statusText, data } = await axios({
-      method: "post",
-      url: process.env.TOKEN_URL,
-      data: stringify({
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: process.env.REDIRECT_URI
-      }),
-      headers: {
-        "content-type": "application/x-www-form-urlencoded"
-      },
-      auth: {
-        username: process.env.CLIENT_ID,
-        password: process.env.CLIENT_SECRET
-      }
+    const { data } = await fetchToken(String(code));
+
+    setCookie(ctx, process.env.TOKEN_COOKIE, data.access_token, {
+      maxAge: data.expires_in
     });
 
-    if (status !== 200) {
-      throw new Error(statusText);
-    }
-
-    setCookie(
-      ctx,
-      process.env.TOKEN_COOKIE,
-      JSON.stringify({
-        access_token: data.access_token,
-        refresh_token: data.refresh_token
-      }),
-      {
-        maxAge: data.expires_in
-      }
-    );
-
-    ctx.res.writeHead(302, { Location: "/" });
-    ctx.res.end();
-    // tslint:disable-next-line: no-empty
+    redirect("/", ctx);
   } catch (error) {
-    // TODO: debug
+    debug.error(error);
   }
 
   return {

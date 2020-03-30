@@ -1,13 +1,13 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
+import redirect from "../common/redirect";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { [process.env.TOKEN_COOKIE]: tokens } = parseCookies(ctx);
+  const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
 
-  if (!tokens) {
-    ctx.res.writeHead(302, { Location: "/login" });
-    ctx.res.end();
+  if (!token) {
+    redirect("/login", ctx);
   }
 
   return {
