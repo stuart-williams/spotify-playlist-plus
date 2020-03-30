@@ -23,6 +23,6 @@ module.exports = {
     })}`,
     TOKEN_COOKIE: "spp_token",
     API_URL: "https://api.spotify.com/v1",
-    ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api/`
+    ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`
   }
 };
