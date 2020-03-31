@@ -1,21 +1,30 @@
 import React from "react";
 import { AppProps } from "next/app";
 import { NextSeo } from "next-seo";
+import { Provider } from "react-redux";
+import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
+import { makeStore } from "../redux/store";
 import normalize from "../styles/global/normalize";
-import global from "../styles/global";
 
-export default ({ Component, pageProps }: AppProps) => (
+const App = ({
+  Component,
+  pageProps,
+  store
+}: AppProps & ReduxWrapperAppProps) => (
   <>
     <NextSeo
       title="Spotify Playlist+"
       description="Advanced Spotify playlist management"
     />
-    <Component {...pageProps} />
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
     <style jsx global>
       {normalize}
     </style>
-    <style jsx global>
-      {global}
-    </style>
   </>
 );
+
+export default withRedux(makeStore, {
+  debug: process.env.NODE_ENV === "development"
+})(App);
