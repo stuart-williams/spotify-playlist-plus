@@ -3,7 +3,7 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../common/redirect";
-import { Button } from "@blueprintjs/core";
+import Playlists from "../modules/playlists/Playlists";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
@@ -29,7 +29,6 @@ export default () => (
         rel="stylesheet"
       />
     </Head>
-    <h1>Hello World</h1>
-    <Button text="Click Me" />
+    <Playlists />
   </>
 );
