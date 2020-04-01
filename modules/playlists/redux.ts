@@ -3,6 +3,7 @@ import { RootState } from "../../redux";
 import fetch from "../../common/fetch";
 
 type PlaylistsResponse = SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+type PlaylistObject = SpotifyApi.PlaylistObjectSimplified;
 
 export interface State {
   response: PlaylistsResponse;
@@ -31,8 +32,8 @@ const { reducer, actions } = createSlice({
   }
 });
 
-export const getPlaylistsCount = (state: RootState): number =>
-  state.playlists.response?.items?.length || 0;
+export const getPlaylists = (state: RootState): PlaylistObject[] =>
+  state.playlists.response?.items || [];
 
 export { actions };
 export default reducer;

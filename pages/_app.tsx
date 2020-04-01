@@ -12,16 +12,18 @@ const App = ({
   store
 }: AppProps & ReduxWrapperAppProps) => (
   <>
-    <NextSeo
-      title="Spotify Playlist+"
-      description="Advanced Spotify playlist management"
-    />
+    <NextSeo title="Playlist+" />
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
     <style jsx global>
       {normalize}
     </style>
+    <style jsx global>{`
+      .bp3-dark {
+        background-color: #30404d;
+      }
+    `}</style>
   </>
 );
 
