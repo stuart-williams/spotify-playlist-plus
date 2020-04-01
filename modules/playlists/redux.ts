@@ -1,13 +1,18 @@
 import { AnyAction } from "redux";
+import { RootState } from "../../redux";
 
 export interface State {
-  playlists: string;
+  test: string;
 }
 
-const reducer = (state: State, action: AnyAction): State => {
-  return {
-    playlists: "some playlists"
-  };
+const initialState = {
+  test: "Hello World"
+};
+
+const reducer = (state: State = initialState, action: AnyAction): State => {
+  return state;
 };
 
 export default reducer;
+
+export const getTest = (state: RootState) => state.playlists.test;

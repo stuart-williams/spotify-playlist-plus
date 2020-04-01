@@ -1,15 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
-import { State } from "./redux";
+import { connect, ConnectedProps } from "react-redux";
+import { RootState } from "../../redux";
+import { getTest } from "./redux";
 
-interface Props {
+const mapState = (state: RootState) => ({
+  test: getTest(state)
+});
+
+const connector = connect(mapState);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
   test: string;
-}
+};
 
 const Playlists = (props: Props) => <h1>Playlists {props.test}</h1>;
 
-const mapStateToProps = (state: State): Props => ({
-  test: state.playlists
-});
-
-export default connect(mapStateToProps)(Playlists);
+export default connector(Playlists);

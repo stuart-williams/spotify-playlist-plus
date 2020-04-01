@@ -3,7 +3,7 @@ import { AppProps } from "next/app";
 import { NextSeo } from "next-seo";
 import { Provider } from "react-redux";
 import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
-import { makeStore } from "../redux/store";
+import { makeStore } from "../redux";
 import normalize from "../styles/global/normalize";
 
 const App = ({
