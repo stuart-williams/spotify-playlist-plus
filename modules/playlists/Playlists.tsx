@@ -1,14 +1,14 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { getCount, actions } from "./redux";
+import { getPlaylistsCount, fetchPlaylists } from "./redux";
 
 const mapState = (state: RootState) => ({
-  n: getCount(state)
+  count: getPlaylistsCount(state)
 });
 
 const mapDispatch = {
-  inc: () => actions.increment(1)
+  getCount: () => fetchPlaylists()
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -16,13 +16,13 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  n: number;
+  count: number;
 };
 
 const Playlists = (props: Props) => (
   <>
-    <h1>Playlists {props.n}</h1>
-    <button onClick={props.inc}>Click Me</button>
+    <h1>Playlists {props.count}</h1>
+    <button onClick={props.getCount}>Click Me</button>
   </>
 );
 

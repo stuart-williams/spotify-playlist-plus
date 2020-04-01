@@ -1,26 +1,38 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../redux";
+import fetch from "../../common/fetch";
+
+type Playlists = SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
 
 export interface State {
-  n: number;
+  playlists: Playlists;
 }
 
 const initialState = {
-  n: 1
+  playlists: {}
 };
+
+export const fetchPlaylists = createAsyncThunk<Playlists>(
+  "me/playlists",
+  async () => {
+    const { data } = await fetch({ url: "me/playlists" });
+    return data as Playlists;
+  }
+);
 
 const { reducer, actions } = createSlice({
   name: "playlists",
   initialState,
-  reducers: {
-    increment: (state: State, action: PayloadAction<number>) => ({
-      ...state,
-      n: state.n + action.payload
-    })
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchPlaylists.fulfilled, (state, action) => {
+      state.playlists = action.payload;
+    });
   }
 });
 
-export const getCount = (state: RootState) => state.playlists.n;
+export const getPlaylistsCount = (state: RootState): number =>
+  state.playlists.playlists?.items?.length || 0;
 
 export { actions };
 export default reducer;
