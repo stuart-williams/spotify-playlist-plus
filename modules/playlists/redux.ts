@@ -16,7 +16,13 @@ const initialState = {
 export const fetchPlaylists = createAsyncThunk<PlaylistsResponse>(
   "me/playlists",
   async () => {
-    const { data } = await fetch({ url: "me/playlists" });
+    const { data } = await fetch({
+      url: "me/playlists",
+      params: {
+        limit: 50
+      }
+    });
+
     return data as PlaylistsResponse;
   }
 );

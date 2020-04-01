@@ -29,6 +29,8 @@ export default () => (
         rel="stylesheet"
       />
     </Head>
-    <Playlists />
+    <div style={{ width: 250, height: "100vh" }}>
+      <Playlists />
+    </div>
   </>
 );
