@@ -1,18 +1,26 @@
-import { AnyAction } from "redux";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux";
 
 export interface State {
-  test: string;
+  n: number;
 }
 
 const initialState = {
-  test: "Hello World"
+  n: 1
 };
 
-const reducer = (state: State = initialState, action: AnyAction): State => {
-  return state;
-};
+const { reducer, actions } = createSlice({
+  name: "playlists",
+  initialState,
+  reducers: {
+    increment: (state: State, action: PayloadAction<number>) => ({
+      ...state,
+      n: state.n + action.payload
+    })
+  }
+});
 
+export const getCount = (state: RootState) => state.playlists.n;
+
+export { actions };
 export default reducer;
-
-export const getTest = (state: RootState) => state.playlists.test;
