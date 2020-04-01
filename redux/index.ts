@@ -1,5 +1,7 @@
 import { MakeStore } from "next-redux-wrapper";
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import ReduxThunk from "redux-thunk";
 import playlists, { State } from "../modules/playlists/redux";
 
 export interface RootState {
@@ -12,4 +14,12 @@ const rootReducer = combineReducers({
 
 export const makeStore: MakeStore = (
   initialState: ReturnType<typeof rootReducer>
-) => createStore(rootReducer, initialState);
+) => {
+  const store = createStore(
+    rootReducer,
+    initialState,
+    composeWithDevTools(applyMiddleware(ReduxThunk))
+  );
+
+  return store;
+};
