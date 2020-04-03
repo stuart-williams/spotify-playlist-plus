@@ -3,7 +3,11 @@ import "./PlaylistsMenu.scss";
 import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { getPlaylists, fetchPlaylists } from "../../redux/playlists";
+import {
+  getPlaylists,
+  fetchMyPlaylists,
+  fetchPlaylistById
+} from "../../redux/playlists";
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
@@ -11,7 +15,8 @@ const mapState = (state: RootState) => ({
 });
 
 const mapDispatch = {
-  fetchPlaylists
+  fetchMyPlaylists,
+  fetchPlaylistById
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -24,8 +29,14 @@ type Props = PropsFromRedux & {
 
 const PlaylistsMenu = (props: Props) => {
   useEffect(() => {
-    props.fetchPlaylists();
+    props.fetchMyPlaylists();
   }, []);
+
+  const handlePlaylistClick = (
+    playlist: SpotifyApi.PlaylistObjectSimplified
+  ) => () => {
+    props.fetchPlaylistById(playlist.id);
+  };
 
   return (
     <div className="Playlists">
@@ -40,6 +51,8 @@ const PlaylistsMenu = (props: Props) => {
               key={playlist.id}
               text={playlist.name}
               icon={playlist.collaborative ? "dot" : undefined}
+              label={String(playlist.tracks.total)}
+              onClick={handlePlaylistClick(playlist)}
             />
           ))}
         </Menu>

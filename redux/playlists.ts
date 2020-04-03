@@ -2,44 +2,55 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import fetch from "../common/fetch";
 
-type PlaylistsResponse = SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
-type PlaylistObject = SpotifyApi.PlaylistObjectSimplified;
-
 export interface State {
-  me: PlaylistsResponse;
+  me: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+  focused: SpotifyApi.PlaylistObjectFull;
 }
 
 const initialState = {
-  me: {}
+  me: {},
+  focused: {}
 };
 
-export const fetchPlaylists = createAsyncThunk<PlaylistsResponse>(
-  "me/playlists",
-  async () => {
-    const { data } = await fetch({
-      url: "me/playlists",
-      params: {
-        limit: 50
-      }
-    });
+export const fetchMyPlaylists = createAsyncThunk<
+  SpotifyApi.ListOfCurrentUsersPlaylistsResponse
+>("me/playlists", async () => {
+  const { data } = await fetch({
+    url: "me/playlists",
+    params: {
+      limit: 50
+    }
+  });
 
-    return data as PlaylistsResponse;
-  }
-);
+  return data as SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+});
+
+export const fetchPlaylistById = createAsyncThunk<
+  SpotifyApi.PlaylistObjectFull,
+  string
+>("playlists/{playlist_id}", async id => {
+  const { data } = await fetch({ url: `playlists/${id}` });
+  return data as SpotifyApi.PlaylistObjectFull;
+});
 
 const { reducer, actions } = createSlice({
   name: "playlists",
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchPlaylists.fulfilled, (state, action) => {
+    builder.addCase(fetchMyPlaylists.fulfilled, (state, action) => {
       state.me = action.payload;
+    });
+
+    builder.addCase(fetchPlaylistById.fulfilled, (state, action) => {
+      state.focused = action.payload;
     });
   }
 });
 
-export const getPlaylists = (state: RootState): PlaylistObject[] =>
-  state.playlists.me?.items || [];
+export const getPlaylists = (
+  state: RootState
+): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.me?.items || [];
 
 export { actions };
 export default reducer;
