@@ -19,11 +19,6 @@ const App = ({
     <style jsx global>
       {normalize}
     </style>
-    <style jsx global>{`
-      .bp3-dark {
-        background-color: #30404d;
-      }
-    `}</style>
   </>
 );
 

@@ -1,5 +1,6 @@
+import "../styles/main.scss";
+
 import React from "react";
-import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../common/redirect";
@@ -18,26 +19,14 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 };
 
 export default () => (
-  <>
-    <Head>
-      <link
-        href="https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css"
-        rel="stylesheet"
-      />
-      <link
-        href="https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css"
-        rel="stylesheet"
-      />
-    </Head>
-    <div
-      style={{
-        width: 250,
-        display: "flex",
-        height: "100vh",
-        overflow: "hidden"
-      }}
-    >
-      <Navigation />
-    </div>
-  </>
+  <div
+    style={{
+      width: 300,
+      display: "flex",
+      height: "100vh",
+      overflow: "hidden"
+    }}
+  >
+    <Navigation />
+  </div>
 );

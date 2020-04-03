@@ -1,0 +1,22 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
+.Navigation,
+.Navigation .bp3-tabs,
+.Navigation .bp3-tab-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.Navigation .bp3-tab-panel {
+  overflow: hidden;
+  margin: 0;
+}
+
+.Navigation .bp3-tab-list {
+  padding: $pt-grid-size;
+}
+
+.Navigation .bp3-menu {
+  background-color: $pt-dark-app-background-color;
+}

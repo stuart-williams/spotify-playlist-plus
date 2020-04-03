@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { stringify } = require("querystring");
+const withSass = require("@zeit/next-sass");
 
 const ACCOUNTS_URL = "https://accounts.spotify.com";
 const SCOPES = [
@@ -10,7 +11,7 @@ const SCOPES = [
   "playlist-read-collaborative"
 ];
 
-module.exports = {
+module.exports = withSass({
   env: {
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
@@ -25,4 +26,4 @@ module.exports = {
     API_URL: "https://api.spotify.com/v1",
     ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`
   }
-};
+});
