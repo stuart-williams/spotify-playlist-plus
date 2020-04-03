@@ -30,7 +30,6 @@ const PlaylistsMenu = (props: Props) => {
   return (
     <div className="Playlists">
       <Menu>
-        <MenuDivider title="PLAYLISTS" />
         <MenuItem text="Create Playlist" icon="plus" />
         <MenuDivider />
       </Menu>

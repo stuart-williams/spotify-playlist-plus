@@ -6,6 +6,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 250px;
+  background-color: darken($pt-dark-app-background-color, 5%);
 }
 
 .Navigation .bp3-tab-panel {
@@ -15,8 +17,4 @@
 
 .Navigation .bp3-tab-list {
   padding: $pt-grid-size;
-}
-
-.Navigation .bp3-menu {
-  background-color: $pt-dark-app-background-color;
 }
