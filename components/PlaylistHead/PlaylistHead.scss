@@ -1,0 +1,32 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
+.PlaylistHead {
+  display: flex;
+}
+
+.PlaylistHead__image {
+  height: 100px;
+  width: 100px;
+}
+
+.PlaylistHead__meta {
+  padding: $pt-grid-size;
+}
+
+.PlaylistHead__title {
+  display: flex;
+  align-items: center;
+}
+
+.PlaylistHead__title .bp3-heading {
+  margin: 0;
+}
+
+.PlaylistHead__title {
+  margin-bottom: $pt-grid-size / 2;
+}
+
+.PlaylistHead__tag,
+.PlaylistHead__menu {
+  margin-left: $pt-grid-size;
+}
