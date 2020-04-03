@@ -1,29 +1,20 @@
 import "./PlaylistTracks.scss";
 
 import React from "react";
-import { connect, ConnectedProps } from "react-redux";
-import { RootState } from "../../redux";
-import { getFocusedPlaylist } from "../../redux/playlists";
 import { HTMLTable } from "@blueprintjs/core";
 
-const mapState = (state: RootState) => ({
-  playlist: getFocusedPlaylist(state)
-});
-
-const connector = connect(mapState);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type Props = PropsFromRedux & {
-  playlist: SpotifyApi.PlaylistObjectFull;
+type Props = {
+  tracks: SpotifyApi.PlaylistTrackObject[];
 };
 
 const PlaylistTracks = (props: Props) => {
+  const { tracks = [] } = props;
+
   return (
     <div className="PlaylistTracks">
       <HTMLTable bordered={false} striped interactive>
         <tbody>
-          {(props.playlist.tracks?.items || []).map(item => {
+          {tracks.map(item => {
             const { track } = item;
 
             if (!track) {
@@ -49,4 +40,4 @@ const PlaylistTracks = (props: Props) => {
   );
 };
 
-export default connector(PlaylistTracks);
+export default PlaylistTracks;

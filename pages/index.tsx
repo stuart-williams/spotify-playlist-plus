@@ -5,7 +5,7 @@ import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../common/redirect";
 import Navigation from "../components/Navigation";
-import PlaylistTracks from "../components/PlaylistTracks";
+import Playlist from "../components/Playlist";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
@@ -25,7 +25,7 @@ export default () => (
       <Navigation />
     </div>
     <div style={{ flex: 1 }}>
-      <PlaylistTracks />
+      <Playlist />
     </div>
   </div>
 );

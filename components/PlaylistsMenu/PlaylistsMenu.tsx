@@ -51,7 +51,6 @@ const PlaylistsMenu = (props: Props) => {
               key={playlist.id}
               text={playlist.name}
               icon={playlist.collaborative ? "dot" : undefined}
-              label={String(playlist.tracks.total)}
               onClick={handlePlaylistClick(playlist)}
             />
           ))}
