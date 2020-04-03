@@ -1,6 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import fetch from "../common/fetch";
+// import shuffle from "../common/shuffle";
+
+// async function run() {
+//   const { data } = await fetch({
+//     method: "put",
+//     url: "playlists/3p2WW9KLnLH61se8GDBoCk/tracks",
+//     data: {
+//       range_start: 0,
+//       insert_before: 4
+//     }
+//   });
+
+//   console.log(data);
+// }
 
 export interface State {
   me: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;

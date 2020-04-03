@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { NextPageContext } from "next";
-import { parseCookies } from "nookies";
+import { parseCookies, destroyCookie } from "nookies";
 import { stringify } from "querystring";
 import redirect from "./redirect";
 
@@ -8,16 +8,16 @@ const instance = axios.create({
   baseURL: process.env.API_URL
 });
 
-export default (
-  config: AxiosRequestConfig,
-  ctx?: Pick<NextPageContext, "req" | "res">
-) => {
+export default (config: AxiosRequestConfig, ctx?: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 
   return instance(config).catch(error => {
-    if (error.response.status === 401) {
-      redirect("/login", ctx);
+    switch (error.response.status) {
+      case 401:
+      case 403:
+        destroyCookie(ctx, process.env.TOKEN_COOKIE);
+        redirect("/login", ctx);
     }
 
     throw new Error(error);
