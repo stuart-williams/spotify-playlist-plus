@@ -28,15 +28,24 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistsMenu = (props: Props) => {
+  const { playlists } = props;
+
   useEffect(() => {
     props.fetchMyPlaylists();
   }, []);
 
-  const handlePlaylistClick = (
-    playlist: SpotifyApi.PlaylistObjectSimplified
-  ) => () => {
+  const handleClick = (playlist: SpotifyApi.PlaylistObjectSimplified) => () => {
     props.fetchPlaylistById(playlist.id);
   };
+
+  const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => (
+    <MenuItem
+      key={playlist.id}
+      text={playlist.name}
+      icon={playlist.collaborative ? "dot" : undefined}
+      onClick={handleClick(playlist)}
+    />
+  );
 
   return (
     <div className="Playlists">
@@ -45,16 +54,7 @@ const PlaylistsMenu = (props: Props) => {
         <MenuDivider />
       </Menu>
       <div className="Playlists__scroll-node">
-        <Menu>
-          {props.playlists.map(playlist => (
-            <MenuItem
-              key={playlist.id}
-              text={playlist.name}
-              icon={playlist.collaborative ? "dot" : undefined}
-              onClick={handlePlaylistClick(playlist)}
-            />
-          ))}
-        </Menu>
+        <Menu>{playlists.map(renderMenuItem)}</Menu>
       </div>
     </div>
   );

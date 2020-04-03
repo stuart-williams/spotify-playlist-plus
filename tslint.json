@@ -1,8 +1,15 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint:recommended",
+        "tslint-react"
     ],
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**",
+            "global.d.ts"
+        ]
+    },
     "jsRules": {},
     "rules": {},
     "rulesDirectory": []

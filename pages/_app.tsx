@@ -16,7 +16,7 @@ const App = ({
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
-    <style jsx global>
+    <style jsx={true} global={true}>
       {normalize}
     </style>
   </>

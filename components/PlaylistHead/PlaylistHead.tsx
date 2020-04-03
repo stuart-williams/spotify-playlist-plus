@@ -16,6 +16,12 @@ type Props = SpotifyApi.PlaylistObjectFull & {};
 const PlaylistHead = (props: Props) => {
   const { name, images, owner, followers, tracks } = props;
 
+  const tag = !!followers.total && (
+    <Tag>
+      {followers.total} {pluralize("Followers", followers.total)}
+    </Tag>
+  );
+
   const menu = (
     <Menu>
       <MenuItem icon="edit" text="Rename" />
@@ -30,13 +36,7 @@ const PlaylistHead = (props: Props) => {
       <div className="PlaylistHead__meta">
         <div className="PlaylistHead__title">
           <h3 className="bp3-heading">{name}</h3>
-          <div className="PlaylistHead__tag">
-            {!!followers.total && (
-              <Tag>
-                {followers.total} {pluralize("Followers", followers.total)}
-              </Tag>
-            )}
-          </div>
+          <div className="PlaylistHead__tag">{tag}</div>
           <div className="PlaylistHead__menu">
             <Popover content={menu} position={Position.RIGHT_BOTTOM}>
               <Button icon="more" />

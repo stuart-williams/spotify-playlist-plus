@@ -10,31 +10,31 @@ type Props = {
 const PlaylistTracks = (props: Props) => {
   const { tracks = [] } = props;
 
+  const renderTrack = (item: SpotifyApi.PlaylistTrackObject) => {
+    const { track } = item;
+
+    if (!track) {
+      return null;
+    }
+
+    return (
+      <tr key={track.id}>
+        <td className="bp3-running-text">
+          <div>{track.name}</div>
+          <div className="bp3-text-muted bp3-text-small">
+            {track.artists.map(({ name }) => name).join(", ")}
+            {" • "}
+            {track.album.name}
+          </div>
+        </td>
+      </tr>
+    );
+  };
+
   return (
     <div className="PlaylistTracks">
-      <HTMLTable bordered={false} striped interactive>
-        <tbody>
-          {tracks.map(item => {
-            const { track } = item;
-
-            if (!track) {
-              return null;
-            }
-
-            return (
-              <tr key={track.id}>
-                <td className="bp3-running-text">
-                  <div>{track.name}</div>
-                  <div className="bp3-text-muted bp3-text-small">
-                    {track.artists.map(({ name }) => name).join(", ")}
-                    &nbsp;&nbsp;•&nbsp;&nbsp;
-                    {track.album.name}
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+      <HTMLTable bordered={false} striped={true} interactive={true}>
+        <tbody>{tracks.map(renderTrack)}</tbody>
       </HTMLTable>
     </div>
   );
