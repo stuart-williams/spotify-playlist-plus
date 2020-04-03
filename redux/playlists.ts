@@ -52,5 +52,9 @@ export const getPlaylists = (
   state: RootState
 ): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.me?.items || [];
 
+export const getFocusedPlaylist = (
+  state: RootState
+): SpotifyApi.PlaylistObjectFull => state.playlists.focused;
+
 export { actions };
 export default reducer;
