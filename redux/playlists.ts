@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../redux";
-import fetch from "../../common/fetch";
+import { RootState } from ".";
+import fetch from "../common/fetch";
 
 type PlaylistsResponse = SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
 type PlaylistObject = SpotifyApi.PlaylistObjectSimplified;
 
 export interface State {
-  response: PlaylistsResponse;
+  me: PlaylistsResponse;
 }
 
 const initialState = {
-  response: {}
+  me: {}
 };
 
 export const fetchPlaylists = createAsyncThunk<PlaylistsResponse>(
@@ -33,13 +33,13 @@ const { reducer, actions } = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchPlaylists.fulfilled, (state, action) => {
-      state.response = action.payload;
+      state.me = action.payload;
     });
   }
 });
 
 export const getPlaylists = (state: RootState): PlaylistObject[] =>
-  state.playlists.response?.items || [];
+  state.playlists.me?.items || [];
 
 export { actions };
 export default reducer;

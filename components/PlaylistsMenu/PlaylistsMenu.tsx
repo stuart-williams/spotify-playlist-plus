@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { getPlaylists, fetchPlaylists } from "./redux";
+import { getPlaylists, fetchPlaylists } from "../../redux/playlists";
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 import styles from "./styles";
 
@@ -21,7 +21,7 @@ type Props = PropsFromRedux & {
   playlists: SpotifyApi.PlaylistObjectSimplified[];
 };
 
-const Playlists = (props: Props) => {
+const PlaylistsMenu = (props: Props) => {
   useEffect(() => {
     props.fetchPlaylists();
   }, []);
@@ -49,4 +49,4 @@ const Playlists = (props: Props) => {
   );
 };
 
-export default connector(Playlists);
+export default connector(PlaylistsMenu);

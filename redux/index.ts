@@ -2,7 +2,7 @@ import { MakeStore } from "next-redux-wrapper";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import ReduxThunk from "redux-thunk";
-import playlists, { State } from "../modules/playlists/redux";
+import playlists, { State } from "./playlists";
 
 export interface RootState {
   playlists: State;
