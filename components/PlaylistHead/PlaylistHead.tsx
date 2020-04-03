@@ -1,7 +1,9 @@
 import "./PlaylistHead.scss";
 
 import React from "react";
+import { connect, ConnectedProps } from "react-redux";
 import pluralize from "pluralize";
+import { randomisePlaylist } from "../../redux/playlists";
 import {
   Tag,
   Button,
@@ -11,10 +13,21 @@ import {
   Position
 } from "@blueprintjs/core";
 
-type Props = SpotifyApi.PlaylistObjectFull & {};
+const mapDispatch = {
+  randomisePlaylist
+};
+
+const connector = connect(null, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
+  playlist: SpotifyApi.PlaylistObjectFull;
+};
 
 const PlaylistHead = (props: Props) => {
-  const { name, images, owner, followers, tracks } = props;
+  const { id, name, images, owner, followers, tracks } = props.playlist;
+  const handleRandomise = () => props.randomisePlaylist(id);
 
   const tag = !!followers.total && (
     <Tag>
@@ -25,7 +38,11 @@ const PlaylistHead = (props: Props) => {
   const menu = (
     <Menu>
       <MenuItem icon="edit" text="Rename" />
-      <MenuItem icon="random" text="Randomise Order" />
+      <MenuItem
+        icon="random"
+        text="Randomise Order"
+        onClick={handleRandomise}
+      />
       <MenuItem icon="heart-broken" text="Unfollow" />
     </Menu>
   );
@@ -54,4 +71,4 @@ const PlaylistHead = (props: Props) => {
   );
 };
 
-export default PlaylistHead;
+export default connector(PlaylistHead);

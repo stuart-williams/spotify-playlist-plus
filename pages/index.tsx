@@ -22,8 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 const styles = {
   display: "flex",
   height: "100vh",
-  overflow: "hidden",
-  minWidth: "800px"
+  overflow: "hidden"
 };
 
 export default () => (

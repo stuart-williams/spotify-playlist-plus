@@ -9,13 +9,15 @@ import fetch from "../common/fetch";
 //     url: "playlists/3p2WW9KLnLH61se8GDBoCk/tracks",
 //     data: {
 //       range_start: 0,
-//       insert_before: 4
+//       insert_before: 4,
+//       snapshot_id: undefined
 //     }
 //   });
 
 //   console.log(data);
 // }
 
+// State
 export interface State {
   me: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
   focused: SpotifyApi.PlaylistObjectFull;
@@ -26,9 +28,10 @@ const initialState = {
   focused: {}
 };
 
+// Actions Creators
 export const fetchMyPlaylists = createAsyncThunk<
   SpotifyApi.ListOfCurrentUsersPlaylistsResponse
->("me/playlists", async () => {
+>("playlists/fetchMyPlaylists", async () => {
   const { data } = await fetch({
     url: "me/playlists",
     params: {
@@ -42,11 +45,19 @@ export const fetchMyPlaylists = createAsyncThunk<
 export const fetchPlaylistById = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   string
->("playlists/{playlist_id}", async id => {
+>("playlists/fetchPlaylistById", async id => {
   const { data } = await fetch({ url: `playlists/${id}` });
   return data as SpotifyApi.PlaylistObjectFull;
 });
 
+export const randomisePlaylist = createAsyncThunk<void, string>(
+  "playlists/randomisePlaylist",
+  async id => {
+    console.log(id);
+  }
+);
+
+// Reducer
 const { reducer, actions } = createSlice({
   name: "playlists",
   initialState,
@@ -62,6 +73,10 @@ const { reducer, actions } = createSlice({
   }
 });
 
+export { actions };
+export default reducer;
+
+// Selectors
 export const getPlaylists = (
   state: RootState
 ): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.me?.items || [];
@@ -69,6 +84,3 @@ export const getPlaylists = (
 export const getFocusedPlaylist = (
   state: RootState
 ): SpotifyApi.PlaylistObjectFull => state.playlists.focused;
-
-export { actions };
-export default reducer;

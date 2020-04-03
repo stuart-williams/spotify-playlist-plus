@@ -28,7 +28,7 @@ const Playlist = (props: Props) => {
 
   return (
     <div className="Playlist">
-      <PlaylistHead {...props.playlist} />
+      <PlaylistHead playlist={props.playlist} />
       <PlaylistTracks tracks={tracks?.items} />
     </div>
   );
