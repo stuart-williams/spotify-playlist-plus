@@ -3,7 +3,7 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../common/redirect";
-import PlaylistsMenu from "../components/PlaylistsMenu";
+import Navigation from "../components/Navigation";
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
@@ -29,8 +29,15 @@ export default () => (
         rel="stylesheet"
       />
     </Head>
-    <div style={{ width: 250, height: "100vh" }}>
-      <PlaylistsMenu />
+    <div
+      style={{
+        width: 250,
+        display: "flex",
+        height: "100vh",
+        overflow: "hidden"
+      }}
+    >
+      <Navigation />
     </div>
   </>
 );
