@@ -1,21 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import fetch from "../common/fetch";
-// import shuffle from "../common/shuffle";
-
-// async function run() {
-//   const { data } = await fetch({
-//     method: "put",
-//     url: "playlists/3p2WW9KLnLH61se8GDBoCk/tracks",
-//     data: {
-//       range_start: 0,
-//       insert_before: 4,
-//       snapshot_id: undefined
-//     }
-//   });
-
-//   console.log(data);
-// }
+import { shufflePlaylist } from "../common/shuffle";
 
 // State
 export interface State {
@@ -50,12 +36,13 @@ export const fetchPlaylistById = createAsyncThunk<
   return data as SpotifyApi.PlaylistObjectFull;
 });
 
-export const randomisePlaylist = createAsyncThunk<void, string>(
-  "playlists/randomisePlaylist",
-  async id => {
-    console.log(id);
-  }
-);
+export const randomisePlaylist = createAsyncThunk<
+  void,
+  SpotifyApi.PlaylistObjectFull
+>("playlists/randomisePlaylist", async playlist => {
+  const resp = await shufflePlaylist(playlist);
+  console.log(resp);
+});
 
 // Reducer
 const { reducer, actions } = createSlice({

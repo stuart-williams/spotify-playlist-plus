@@ -27,7 +27,7 @@ type Props = PropsFromRedux & {
 
 const PlaylistHead = (props: Props) => {
   const { id, name, images, owner, followers, tracks } = props.playlist;
-  const handleRandomise = () => props.randomisePlaylist(id);
+  const handleRandomise = () => props.randomisePlaylist(props.playlist);
 
   const tag = !!followers.total && (
     <Tag>
