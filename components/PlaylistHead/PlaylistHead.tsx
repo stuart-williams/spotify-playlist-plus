@@ -38,7 +38,13 @@ const PlaylistHead = (props: Props) => {
     toaster.current?.show(
       {
         icon: "random",
-        message: <ProgressBar intent={Intent.PRIMARY} value={100} />
+        message: (
+          <ProgressBar
+            className="PlaylistHead__menu__toast-progress"
+            intent={Intent.PRIMARY}
+            value={100}
+          />
+        )
       },
       "pending"
     );
