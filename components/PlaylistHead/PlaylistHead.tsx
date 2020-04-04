@@ -56,7 +56,7 @@ const PlaylistHead = (props: Props) => {
     if (randomisePlaylist.fulfilled.match(resultAction)) {
       toaster.current?.show({
         icon: "tick",
-        message: "Done",
+        message: "So random",
         intent: Intent.SUCCESS
       });
 
@@ -72,7 +72,8 @@ const PlaylistHead = (props: Props) => {
 
   const tag = !!followers.total && (
     <Tag>
-      {followers.total} {pluralize("Followers", followers.total)}
+      {new Intl.NumberFormat().format(followers.total)}{" "}
+      {pluralize("Followers", followers.total)}
     </Tag>
   );
 
