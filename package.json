@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "tslint -c tslint.json '**/*.{ts,tsx}'",
+    "test": "npm run lint",
     "dev": "DEBUG=spp:* next dev",
     "build": "next build",
     "start": "next start"

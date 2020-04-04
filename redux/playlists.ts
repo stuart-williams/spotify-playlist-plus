@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import fetch from "../common/fetch";
-import { shufflePlaylist } from "../common/shuffle";
+import * as playlistApi from "../api/playlists";
 
 // State
 export interface State {
@@ -15,27 +14,19 @@ const initialState = {
 };
 
 // Actions Creators
-export const fetchMyPlaylists = createAsyncThunk<
-  SpotifyApi.ListOfCurrentUsersPlaylistsResponse
->("playlists/fetchMyPlaylists", async () => {
-  const { data } = await fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>({
-    url: "me/playlists",
-    params: {
-      limit: 50
-    }
-  });
-
-  return data;
-});
+export const fetchMyPlaylists = createAsyncThunk(
+  "playlists/fetchMyPlaylists",
+  async () => {
+    const { data } = await playlistApi.fetchMyPlaylists();
+    return data;
+  }
+);
 
 export const fetchPlaylistById = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   string
 >("playlists/fetchPlaylistById", async id => {
-  const { data } = await fetch<SpotifyApi.PlaylistObjectFull>({
-    url: `playlists/${id}`
-  });
-
+  const { data } = await playlistApi.fetchPlaylistById(id);
   return data;
 });
 
@@ -47,7 +38,7 @@ export const randomisePlaylist = createAsyncThunk<
   }
 >("playlists/randomisePlaylist", async (playlist, { rejectWithValue }) => {
   try {
-    await shufflePlaylist(playlist);
+    await playlistApi.randomisePlaylist(playlist);
   } catch (error) {
     return rejectWithValue(error.response.data.error as SpotifyApi.ErrorObject);
   }

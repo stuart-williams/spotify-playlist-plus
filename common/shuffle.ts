@@ -1,7 +1,5 @@
-import fetch from "./fetch";
-
 // Fisher–Yates Shuffle
-export function* shuffle<T>(
+export default function* shuffle<T>(
   arr: T[]
 ): Generator<{ swap: number[]; snapshot: T[] }> {
   let i = arr.length - 1;
@@ -18,47 +16,3 @@ export function* shuffle<T>(
     };
   }
 }
-
-const moveTrack = (
-  id: string,
-  rangeStart: number,
-  insertBefore: number,
-  snapshotId?: string
-) =>
-  fetch<SpotifyApi.ReorderPlaylistTracksResponse>({
-    method: "put",
-    url: `playlists/${id}/tracks`,
-    data: {
-      range_start: rangeStart,
-      insert_before: insertBefore,
-      snapshot_id: snapshotId
-    }
-  });
-
-export const shufflePlaylist = async (
-  playlist: SpotifyApi.PlaylistObjectFull
-) => {
-  const { id, tracks } = playlist;
-  const ar = tracks.items.map(({ track }) => track.name);
-  const it = shuffle<string>(ar);
-
-  const next = async (snapshotId?: string): Promise<any> => {
-    const { done, value } = it.next();
-
-    if (done) {
-      return;
-    }
-
-    const r1 = await moveTrack(id, value.swap[0], value.swap[1], snapshotId);
-    const r2 = await moveTrack(
-      id,
-      value.swap[1],
-      value.swap[0],
-      r1.data.snapshot_id
-    );
-
-    return next(r2.data.snapshot_id);
-  };
-
-  return next();
-};
