@@ -26,6 +26,7 @@ const moveTrack = (
   snapshotId?: string
 ) =>
   fetch<SpotifyApi.ReorderPlaylistTracksResponse>({
+    method: "put",
     url: `playlists/${id}/tracks`,
     data: {
       range_start: rangeStart,
