@@ -18,22 +18,25 @@ const initialState = {
 export const fetchMyPlaylists = createAsyncThunk<
   SpotifyApi.ListOfCurrentUsersPlaylistsResponse
 >("playlists/fetchMyPlaylists", async () => {
-  const { data } = await fetch({
+  const { data } = await fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>({
     url: "me/playlists",
     params: {
       limit: 50
     }
   });
 
-  return data as SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+  return data;
 });
 
 export const fetchPlaylistById = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   string
 >("playlists/fetchPlaylistById", async id => {
-  const { data } = await fetch({ url: `playlists/${id}` });
-  return data as SpotifyApi.PlaylistObjectFull;
+  const { data } = await fetch<SpotifyApi.PlaylistObjectFull>({
+    url: `playlists/${id}`
+  });
+
+  return data;
 });
 
 export const randomisePlaylist = createAsyncThunk<

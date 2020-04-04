@@ -24,9 +24,8 @@ const moveTrack = (
   rangeStart: number,
   insertBefore: number,
   snapshotId?: string
-) => {
-  // SpotifyApi.ReorderPlaylistTracksResponse
-  return fetch({
+) =>
+  fetch<SpotifyApi.ReorderPlaylistTracksResponse>({
     url: `playlists/${id}/tracks`,
     data: {
       range_start: rangeStart,
@@ -34,7 +33,6 @@ const moveTrack = (
       snapshot_id: snapshotId
     }
   });
-};
 
 export const shufflePlaylist = (playlist: SpotifyApi.PlaylistObjectFull) =>
   new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { NextPageContext } from "next";
 import { parseCookies, destroyCookie } from "nookies";
 import { stringify } from "querystring";
@@ -9,7 +9,10 @@ const instance = axios.create({
 });
 
 // TODO: Allow response typing
-export default (config: AxiosRequestConfig, ctx?: NextPageContext) => {
+export default <T = any>(
+  config: AxiosRequestConfig,
+  ctx?: NextPageContext
+): AxiosPromise<T> => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 
