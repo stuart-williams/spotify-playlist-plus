@@ -24,9 +24,9 @@ const moveTrack = (
   rangeStart: number,
   insertBefore: number,
   snapshotId?: string
-) =>
-  fetch({
-    method: "put",
+) => {
+  // SpotifyApi.ReorderPlaylistTracksResponse
+  return fetch({
     url: `playlists/${id}/tracks`,
     data: {
       range_start: rangeStart,
@@ -34,39 +34,40 @@ const moveTrack = (
       snapshot_id: snapshotId
     }
   });
+};
 
-export const shufflePlaylist = (playlist: SpotifyApi.PlaylistObjectFull) => {
-  return new Promise(resolve => {
+export const shufflePlaylist = (playlist: SpotifyApi.PlaylistObjectFull) =>
+  new Promise((resolve, reject) => {
     const { id, tracks } = playlist;
     const ar = tracks.items.map(({ track }) => track.name);
     const it = shuffle<string>(ar);
 
-    let snapshotId: any;
-
-    const next = async () => {
+    const next = async (snapshotId?: string) => {
       const { done, value } = it.next();
 
       if (done) {
-        resolve();
-      } else {
+        return resolve();
+      }
+
+      try {
         const r1 = await moveTrack(
           id,
           value.swap[0],
           value.swap[1],
           snapshotId
         );
-        snapshotId = r1?.data?.snapshot_id;
         const r2 = await moveTrack(
           id,
           value.swap[1],
           value.swap[0],
-          snapshotId
+          r1.data.snapshot_id
         );
-        snapshotId = r2?.data?.snapshot_id;
-        next();
+
+        next(r2.data.snapshot_id);
+      } catch (error) {
+        reject(error);
       }
     };
 
     next();
   });
-};

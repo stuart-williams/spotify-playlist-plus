@@ -40,8 +40,8 @@ export const randomisePlaylist = createAsyncThunk<
   void,
   SpotifyApi.PlaylistObjectFull
 >("playlists/randomisePlaylist", async playlist => {
-  const resp = await shufflePlaylist(playlist);
-  console.log(resp);
+  // TODO: error hanling
+  shufflePlaylist(playlist);
 });
 
 // Reducer

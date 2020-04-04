@@ -8,6 +8,7 @@ const instance = axios.create({
   baseURL: process.env.API_URL
 });
 
+// TODO: Allow response typing
 export default (config: AxiosRequestConfig, ctx?: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -15,7 +16,7 @@ export default (config: AxiosRequestConfig, ctx?: NextPageContext) => {
   return instance(config).catch(error => {
     switch (error.response.status) {
       case 401:
-      case 403:
+        // case 403:
         destroyCookie(ctx, process.env.TOKEN_COOKIE);
         redirect("/login", ctx);
     }
