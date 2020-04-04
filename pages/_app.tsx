@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import { AppProps } from "next/app";
 import { NextSeo } from "next-seo";
 import { Provider } from "react-redux";
@@ -12,7 +13,10 @@ const App = ({
   store
 }: AppProps & ReduxWrapperAppProps) => (
   <>
-    <NextSeo title="Playlist+" />
+    <Head>
+      <link rel="shortcut icon" href="/favicon.ico" />
+    </Head>
+    <NextSeo title="Spotify – Playlist +" />
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
