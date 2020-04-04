@@ -12,6 +12,7 @@ import {
   Popover,
   Position
 } from "@blueprintjs/core";
+import Img from "react-image";
 
 const mapDispatch = {
   randomisePlaylist
@@ -26,7 +27,7 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistHead = (props: Props) => {
-  const { id, name, images, owner, followers, tracks } = props.playlist;
+  const { name, images, owner, followers, tracks } = props.playlist;
   const handleRandomise = () => props.randomisePlaylist(props.playlist);
 
   const tag = !!followers.total && (
@@ -49,7 +50,9 @@ const PlaylistHead = (props: Props) => {
 
   return (
     <div className="PlaylistHead">
-      <img className="PlaylistHead__image" src={images[0].url} alt={name} />
+      <div className="PlaylistHead__image">
+        <Img src={images?.[0]?.url} alt={name} />
+      </div>
       <div className="PlaylistHead__meta">
         <div className="PlaylistHead__title">
           <h3 className="bp3-heading">{name}</h3>

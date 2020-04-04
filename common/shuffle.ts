@@ -1,6 +1,6 @@
 import fetch from "./fetch";
 
-// https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+// Fisher–Yates Shuffle
 export function* shuffle<T>(
   arr: T[]
 ): Generator<{ swap: number[]; snapshot: T[] }> {
