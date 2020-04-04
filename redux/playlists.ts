@@ -6,11 +6,17 @@ import * as playlistApi from "../api/playlists";
 export interface State {
   me: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
   focused: SpotifyApi.PlaylistObjectFull;
+  randomise: {
+    loading: "idle" | "pending" | "rejected";
+  };
 }
 
 const initialState = {
   me: {},
-  focused: {}
+  focused: {},
+  randomise: {
+    loading: "idle"
+  }
 };
 
 // Actions Creators
@@ -57,6 +63,14 @@ const { reducer, actions } = createSlice({
     builder.addCase(fetchPlaylistById.fulfilled, (state, action) => {
       state.focused = action.payload;
     });
+
+    builder.addCase(randomisePlaylist.pending, state => {
+      state.randomise.loading = "pending";
+    });
+
+    builder.addCase(randomisePlaylist.fulfilled, state => {
+      state.randomise.loading = "idle";
+    });
   }
 });
 
@@ -71,3 +85,6 @@ export const getPlaylists = (
 export const getFocusedPlaylist = (
   state: RootState
 ): SpotifyApi.PlaylistObjectFull => state.playlists.focused;
+
+export const getRandomiseLoading = (state: RootState) =>
+  state.playlists.randomise.loading;

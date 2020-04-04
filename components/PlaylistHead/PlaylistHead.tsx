@@ -1,9 +1,14 @@
 import "./PlaylistHead.scss";
 
 import React, { useRef } from "react";
-import { connect, ConnectedProps } from "react-redux";
+import { connect, ConnectedProps, useSelector } from "react-redux";
+import { RootState } from "../../redux";
 import pluralize from "pluralize";
-import { randomisePlaylist, fetchPlaylistById } from "../../redux/playlists";
+import {
+  randomisePlaylist,
+  fetchPlaylistById,
+  getRandomiseLoading
+} from "../../redux/playlists";
 import Img from "react-image";
 import {
   Tag,
@@ -17,12 +22,16 @@ import {
   Intent
 } from "@blueprintjs/core";
 
+const mapState = (state: RootState) => ({
+  randomiseLoading: getRandomiseLoading(state)
+});
+
 const mapDispatch = {
   randomisePlaylist,
   fetchPlaylistById
 };
 
-const connector = connect(null, mapDispatch);
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -31,7 +40,8 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistHead = (props: Props) => {
-  const { id, name, images, owner, followers, tracks } = props.playlist;
+  const { playlist, randomiseLoading } = props;
+  const { id, name, images, owner, followers, tracks } = playlist;
   const toaster = useRef<Toaster>();
 
   const handleRandomise = async () => {
@@ -49,7 +59,7 @@ const PlaylistHead = (props: Props) => {
       "pending"
     );
 
-    const resultAction = await props.randomisePlaylist(props.playlist);
+    const resultAction = await props.randomisePlaylist(playlist);
 
     toaster.current?.dismiss("pending");
 
@@ -84,6 +94,7 @@ const PlaylistHead = (props: Props) => {
         icon="random"
         text="Randomise Order"
         onClick={handleRandomise}
+        disabled={randomiseLoading === "pending"}
       />
       <MenuItem icon="heart-broken" text="Unfollow" />
     </Menu>
