@@ -3,7 +3,7 @@ import "./PlaylistHead.scss";
 import React, { useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import pluralize from "pluralize";
-import { randomisePlaylist } from "../../redux/playlists";
+import { randomisePlaylist, fetchPlaylistById } from "../../redux/playlists";
 import Img from "react-image";
 import {
   Tag,
@@ -12,12 +12,14 @@ import {
   MenuItem,
   Popover,
   Toaster,
+  ProgressBar,
   Position,
   Intent
 } from "@blueprintjs/core";
 
 const mapDispatch = {
-  randomisePlaylist
+  randomisePlaylist,
+  fetchPlaylistById
 };
 
 const connector = connect(null, mapDispatch);
@@ -29,18 +31,30 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistHead = (props: Props) => {
-  const { name, images, owner, followers, tracks } = props.playlist;
+  const { id, name, images, owner, followers, tracks } = props.playlist;
   const toaster = useRef<Toaster>();
 
   const handleRandomise = async () => {
+    toaster.current?.show(
+      {
+        icon: "random",
+        message: <ProgressBar intent={Intent.PRIMARY} value={100} />
+      },
+      "pending"
+    );
+
     const resultAction = await props.randomisePlaylist(props.playlist);
+
+    toaster.current?.dismiss("pending");
 
     if (randomisePlaylist.fulfilled.match(resultAction)) {
       toaster.current?.show({
         icon: "tick",
-        message: "Randomise order complete",
+        message: "Done",
         intent: Intent.SUCCESS
       });
+
+      props.fetchPlaylistById(id);
     } else {
       toaster.current?.show({
         icon: "warning-sign",
