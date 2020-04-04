@@ -41,10 +41,16 @@ export const fetchPlaylistById = createAsyncThunk<
 
 export const randomisePlaylist = createAsyncThunk<
   void,
-  SpotifyApi.PlaylistObjectFull
->("playlists/randomisePlaylist", async playlist => {
-  // TODO: error hanling
-  shufflePlaylist(playlist);
+  SpotifyApi.PlaylistObjectFull,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("playlists/randomisePlaylist", async (playlist, { rejectWithValue }) => {
+  try {
+    await shufflePlaylist(playlist);
+  } catch (error) {
+    return rejectWithValue(error.response.data.error as SpotifyApi.ErrorObject);
+  }
 });
 
 // Reducer

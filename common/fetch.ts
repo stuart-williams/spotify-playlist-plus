@@ -8,7 +8,6 @@ const instance = axios.create({
   baseURL: process.env.API_URL
 });
 
-// TODO: Allow response typing
 export default <T = any>(
   config: AxiosRequestConfig,
   ctx?: NextPageContext
@@ -24,7 +23,7 @@ export default <T = any>(
         redirect("/login", ctx);
     }
 
-    throw new Error(error);
+    return Promise.reject(error);
   });
 };
 

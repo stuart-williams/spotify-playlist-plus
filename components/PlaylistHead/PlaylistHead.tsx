@@ -1,18 +1,20 @@
 import "./PlaylistHead.scss";
 
-import React from "react";
+import React, { useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import pluralize from "pluralize";
 import { randomisePlaylist } from "../../redux/playlists";
+import Img from "react-image";
 import {
   Tag,
   Button,
   Menu,
   MenuItem,
   Popover,
-  Position
+  Toaster,
+  Position,
+  Intent
 } from "@blueprintjs/core";
-import Img from "react-image";
 
 const mapDispatch = {
   randomisePlaylist
@@ -28,7 +30,25 @@ type Props = PropsFromRedux & {
 
 const PlaylistHead = (props: Props) => {
   const { name, images, owner, followers, tracks } = props.playlist;
-  const handleRandomise = () => props.randomisePlaylist(props.playlist);
+  const toaster = useRef<Toaster>();
+
+  const handleRandomise = async () => {
+    const resultAction = await props.randomisePlaylist(props.playlist);
+
+    if (randomisePlaylist.fulfilled.match(resultAction)) {
+      toaster.current?.show({
+        icon: "tick",
+        message: "Randomise order complete",
+        intent: Intent.SUCCESS
+      });
+    } else {
+      toaster.current?.show({
+        icon: "warning-sign",
+        message: resultAction?.payload?.message || "Unknown error",
+        intent: Intent.DANGER
+      });
+    }
+  };
 
   const tag = !!followers.total && (
     <Tag>
@@ -49,28 +69,34 @@ const PlaylistHead = (props: Props) => {
   );
 
   return (
-    <div className="PlaylistHead">
-      <div className="PlaylistHead__image">
-        <Img src={images?.[0]?.url} alt={name} />
-      </div>
-      <div className="PlaylistHead__meta">
-        <div className="PlaylistHead__title">
-          <h3 className="bp3-heading">{name}</h3>
-          <div className="PlaylistHead__tag">{tag}</div>
-          <div className="PlaylistHead__menu">
-            <Popover content={menu} position={Position.RIGHT_BOTTOM}>
-              <Button icon="more" />
-            </Popover>
+    <>
+      <Toaster
+        ref={(ref: Toaster) => (toaster.current = ref)}
+        position={Position.TOP}
+      />
+      <div className="PlaylistHead">
+        <div className="PlaylistHead__image">
+          <Img src={images?.[0]?.url} alt={name} />
+        </div>
+        <div className="PlaylistHead__meta">
+          <div className="PlaylistHead__title">
+            <h3 className="bp3-heading">{name}</h3>
+            <div className="PlaylistHead__tag">{tag}</div>
+            <div className="PlaylistHead__menu">
+              <Popover content={menu} position={Position.RIGHT_BOTTOM}>
+                <Button icon="more" />
+              </Popover>
+            </div>
+          </div>
+          <div className="bp3-running-text">
+            <div className="bp3-text-muted">{owner.display_name}</div>
+            <div className="bp3-text-muted bp3-text-small">
+              {tracks.total} Songs
+            </div>
           </div>
         </div>
-        <div className="bp3-running-text">
-          <div className="bp3-text-muted">{owner.display_name}</div>
-          <div className="bp3-text-muted bp3-text-small">
-            {tracks.total} Songs
-          </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
