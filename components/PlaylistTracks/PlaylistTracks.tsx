@@ -1,6 +1,7 @@
 import "./PlaylistTracks.scss";
 
 import React from "react";
+import ms from "pretty-ms";
 import { HTMLTable } from "@blueprintjs/core";
 
 type Props = {
@@ -17,16 +18,24 @@ const PlaylistTracks = (props: Props) => {
       return null;
     }
 
+    const duration = ms(track.duration_ms, {
+      colonNotation: true,
+      secondsDecimalDigits: 0
+    });
+
     return (
       <tr key={track.id}>
-        <td className="bp3-running-text">
-          <div>{track.name}</div>
-          <div className="bp3-text-muted bp3-text-small">
-            {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
-            {track.artists.map(({ name }) => name).join(", ")}
-            {" • "}
-            {track.album.name}
+        <td className="PlaylistTracks__track bp3-running-text">
+          <div>
+            {track.name}
+            <div className="bp3-text-muted bp3-text-small">
+              {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
+              {track.artists.map(({ name }) => name).join(", ")}
+              {" • "}
+              {track.album.name}
+            </div>
           </div>
+          {duration}
         </td>
       </tr>
     );

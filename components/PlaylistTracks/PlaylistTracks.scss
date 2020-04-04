@@ -7,3 +7,9 @@
 .PlaylistTracks td {
   box-shadow: none !important;
 }
+
+.PlaylistTracks__track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
