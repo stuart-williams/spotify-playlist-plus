@@ -71,6 +71,10 @@ const { reducer, actions } = createSlice({
     builder.addCase(randomisePlaylist.fulfilled, state => {
       state.randomise.loading = "idle";
     });
+
+    builder.addCase(randomisePlaylist.rejected, state => {
+      state.randomise.loading = "idle";
+    });
   }
 });
 
