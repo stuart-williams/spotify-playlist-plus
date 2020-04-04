@@ -20,16 +20,16 @@ type Props = PropsFromRedux & {
 };
 
 const Playlist = (props: Props) => {
-  const { id, tracks } = props.playlist;
+  const { playlist } = props;
 
-  if (!id) {
+  if (!playlist.id) {
     return null;
   }
 
   return (
     <div className="Playlist">
-      <PlaylistHead playlist={props.playlist} />
-      <PlaylistTracks tracks={tracks?.items} />
+      <PlaylistHead playlist={playlist} />
+      <PlaylistTracks playlist={playlist} />
     </div>
   );
 };

@@ -4,14 +4,14 @@ import React from "react";
 import { HTMLTable } from "@blueprintjs/core";
 
 type Props = {
-  tracks: SpotifyApi.PlaylistTrackObject[];
+  playlist: SpotifyApi.PlaylistObjectFull;
 };
 
 const PlaylistTracks = (props: Props) => {
-  const { tracks = [] } = props;
+  const { tracks, collaborative } = props.playlist;
 
   const renderTrack = (item: SpotifyApi.PlaylistTrackObject) => {
-    const { track } = item;
+    const { track, added_by } = item;
 
     if (!track) {
       return null;
@@ -22,6 +22,7 @@ const PlaylistTracks = (props: Props) => {
         <td className="bp3-running-text">
           <div>{track.name}</div>
           <div className="bp3-text-muted bp3-text-small">
+            {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
             {track.artists.map(({ name }) => name).join(", ")}
             {" • "}
             {track.album.name}
@@ -34,7 +35,7 @@ const PlaylistTracks = (props: Props) => {
   return (
     <div className="PlaylistTracks">
       <HTMLTable bordered={false} striped={true} interactive={true}>
-        <tbody>{tracks.map(renderTrack)}</tbody>
+        <tbody>{tracks.items.map(renderTrack)}</tbody>
       </HTMLTable>
     </div>
   );

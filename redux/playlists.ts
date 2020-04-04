@@ -7,7 +7,7 @@ export interface State {
   me: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
   focused: SpotifyApi.PlaylistObjectFull;
   randomise: {
-    loading: "idle" | "pending" | "rejected";
+    loading: "idle" | "pending";
   };
 }
 
