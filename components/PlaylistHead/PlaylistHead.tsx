@@ -47,6 +47,7 @@ const PlaylistHead = (props: Props) => {
   const handleRandomise = async () => {
     toaster.current?.show(
       {
+        timeout: 0,
         icon: "random",
         message: (
           <ProgressBar
