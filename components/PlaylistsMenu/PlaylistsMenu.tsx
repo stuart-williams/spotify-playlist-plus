@@ -1,26 +1,17 @@
 import "./PlaylistsMenu.scss";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import {
-  getListOfPlaylists,
-  fetchMyPlaylists,
-  fetchPlaylistById
-} from "../../redux/playlists";
+import { getListOfPlaylists } from "../../redux/playlists";
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
   playlists: getListOfPlaylists(state)
 });
 
-const mapDispatch = {
-  fetchMyPlaylists,
-  fetchPlaylistById
-};
-
-const connector = connect(mapState, mapDispatch);
+const connector = connect(mapState);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -29,12 +20,7 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistsMenu = (props: Props) => {
-  const { playlists } = props;
   const router = useRouter();
-
-  useEffect(() => {
-    props.fetchMyPlaylists();
-  }, []);
 
   const handleClick = (playlist: SpotifyApi.PlaylistObjectSimplified) => () => {
     router.replace(`/playlist/[id]`, `/playlist/${playlist.id}`);
@@ -56,7 +42,7 @@ const PlaylistsMenu = (props: Props) => {
         <MenuDivider />
       </Menu>
       <div className="Playlists__scroll-node">
-        <Menu>{playlists.map(renderMenuItem)}</Menu>
+        <Menu>{props.playlists.map(renderMenuItem)}</Menu>
       </div>
     </div>
   );

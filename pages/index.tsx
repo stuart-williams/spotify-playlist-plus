@@ -33,7 +33,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
 
   if (!token) {
     redirect("/login", ctx);
-  } else {
+  } else if (ctx.req) {
     const [user, myPlaylists] = await Promise.all([
       fetch<SpotifyApi.CurrentUsersProfileResponse>({ url: "me" }, ctx),
       playlistApi.fetchMyPlaylists(ctx)
