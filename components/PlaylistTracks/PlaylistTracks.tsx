@@ -2,7 +2,7 @@ import "./PlaylistTracks.scss";
 
 import React from "react";
 import ms from "pretty-ms";
-import { HTMLTable } from "@blueprintjs/core";
+import { HTMLTable, Tag } from "@blueprintjs/core";
 
 type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
@@ -30,6 +30,7 @@ const PlaylistTracks = (props: Props) => {
           <div>
             {track.name}
             <div className="bp3-text-muted bp3-text-small">
+              {track.explicit && <Tag minimal={true}>EXPLICIT</Tag>}{" "}
               {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
               {track.artists.map(({ name }) => name).join(", ")}
               {" • "}

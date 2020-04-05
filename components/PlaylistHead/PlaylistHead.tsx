@@ -42,7 +42,15 @@ type Props = PropsFromRedux & {
 
 const PlaylistHead = (props: Props) => {
   const { playlist, randomiseLoading } = props;
-  const { id, name, images, owner, followers, tracks } = playlist;
+  const {
+    id,
+    name,
+    images,
+    owner,
+    followers,
+    tracks,
+    collaborative
+  } = playlist;
   const toaster = useRef<Toaster>();
   const duration = ms(
     tracks.items.reduce((d, item) => d + item.track.duration_ms, 0),
@@ -98,6 +106,10 @@ const PlaylistHead = (props: Props) => {
   const menu = (
     <Menu>
       <MenuItem icon="edit" text="Rename" />
+      <MenuItem
+        icon="people"
+        text={`Make ${collaborative ? "Non-" : ""}Collaborative`}
+      />
       <MenuItem
         icon="random"
         text="Randomise Order"

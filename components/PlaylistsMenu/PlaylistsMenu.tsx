@@ -4,14 +4,14 @@ import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import {
-  getPlaylists,
+  getListOfPlaylists,
   fetchMyPlaylists,
   fetchPlaylistById
 } from "../../redux/playlists";
 import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
-  playlists: getPlaylists(state)
+  playlists: getListOfPlaylists(state)
 });
 
 const mapDispatch = {
@@ -42,7 +42,7 @@ const PlaylistsMenu = (props: Props) => {
     <MenuItem
       key={playlist.id}
       text={playlist.name}
-      icon={playlist.collaborative ? "dot" : undefined}
+      icon={playlist.collaborative ? "people" : undefined}
       onClick={handleClick(playlist)}
     />
   );
