@@ -52,14 +52,16 @@ const PlaylistHead = (props: Props) => {
     owner,
     followers,
     tracks,
-    collaborative
+    collaborative,
+    public: isPublic
   } = playlist;
   const userIsOwner = user.id === playlist.owner.id;
   const toaster = useRef<Toaster>();
   const duration = ms(
-    tracks.items.reduce((d, item) => d + item.track.duration_ms, 0),
+    tracks.items.reduce((d, item) => d + (item.track?.duration_ms || 0), 0),
     {
-      unitCount: 2
+      unitCount: 2,
+      secondsDecimalDigits: 0
     }
   );
 
@@ -111,7 +113,11 @@ const PlaylistHead = (props: Props) => {
     <>
       <MenuItem icon="edit" text="Rename" />
       <MenuItem
-        icon="people"
+        icon={isPublic ? "lock" : "unlock"}
+        text={`Make ${isPublic ? "Private" : "Public"}`}
+      />
+      <MenuItem
+        icon={collaborative ? "person" : "people"}
         text={`Make ${collaborative ? "Non-" : ""}Collaborative`}
       />
       <MenuItem
@@ -126,7 +132,7 @@ const PlaylistHead = (props: Props) => {
   const menu = (
     <Menu>
       {userIsOwner && ownerMenuItems}
-      <MenuItem icon="heart-broken" text="Unfollow" />
+      <MenuItem icon="heart" text="Unfollow" />
     </Menu>
   );
 
