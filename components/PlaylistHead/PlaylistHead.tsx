@@ -5,6 +5,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import pluralize from "pluralize";
 import ms from "pretty-ms";
+import { getUser } from "../../redux/user";
 import {
   randomisePlaylist,
   fetchPlaylistById,
@@ -24,6 +25,7 @@ import {
 } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
+  user: getUser(state),
   randomiseLoading: getRandomiseLoading(state)
 });
 
@@ -37,11 +39,12 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
+  user: SpotifyApi.CurrentUsersProfileResponse;
   playlist: SpotifyApi.PlaylistObjectFull;
 };
 
 const PlaylistHead = (props: Props) => {
-  const { playlist, randomiseLoading } = props;
+  const { user, playlist, randomiseLoading } = props;
   const {
     id,
     name,
@@ -51,6 +54,7 @@ const PlaylistHead = (props: Props) => {
     tracks,
     collaborative
   } = playlist;
+  const userIsOwner = user.id === playlist.owner.id;
   const toaster = useRef<Toaster>();
   const duration = ms(
     tracks.items.reduce((d, item) => d + item.track.duration_ms, 0),
@@ -103,8 +107,8 @@ const PlaylistHead = (props: Props) => {
     </Tag>
   );
 
-  const menu = (
-    <Menu>
+  const ownerMenuItems = (
+    <>
       <MenuItem icon="edit" text="Rename" />
       <MenuItem
         icon="people"
@@ -116,6 +120,12 @@ const PlaylistHead = (props: Props) => {
         onClick={handleRandomise}
         disabled={randomiseLoading === "pending"}
       />
+    </>
+  );
+
+  const menu = (
+    <Menu>
+      {userIsOwner && ownerMenuItems}
       <MenuItem icon="heart-broken" text="Unfollow" />
     </Menu>
   );
