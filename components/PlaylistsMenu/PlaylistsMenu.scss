@@ -6,10 +6,6 @@
   height: 100%;
 }
 
-.Playlists .bp3-menu {
-  background-color: darken($pt-dark-app-background-color, 5%);
-}
-
-.Playlists__scroll-node {
+.Playlists__scroll {
   overflow-y: auto;
 }

@@ -1,11 +1,10 @@
 import "./PlaylistsMenu.scss";
 
 import React from "react";
-import { useRouter } from "next/router";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import { getListOfPlaylists } from "../../redux/playlists";
-import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
+import Link from "next/link";
 
 const mapState = (state: RootState) => ({
   playlists: getListOfPlaylists(state)
@@ -20,30 +19,23 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistsMenu = (props: Props) => {
-  const router = useRouter();
-
-  const handleClick = (playlist: SpotifyApi.PlaylistObjectSimplified) => () => {
-    router.replace(`/playlist/[id]`, `/playlist/${playlist.id}`);
-  };
-
   const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => (
-    <MenuItem
-      key={playlist.id}
-      text={playlist.name}
-      icon={playlist.collaborative ? "people" : undefined}
-      onClick={handleClick(playlist)}
-    />
+    <li key={playlist.id}>
+      <Link href="/playlist/[id]" as={`/playlist/${playlist.id}`}>
+        <a className="bp3-menu-item">
+          <span className="bp3-text-overflow-ellipsis bp3-fill">
+            {playlist.name}
+          </span>
+        </a>
+      </Link>
+    </li>
   );
 
   return (
     <div className="Playlists">
-      <Menu>
-        <MenuItem text="Create Playlist" icon="plus" />
-        <MenuDivider />
-      </Menu>
-      <div className="Playlists__scroll-node">
-        <Menu>{props.playlists.map(renderMenuItem)}</Menu>
-      </div>
+      <ul className="Playlists__scroll bp3-list-unstyled">
+        {props.playlists.map(renderMenuItem)}
+      </ul>
     </div>
   );
 };
