@@ -1,9 +1,10 @@
 import "./PlaylistHead.scss";
 
 import React, { useRef } from "react";
-import { connect, ConnectedProps, useSelector } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import pluralize from "pluralize";
+import ms from "pretty-ms";
 import {
   randomisePlaylist,
   fetchPlaylistById,
@@ -43,6 +44,12 @@ const PlaylistHead = (props: Props) => {
   const { playlist, randomiseLoading } = props;
   const { id, name, images, owner, followers, tracks } = playlist;
   const toaster = useRef<Toaster>();
+  const duration = ms(
+    tracks.items.reduce((d, item) => d + item.track.duration_ms, 0),
+    {
+      unitCount: 2
+    }
+  );
 
   const handleRandomise = async () => {
     toaster.current?.show(
@@ -122,9 +129,11 @@ const PlaylistHead = (props: Props) => {
             </div>
           </div>
           <div className="bp3-running-text">
-            <div className="bp3-text-muted">{owner.display_name}</div>
+            <div className="bp3-text-muted">By {owner.display_name}</div>
             <div className="bp3-text-muted bp3-text-small">
-              {tracks.total} Songs
+              {tracks.total}
+              {" Songs • "}
+              {duration}
             </div>
           </div>
         </div>

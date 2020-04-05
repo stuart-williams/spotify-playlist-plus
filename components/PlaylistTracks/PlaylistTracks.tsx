@@ -8,6 +8,7 @@ type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
 };
 
+// TODO: extrack <Track />
 const PlaylistTracks = (props: Props) => {
   const { tracks, collaborative } = props.playlist;
 
