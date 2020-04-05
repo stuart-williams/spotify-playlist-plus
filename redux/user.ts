@@ -7,7 +7,7 @@ export type State = SpotifyApi.CurrentUsersProfileResponse;
 // Reducer
 const { reducer, actions } = createSlice({
   name: "user",
-  initialState: {},
+  initialState: {} as State,
   reducers: {
     setUser: (
       state,

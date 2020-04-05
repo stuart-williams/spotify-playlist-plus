@@ -9,7 +9,7 @@ import { getUser } from "../../redux/user";
 import {
   randomisePlaylist,
   fetchPlaylistById,
-  getRandomiseLoading
+  getRandomiseState
 } from "../../redux/playlists";
 import Img from "react-image";
 import {
@@ -26,7 +26,7 @@ import {
 
 const mapState = (state: RootState) => ({
   user: getUser(state),
-  randomiseLoading: getRandomiseLoading(state)
+  randomiseLoading: getRandomiseState(state)
 });
 
 const mapDispatch = {

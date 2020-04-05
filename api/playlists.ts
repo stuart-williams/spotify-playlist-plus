@@ -2,13 +2,16 @@ import { NextPageContext } from "next";
 import fetch from "../common/fetch";
 import shuffle from "../common/shuffle";
 
-export const fetchMyPlaylists = () =>
-  fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>({
-    url: "me/playlists",
-    params: {
-      limit: 50
-    }
-  });
+export const fetchMyPlaylists = (ctx?: Pick<NextPageContext, "req" | "res">) =>
+  fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>(
+    {
+      url: "me/playlists",
+      params: {
+        limit: 50
+      }
+    },
+    ctx
+  );
 
 export const fetchPlaylistById = (
   id: string,

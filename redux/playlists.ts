@@ -4,30 +4,18 @@ import * as playlistApi from "../api/playlists";
 
 // State
 export interface State {
-  list: {
-    loading: "idle" | "pending";
-    response: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
-  };
-  focused: {
-    loading: "idle" | "pending";
-    response: SpotifyApi.PlaylistObjectFull;
-  };
+  list: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
+  focused: SpotifyApi.PlaylistObjectFull;
   randomise: {
-    loading: "idle" | "pending";
+    state: "idle" | "pending";
   };
 }
 
 const initialState = {
-  list: {
-    loading: "idle",
-    response: {}
-  },
-  focused: {
-    loading: "idle",
-    response: {}
-  },
+  list: {},
+  focused: {},
   randomise: {
-    loading: "idle"
+    state: "idle"
   }
 };
 
@@ -65,55 +53,43 @@ export const randomisePlaylist = createAsyncThunk<
 // Reducer
 const { reducer, actions } = createSlice({
   name: "playlists",
-  initialState,
+  initialState: initialState as State,
   reducers: {
-    setPlaylist: (
+    setListOfPlaylists: (
+      state,
+      action: PayloadAction<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>
+    ) => {
+      state.list = action.payload;
+    },
+    setFocusedPlaylist: (
       state,
       action: PayloadAction<SpotifyApi.PlaylistObjectFull>
     ) => {
-      state.focused.response = action.payload;
+      state.focused = action.payload;
     }
   },
   extraReducers: builder => {
     // List
-    builder.addCase(fetchMyPlaylists.pending, state => {
-      state.list.loading = "pending";
-    });
-
     builder.addCase(fetchMyPlaylists.fulfilled, (state, action) => {
-      state.list.loading = "idle";
-      state.list.response = action.payload;
-    });
-
-    builder.addCase(fetchMyPlaylists.rejected, state => {
-      state.list.loading = "idle";
+      state.list = action.payload;
     });
 
     // Focussed
-    builder.addCase(fetchPlaylistById.pending, state => {
-      state.focused.loading = "pending";
-    });
-
     builder.addCase(fetchPlaylistById.fulfilled, (state, action) => {
-      state.focused.loading = "idle";
-      state.focused.response = action.payload;
-    });
-
-    builder.addCase(fetchPlaylistById.rejected, state => {
-      state.focused.loading = "idle";
+      state.focused = action.payload;
     });
 
     // Randomise
     builder.addCase(randomisePlaylist.pending, state => {
-      state.randomise.loading = "pending";
+      state.randomise.state = "pending";
     });
 
     builder.addCase(randomisePlaylist.fulfilled, state => {
-      state.randomise.loading = "idle";
+      state.randomise.state = "idle";
     });
 
     builder.addCase(randomisePlaylist.rejected, state => {
-      state.randomise.loading = "idle";
+      state.randomise.state = "idle";
     });
   }
 });
@@ -124,12 +100,11 @@ export default reducer;
 // Selectors
 export const getListOfPlaylists = (
   state: RootState
-): SpotifyApi.PlaylistObjectSimplified[] =>
-  state.playlists.list.response?.items || [];
+): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.list?.items || [];
 
 export const getFocusedPlaylist = (
   state: RootState
-): SpotifyApi.PlaylistObjectFull => state.playlists.focused.response;
+): SpotifyApi.PlaylistObjectFull => state.playlists.focused;
 
-export const getRandomiseLoading = (state: RootState) =>
-  state.playlists.randomise.loading;
+export const getRandomiseState = (state: RootState) =>
+  state.playlists.randomise.state;

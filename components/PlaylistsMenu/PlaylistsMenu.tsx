@@ -37,10 +37,7 @@ const PlaylistsMenu = (props: Props) => {
   }, []);
 
   const handleClick = (playlist: SpotifyApi.PlaylistObjectSimplified) => () => {
-    router.replace(`/playlist/[id]`, `/playlist/${playlist.id}`, {
-      shallow: true
-    });
-    props.fetchPlaylistById(playlist.id);
+    router.replace(`/playlist/[id]`, `/playlist/${playlist.id}`);
   };
 
   const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => (

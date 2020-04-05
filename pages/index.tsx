@@ -5,7 +5,9 @@ import { NextPageContext } from "next";
 import { parseCookies } from "nookies";
 import fetch from "../common/fetch";
 import redirect from "../common/redirect";
-import { actions } from "../redux/user";
+import { actions as userActions } from "../redux/user";
+import { actions as playlistActions } from "../redux/playlists";
+import * as playlistApi from "../api/playlists";
 import Navigation from "../components/Navigation";
 import Playlist from "../components/Playlist";
 
@@ -32,14 +34,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   if (!token) {
     redirect("/login", ctx);
   } else {
-    const { data: user } = await fetch<SpotifyApi.CurrentUsersProfileResponse>(
-      {
-        url: "me"
-      },
-      ctx
-    );
+    const [user, myPlaylists] = await Promise.all([
+      fetch<SpotifyApi.CurrentUsersProfileResponse>({ url: "me" }, ctx),
+      playlistApi.fetchMyPlaylists(ctx)
+    ]);
 
-    ctx.store.dispatch(actions.setUser(user));
+    ctx.store.dispatch(userActions.setUser(user.data));
+    ctx.store.dispatch(playlistActions.setListOfPlaylists(myPlaylists.data));
   }
 
   return {};

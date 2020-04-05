@@ -1,5 +1,3 @@
-import "../../styles/main.scss";
-
 import React from "react";
 import { NextPageContext } from "next";
 import { parseCookies } from "nookies";
@@ -7,26 +5,11 @@ import fetch from "../../common/fetch";
 import redirect from "../../common/redirect";
 import { actions as userActions } from "../../redux/user";
 import { actions as playlistActions } from "../../redux/playlists";
-import Navigation from "../../components/Navigation";
-import Playlist from "../../components/Playlist";
 import * as playlistApi from "../../api/playlists";
+import IndexPage from "../index";
 
-const styles = {
-  display: "flex",
-  height: "100vh",
-  overflow: "hidden"
-};
-
-const Page = () => (
-  <div style={styles}>
-    <div>
-      <Navigation />
-    </div>
-    <div style={{ flex: 1 }}>
-      <Playlist />
-    </div>
-  </div>
-);
+// TODO: Create Layout component
+const Page = () => <IndexPage />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
@@ -34,18 +17,24 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   if (!token) {
     redirect("/login", ctx);
   } else {
-    const [user, playlist] = await Promise.all([
-      fetch<SpotifyApi.CurrentUsersProfileResponse>(
-        {
-          url: "me"
-        },
-        ctx
-      ),
-      playlistApi.fetchPlaylistById(String(ctx.query.id), ctx)
+    const ssrRequests = () =>
+      Promise.all([
+        fetch<SpotifyApi.CurrentUsersProfileResponse>({ url: "me" }, ctx),
+        playlistApi.fetchMyPlaylists(ctx)
+      ]);
+
+    const [playlist, ssrResponses] = await Promise.all([
+      playlistApi.fetchPlaylistById(String(ctx.query.id), ctx),
+      ctx.req && ssrRequests()
     ]);
 
-    ctx.store.dispatch(userActions.setUser(user.data));
-    ctx.store.dispatch(playlistActions.setPlaylist(playlist.data));
+    ctx.store.dispatch(playlistActions.setFocusedPlaylist(playlist.data));
+
+    if (ssrResponses) {
+      const [user, list] = ssrResponses;
+      ctx.store.dispatch(userActions.setUser(user.data));
+      ctx.store.dispatch(playlistActions.setListOfPlaylists(list.data));
+    }
   }
 
   return {};
