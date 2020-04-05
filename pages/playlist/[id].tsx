@@ -1,15 +1,19 @@
 import React from "react";
 import { NextPageContext } from "next";
 import { parseCookies } from "nookies";
-import fetch from "../../common/fetch";
 import redirect from "../../common/redirect";
 import { actions as userActions } from "../../redux/user";
 import { actions as playlistActions } from "../../redux/playlists";
+import * as userApi from "../../api/user";
 import * as playlistApi from "../../api/playlists";
-import IndexPage from "../index";
+import Layout from "../../components/Layout";
+import Playlist from "../../components/Playlist";
 
-// TODO: Create Layout component
-const Page = () => <IndexPage />;
+const Page = () => (
+  <Layout>
+    <Playlist />
+  </Layout>
+);
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
@@ -19,7 +23,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   } else {
     const ssrRequests = () =>
       Promise.all([
-        fetch<SpotifyApi.CurrentUsersProfileResponse>({ url: "me" }, ctx),
+        userApi.getCurrentUser(ctx),
         playlistApi.fetchMyPlaylists(ctx)
       ]);
 

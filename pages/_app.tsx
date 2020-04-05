@@ -1,6 +1,7 @@
+import "normalize.scss/normalize.scss";
+
 import React from "react";
 import Head from "next/head";
-import normalize from "../styles/global/normalize";
 import { AppContext, AppProps } from "next/app";
 import { NextSeo } from "next-seo";
 import { Provider } from "react-redux";
@@ -20,9 +21,6 @@ const App = ({
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
-    <style jsx={true} global={true}>
-      {normalize}
-    </style>
   </>
 );
 

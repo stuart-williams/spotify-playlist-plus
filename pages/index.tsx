@@ -1,31 +1,17 @@
-import "../styles/main.scss";
-
 import React from "react";
 import { NextPageContext } from "next";
 import { parseCookies } from "nookies";
-import fetch from "../common/fetch";
 import redirect from "../common/redirect";
 import { actions as userActions } from "../redux/user";
 import { actions as playlistActions } from "../redux/playlists";
+import * as userApi from "../api/user";
 import * as playlistApi from "../api/playlists";
-import Navigation from "../components/Navigation";
-import Playlist from "../components/Playlist";
-
-const styles = {
-  display: "flex",
-  height: "100vh",
-  overflow: "hidden"
-};
+import Layout from "../components/Layout";
 
 const Page = () => (
-  <div style={styles}>
-    <div>
-      <Navigation />
-    </div>
-    <div style={{ flex: 1 }}>
-      <Playlist />
-    </div>
-  </div>
+  <Layout>
+    <h1>Empty</h1>
+  </Layout>
 );
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
@@ -35,7 +21,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     redirect("/login", ctx);
   } else if (ctx.req) {
     const [user, myPlaylists] = await Promise.all([
-      fetch<SpotifyApi.CurrentUsersProfileResponse>({ url: "me" }, ctx),
+      userApi.getCurrentUser(ctx),
       playlistApi.fetchMyPlaylists(ctx)
     ]);
 
