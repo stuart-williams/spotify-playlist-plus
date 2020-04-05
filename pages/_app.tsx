@@ -1,11 +1,11 @@
 import React from "react";
 import Head from "next/head";
-import { AppProps } from "next/app";
+import normalize from "../styles/global/normalize";
+import { AppContext, AppProps } from "next/app";
 import { NextSeo } from "next-seo";
 import { Provider } from "react-redux";
 import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
 import { makeStore } from "../redux";
-import normalize from "../styles/global/normalize";
 
 const App = ({
   Component,
@@ -25,6 +25,12 @@ const App = ({
     </style>
   </>
 );
+
+App.getInitialProps = async ({ Component, ctx }: AppContext) => ({
+  pageProps: {
+    ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {})
+  }
+});
 
 export default withRedux(makeStore, {
   debug: process.env.NODE_ENV === "development"
