@@ -1,3 +1,4 @@
+import { NextPageContext } from "next";
 import fetch from "../common/fetch";
 import shuffle from "../common/shuffle";
 
@@ -9,10 +10,16 @@ export const fetchMyPlaylists = () =>
     }
   });
 
-export const fetchPlaylistById = (id: string) =>
-  fetch<SpotifyApi.PlaylistObjectFull>({
-    url: `playlists/${id}`
-  });
+export const fetchPlaylistById = (
+  id: string,
+  ctx?: Pick<NextPageContext, "req" | "res">
+) =>
+  fetch<SpotifyApi.PlaylistObjectFull>(
+    {
+      url: `playlists/${id}`
+    },
+    ctx
+  );
 
 export const reorderPlaylistTrack = (
   id: string,

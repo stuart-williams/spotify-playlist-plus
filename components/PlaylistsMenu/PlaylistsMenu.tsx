@@ -1,6 +1,7 @@
 import "./PlaylistsMenu.scss";
 
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import {
@@ -29,12 +30,16 @@ type Props = PropsFromRedux & {
 
 const PlaylistsMenu = (props: Props) => {
   const { playlists } = props;
+  const router = useRouter();
 
   useEffect(() => {
     props.fetchMyPlaylists();
   }, []);
 
   const handleClick = (playlist: SpotifyApi.PlaylistObjectSimplified) => () => {
+    router.replace(`/playlist/[id]`, `/playlist/${playlist.id}`, {
+      shallow: true
+    });
     props.fetchPlaylistById(playlist.id);
   };
 

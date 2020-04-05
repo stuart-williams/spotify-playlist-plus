@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import * as playlistApi from "../api/playlists";
 
@@ -66,7 +66,14 @@ export const randomisePlaylist = createAsyncThunk<
 const { reducer, actions } = createSlice({
   name: "playlists",
   initialState,
-  reducers: {},
+  reducers: {
+    setPlaylist: (
+      state,
+      action: PayloadAction<SpotifyApi.PlaylistObjectFull>
+    ) => {
+      state.focused.response = action.payload;
+    }
+  },
   extraReducers: builder => {
     // List
     builder.addCase(fetchMyPlaylists.pending, state => {
