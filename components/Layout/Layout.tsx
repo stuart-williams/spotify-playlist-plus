@@ -5,12 +5,12 @@ import React, { ReactNode } from "react";
 import Navigation from "../Navigation";
 
 interface Props {
-  children: ReactNode;
+  primaryPanel: ReactNode;
 }
 
-export default ({ children }: Props) => (
+export default ({ primaryPanel }: Props) => (
   <div className="Layout">
     <Navigation />
-    {children}
+    <div className="Layout__primary-panel">{primaryPanel}</div>
   </div>
 );

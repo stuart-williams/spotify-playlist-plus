@@ -7,11 +7,10 @@ import { actions as playlistActions } from "../redux/playlists";
 import * as userApi from "../api/user";
 import * as playlistApi from "../api/playlists";
 import Layout from "../components/Layout";
+import { NonIdealState } from "@blueprintjs/core";
 
 const Page = () => (
-  <Layout>
-    <h1>Empty</h1>
-  </Layout>
+  <Layout primaryPanel={<NonIdealState title="No search results" />} />
 );
 
 Page.getInitialProps = async (ctx: NextPageContext) => {

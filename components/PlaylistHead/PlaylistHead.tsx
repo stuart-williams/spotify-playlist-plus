@@ -26,7 +26,7 @@ import {
 
 const mapState = (state: RootState) => ({
   user: getUser(state),
-  randomiseLoading: getRandomiseState(state)
+  randomiseState: getRandomiseState(state)
 });
 
 const mapDispatch = {
@@ -44,7 +44,7 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistHead = (props: Props) => {
-  const { user, playlist, randomiseLoading } = props;
+  const { user, playlist, randomiseState } = props;
   const {
     id,
     name,
@@ -124,7 +124,7 @@ const PlaylistHead = (props: Props) => {
         icon="random"
         text="Randomise Order"
         onClick={handleRandomise}
-        disabled={randomiseLoading === "pending"}
+        disabled={randomiseState === "pending"}
       />
     </>
   );

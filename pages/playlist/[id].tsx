@@ -9,11 +9,7 @@ import * as playlistApi from "../../api/playlists";
 import Layout from "../../components/Layout";
 import Playlist from "../../components/Playlist";
 
-const Page = () => (
-  <Layout>
-    <Playlist />
-  </Layout>
-);
+const Page = () => <Layout primaryPanel={<Playlist />} />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
