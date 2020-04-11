@@ -113,32 +113,32 @@ const PlaylistControls = (props: Props) => {
   };
 
   const handleSortTempoAsc = async () => {
-    pendingToast({ icon: "sort-asc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "tempo", order: "ASC" });
   };
 
   const handleSortTempoDesc = async () => {
-    pendingToast({ icon: "sort-desc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "tempo", order: "DESC" });
   };
 
   const handleSortDanceabilityAsc = async () => {
-    pendingToast({ icon: "sort-asc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "danceability", order: "ASC" });
   };
 
   const handleSortDanceabilityDesc = async () => {
-    pendingToast({ icon: "sort-desc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "danceability", order: "DESC" });
   };
 
   const handleSortMoodAsc = async () => {
-    pendingToast({ icon: "sort-asc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "valence", order: "ASC" });
   };
 
   const handleSortMoodDesc = async () => {
-    pendingToast({ icon: "sort-desc" });
+    pendingToast({ icon: "sort" });
     handleSortByAudioFeature({ key: "valence", order: "DESC" });
   };
 
