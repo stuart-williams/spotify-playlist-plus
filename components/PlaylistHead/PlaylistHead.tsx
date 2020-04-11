@@ -15,10 +15,14 @@ import Img from "react-image";
 import {
   Tag,
   Button,
+  ButtonGroup,
   Toaster,
   ProgressBar,
   Position,
   Intent,
+  Menu,
+  MenuItem,
+  Popover,
 } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
@@ -43,7 +47,7 @@ type Props = PropsFromRedux & {
 const PlaylistHead = (props: Props) => {
   const { user, playlist, randomiseState } = props;
   const { id, name, images, owner, followers, tracks } = playlist;
-  const userIsOwner = user.id === playlist.owner.id;
+  const isOwner = user.id === playlist.owner.id;
   const toaster = useRef<Toaster>();
   const duration = ms(
     tracks.items.reduce((d, item) => d + (item.track?.duration_ms || 0), 0),
@@ -76,7 +80,7 @@ const PlaylistHead = (props: Props) => {
     if (randomisePlaylist.fulfilled.match(resultAction)) {
       toaster.current?.show({
         icon: "tick",
-        message: "So random",
+        message: "Randomise Complete",
         intent: Intent.SUCCESS,
       });
 
@@ -84,7 +88,7 @@ const PlaylistHead = (props: Props) => {
     } else {
       toaster.current?.show({
         icon: "warning-sign",
-        message: resultAction?.payload?.message || "Unknown error",
+        message: resultAction?.payload?.message || "Unknown Error",
         intent: Intent.DANGER,
       });
     }
@@ -95,6 +99,28 @@ const PlaylistHead = (props: Props) => {
       {new Intl.NumberFormat().format(followers.total)}{" "}
       {pluralize("Followers", followers.total)}
     </Tag>
+  );
+
+  const menu = (
+    <Menu>
+      <MenuItem icon="sort-numerical" text="Tempo (Low to High)" />
+      <MenuItem icon="sort-numerical-desc" text="Tempo (High to  Low)" />
+    </Menu>
+  );
+
+  const buttons = (
+    <ButtonGroup>
+      <Button
+        icon="random"
+        disabled={randomiseState === "pending"}
+        onClick={handleRandomise}
+      >
+        Randomise
+      </Button>
+      <Popover content={menu} position={Position.RIGHT_BOTTOM}>
+        <Button icon="sort-asc">Sort</Button>
+      </Popover>
+    </ButtonGroup>
   );
 
   return (
@@ -120,7 +146,7 @@ const PlaylistHead = (props: Props) => {
               {duration}
             </div>
           </div>
-          {userIsOwner && <Button icon="random" onClick={handleRandomise} />}
+          {isOwner && buttons}
         </div>
       </div>
     </>
