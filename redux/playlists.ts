@@ -5,40 +5,54 @@ import * as playlistApi from "../api/playlists";
 // State
 export interface State {
   list: SpotifyApi.ListOfCurrentUsersPlaylistsResponse;
-  focused: SpotifyApi.PlaylistObjectFull;
-  randomise: {
-    state: "idle" | "pending";
-  };
+  playlist: SpotifyApi.PlaylistObjectFull;
+  sortState: "idle" | "pending";
 }
 
 const initialState = {
   list: {},
-  focused: {},
-  randomise: {
-    state: "idle",
-  },
+  playlist: {},
+  sortState: "idle",
 };
 
 // Actions Creators
-export const fetchPlaylistById = createAsyncThunk<
-  SpotifyApi.PlaylistObjectFull,
-  string
->("playlists/fetchPlaylistById", async (id) => {
-  const { data } = await playlistApi.fetchById(id);
-  return data;
-});
+export const getPlaylistById = createAsyncThunk(
+  "playlists/getPlaylistById",
+  async (id: string) => {
+    const { data } = await playlistApi.getPlaylistById(id);
+    return data;
+  }
+);
 
-export const randomisePlaylist = createAsyncThunk<
+export const randomise = createAsyncThunk<
   void,
   SpotifyApi.PlaylistObjectFull,
   {
     rejectValue: SpotifyApi.ErrorObject;
   }
->("playlists/randomisePlaylist", async (playlist, { rejectWithValue }) => {
+>("playlists/randomise", async (playlist, thunkApi) => {
   try {
     await playlistApi.randomise(playlist);
   } catch (error) {
-    return rejectWithValue(error.response.data.error as SpotifyApi.ErrorObject);
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
+});
+
+export const sortByAudioFeature = createAsyncThunk<
+  void,
+  playlistApi.SortByAudioFeatureOptions,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("playlists/sortByAudioFeature", async (options, thunkApi) => {
+  try {
+    await playlistApi.sortByAudioFeature(options);
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
   }
 });
 
@@ -53,30 +67,43 @@ const { reducer, actions } = createSlice({
     ) => {
       state.list = action.payload;
     },
-    setFocusedPlaylist: (
+    setPlaylist: (
       state,
       action: PayloadAction<SpotifyApi.PlaylistObjectFull>
     ) => {
-      state.focused = action.payload;
+      state.playlist = action.payload;
     },
   },
   extraReducers: (builder) => {
     // Focussed
-    builder.addCase(fetchPlaylistById.fulfilled, (state, action) => {
-      state.focused = action.payload;
+    builder.addCase(getPlaylistById.fulfilled, (state, action) => {
+      state.playlist = action.payload;
     });
 
     // Randomise
-    builder.addCase(randomisePlaylist.pending, (state) => {
-      state.randomise.state = "pending";
+    builder.addCase(randomise.pending, (state) => {
+      state.sortState = "pending";
     });
 
-    builder.addCase(randomisePlaylist.fulfilled, (state) => {
-      state.randomise.state = "idle";
+    builder.addCase(randomise.fulfilled, (state) => {
+      state.sortState = "idle";
     });
 
-    builder.addCase(randomisePlaylist.rejected, (state) => {
-      state.randomise.state = "idle";
+    builder.addCase(randomise.rejected, (state) => {
+      state.sortState = "idle";
+    });
+
+    // Sort by audio feature
+    builder.addCase(sortByAudioFeature.pending, (state) => {
+      state.sortState = "pending";
+    });
+
+    builder.addCase(sortByAudioFeature.fulfilled, (state) => {
+      state.sortState = "idle";
+    });
+
+    builder.addCase(sortByAudioFeature.rejected, (state) => {
+      state.sortState = "idle";
     });
   },
 });
@@ -89,9 +116,7 @@ export const getListOfPlaylists = (
   state: RootState
 ): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.list?.items || [];
 
-export const getFocusedPlaylist = (
-  state: RootState
-): SpotifyApi.PlaylistObjectFull => state.playlists.focused;
+export const getPlaylist = (state: RootState): SpotifyApi.PlaylistObjectFull =>
+  state.playlists.playlist;
 
-export const getRandomiseState = (state: RootState) =>
-  state.playlists.randomise.state;
+export const getSortState = (state: RootState) => state.playlists.sortState;

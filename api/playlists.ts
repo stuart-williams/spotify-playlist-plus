@@ -4,7 +4,9 @@ import fetch from "../common/fetch";
 import shuffle from "../common/shuffle";
 import * as tracksApi from "../api/tracks";
 
-export const fetchMyPlaylists = (ctx?: Pick<NextPageContext, "req" | "res">) =>
+export const getListOfPlaylists = (
+  ctx?: Pick<NextPageContext, "req" | "res">
+) =>
   fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>(
     {
       url: "me/playlists",
@@ -15,7 +17,7 @@ export const fetchMyPlaylists = (ctx?: Pick<NextPageContext, "req" | "res">) =>
     ctx
   );
 
-export const fetchById = (
+export const getPlaylistById = (
   id: string,
   ctx?: Pick<NextPageContext, "req" | "res">
 ) =>
@@ -71,15 +73,18 @@ export const randomise = async (playlist: SpotifyApi.PlaylistObjectFull) => {
   return next();
 };
 
-export const sortByAudioFeature = async <
-  K extends keyof Pick<SpotifyApi.AudioFeaturesObject, "tempo" | "danceability">
->(
-  playlist: SpotifyApi.PlaylistObjectFull,
-  key: K,
-  order: "ASC" | "DESC" = "ASC"
+export interface SortByAudioFeatureOptions {
+  playlist: SpotifyApi.PlaylistObjectFull;
+  key: "tempo" | "danceability";
+  order: "ASC" | "DESC";
+}
+
+export const sortByAudioFeature = async (
+  options: SortByAudioFeatureOptions
 ) => {
+  const { playlist, key, order } = options;
   const ids = playlist.tracks.items.map((item) => item.track.id);
-  const { data: tracksData } = await tracksApi.fetchAudioFeatures(ids);
+  const { data: tracksData } = await tracksApi.getAudioFeatures(ids);
   const features = tracksData.audio_features;
   const sortedFeatures = features.sort((a, b) => {
     const av = a[key];

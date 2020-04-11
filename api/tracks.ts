@@ -1,7 +1,7 @@
 import { NextPageContext } from "next";
 import fetch from "../common/fetch";
 
-export const fetchAudioFeatures = (
+export const getAudioFeatures = (
   ids: string[],
   ctx?: Pick<NextPageContext, "req" | "res">
 ) =>

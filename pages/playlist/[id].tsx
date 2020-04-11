@@ -18,17 +18,14 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     redirect("/login", ctx);
   } else {
     const ssrRequests = () =>
-      Promise.all([
-        userApi.getCurrentUser(ctx),
-        playlistApi.fetchMyPlaylists(ctx),
-      ]);
+      Promise.all([userApi.getUser(ctx), playlistApi.getListOfPlaylists(ctx)]);
 
     const [playlist, ssrResponses] = await Promise.all([
-      playlistApi.fetchById(String(ctx.query.id), ctx),
+      playlistApi.getPlaylistById(String(ctx.query.id), ctx),
       ctx.req && ssrRequests(),
     ]);
 
-    ctx.store.dispatch(playlistActions.setFocusedPlaylist(playlist.data));
+    ctx.store.dispatch(playlistActions.setPlaylist(playlist.data));
 
     if (ssrResponses) {
       const [user, list] = ssrResponses;

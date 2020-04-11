@@ -4,9 +4,10 @@ import React, { useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import {
-  randomisePlaylist,
-  fetchPlaylistById,
-  getRandomiseState,
+  randomise,
+  sortByAudioFeature,
+  getPlaylistById,
+  getSortState,
 } from "../../redux/playlists";
 import {
   Button,
@@ -20,15 +21,15 @@ import {
   MenuItem,
   Popover,
 } from "@blueprintjs/core";
-import * as playlistApi from "../../api/playlists";
 
 const mapState = (state: RootState) => ({
-  randomiseState: getRandomiseState(state),
+  sortState: getSortState(state),
 });
 
 const mapDispatch = {
-  randomisePlaylist,
-  fetchPlaylistById,
+  randomise,
+  sortByAudioFeature,
+  getPlaylistById,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -40,7 +41,7 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistControls = (props: Props) => {
-  const { playlist, randomiseState } = props;
+  const { playlist, sortState } = props;
   const toaster = useRef<Toaster>();
 
   const pendingToast = ({ icon }: Pick<IToastProps, "icon">) => {
@@ -78,39 +79,41 @@ const PlaylistControls = (props: Props) => {
 
   const handleRandomise = async () => {
     pendingToast({ icon: "random" });
-    const resultAction = await props.randomisePlaylist(playlist);
+    const resultAction = await props.randomise(playlist);
     toaster.current?.dismiss("pending");
 
-    if (randomisePlaylist.fulfilled.match(resultAction)) {
+    if (randomise.fulfilled.match(resultAction)) {
       successToast({ message: "Randomise Complete" });
-      props.fetchPlaylistById(playlist.id);
+      props.getPlaylistById(playlist.id);
     } else {
       errorToast({ message: resultAction?.payload?.message });
     }
   };
 
-  // TODO: Error handling
-  const handleSortTempoAsc = async () => {
-    pendingToast({ icon: "sort-numerical" });
+  const handleSortByTempo = async (order: "ASC" | "DESC") => {
+    const resultAction = await props.sortByAudioFeature({
+      playlist,
+      key: "tempo",
+      order,
+    });
 
-    try {
-      await playlistApi.sortByAudioFeature(playlist, "tempo", "ASC");
+    if (sortByAudioFeature.fulfilled.match(resultAction)) {
       toaster.current?.dismiss("pending");
-      props.fetchPlaylistById(playlist.id);
+      props.getPlaylistById(playlist.id);
       successToast({ message: "Sort Complete" });
-    } catch (error) {}
+    } else {
+      errorToast({ message: resultAction?.payload?.message });
+    }
   };
 
-  // TODO: Error handling
+  const handleSortTempoAsc = async () => {
+    pendingToast({ icon: "sort-numerical" });
+    handleSortByTempo("ASC");
+  };
+
   const handleSortTempoDesc = async () => {
     pendingToast({ icon: "sort-numerical-desc" });
-
-    try {
-      await playlistApi.sortByAudioFeature(playlist, "tempo", "DESC");
-      toaster.current?.dismiss("pending");
-      props.fetchPlaylistById(playlist.id);
-      successToast({ message: "Sort Complete" });
-    } catch (error) {}
+    handleSortByTempo("DESC");
   };
 
   const menu = (
@@ -137,13 +140,15 @@ const PlaylistControls = (props: Props) => {
       <ButtonGroup>
         <Button
           icon="random"
-          disabled={randomiseState === "pending"}
+          disabled={sortState === "pending"}
           onClick={handleRandomise}
         >
           Randomise
         </Button>
         <Popover content={menu} position={Position.RIGHT_BOTTOM}>
-          <Button icon="sort-asc">Sort</Button>
+          <Button icon="sort-asc" disabled={sortState === "pending"}>
+            Sort
+          </Button>
         </Popover>
       </ButtonGroup>
     </>

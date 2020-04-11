@@ -19,13 +19,13 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   if (!token) {
     redirect("/login", ctx);
   } else if (ctx.req) {
-    const [user, myPlaylists] = await Promise.all([
-      userApi.getCurrentUser(ctx),
-      playlistApi.fetchMyPlaylists(ctx)
+    const [user, list] = await Promise.all([
+      userApi.getUser(ctx),
+      playlistApi.getListOfPlaylists(ctx),
     ]);
 
     ctx.store.dispatch(userActions.setUser(user.data));
-    ctx.store.dispatch(playlistActions.setListOfPlaylists(myPlaylists.data));
+    ctx.store.dispatch(playlistActions.setListOfPlaylists(list.data));
   }
 
   return {};
