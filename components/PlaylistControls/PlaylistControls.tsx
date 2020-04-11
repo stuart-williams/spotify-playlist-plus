@@ -10,6 +10,7 @@ import {
   getPlaylistById,
   getSortState,
 } from "../../redux/playlists";
+import { SortByAudioFeatureOptions } from "../../api/playlists";
 import {
   Button,
   ButtonGroup,
@@ -92,10 +93,13 @@ const PlaylistControls = (props: Props) => {
     }
   };
 
-  const handleSortByTempo = async (order: "ASC" | "DESC") => {
+  const handleSortByAudioFeature = async ({
+    key,
+    order,
+  }: Pick<SortByAudioFeatureOptions, "key" | "order">) => {
     const resultAction = await props.sortByAudioFeature({
       playlist,
-      key: "tempo",
+      key,
       order,
     });
 
@@ -110,25 +114,61 @@ const PlaylistControls = (props: Props) => {
 
   const handleSortTempoAsc = async () => {
     pendingToast({ icon: "sort-numerical" });
-    handleSortByTempo("ASC");
+    handleSortByAudioFeature({ key: "tempo", order: "ASC" });
   };
 
   const handleSortTempoDesc = async () => {
     pendingToast({ icon: "sort-numerical-desc" });
-    handleSortByTempo("DESC");
+    handleSortByAudioFeature({ key: "tempo", order: "DESC" });
+  };
+
+  const handleSortDanceabilityAsc = async () => {
+    pendingToast({ icon: "sort-numerical" });
+    handleSortByAudioFeature({ key: "danceability", order: "ASC" });
+  };
+
+  const handleSortDanceabilityDesc = async () => {
+    pendingToast({ icon: "sort-numerical-desc" });
+    handleSortByAudioFeature({ key: "danceability", order: "DESC" });
+  };
+
+  const handleSortMoodAsc = async () => {
+    pendingToast({ icon: "sort-numerical" });
+    handleSortByAudioFeature({ key: "valence", order: "ASC" });
+  };
+
+  const handleSortMoodDesc = async () => {
+    pendingToast({ icon: "sort-numerical-desc" });
+    handleSortByAudioFeature({ key: "valence", order: "DESC" });
   };
 
   const menu = (
     <Menu>
       <MenuItem
         icon="sort-numerical"
-        text="Tempo (Low to High)"
+        text="Tempo"
         onClick={handleSortTempoAsc}
       />
       <MenuItem
         icon="sort-numerical-desc"
-        text="Tempo (High to  Low)"
+        text="Tempo"
         onClick={handleSortTempoDesc}
+      />
+      <MenuItem
+        icon="sort-numerical"
+        text="Danceability"
+        onClick={handleSortDanceabilityAsc}
+      />
+      <MenuItem
+        icon="sort-numerical-desc"
+        text="Danceability"
+        onClick={handleSortDanceabilityDesc}
+      />
+      <MenuItem icon="sort-numerical" text="Mood" onClick={handleSortMoodAsc} />
+      <MenuItem
+        icon="sort-numerical-desc"
+        text="Mood"
+        onClick={handleSortMoodDesc}
       />
     </Menu>
   );

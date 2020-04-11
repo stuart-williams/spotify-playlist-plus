@@ -78,7 +78,7 @@ export const randomise = async (playlist: SpotifyApi.PlaylistObjectFull) => {
 
 export interface SortByAudioFeatureOptions {
   playlist: SpotifyApi.PlaylistObjectFull;
-  key: "tempo" | "danceability";
+  key: "tempo" | "danceability" | "valence";
   order: "ASC" | "DESC";
 }
 
