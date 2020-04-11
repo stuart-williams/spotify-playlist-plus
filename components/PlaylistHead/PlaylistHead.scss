@@ -6,8 +6,8 @@
 
 .PlaylistHead__image,
 .PlaylistHead__image img {
-  height: 100px;
-  width: 100px;
+  height: 150px;
+  width: 150px;
 }
 
 .PlaylistHead__meta {
@@ -27,12 +27,11 @@
   margin-bottom: $pt-grid-size / 2;
 }
 
-.PlaylistHead__tag,
-.PlaylistHead__menu {
+.PlaylistHead__tag {
   margin-left: $pt-grid-size;
 }
 
-.PlaylistHead__menu__toast-progress {
+.PlaylistHead__toast-progress {
   margin-top: $pt-grid-size / 2;
   margin-bottom: 0;
 }

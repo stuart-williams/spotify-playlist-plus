@@ -9,29 +9,26 @@ import { getUser } from "../../redux/user";
 import {
   randomisePlaylist,
   fetchPlaylistById,
-  getRandomiseState
+  getRandomiseState,
 } from "../../redux/playlists";
 import Img from "react-image";
 import {
   Tag,
   Button,
-  Menu,
-  MenuItem,
-  Popover,
   Toaster,
   ProgressBar,
   Position,
-  Intent
+  Intent,
 } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
   user: getUser(state),
-  randomiseState: getRandomiseState(state)
+  randomiseState: getRandomiseState(state),
 });
 
 const mapDispatch = {
   randomisePlaylist,
-  fetchPlaylistById
+  fetchPlaylistById,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -45,23 +42,14 @@ type Props = PropsFromRedux & {
 
 const PlaylistHead = (props: Props) => {
   const { user, playlist, randomiseState } = props;
-  const {
-    id,
-    name,
-    images,
-    owner,
-    followers,
-    tracks,
-    collaborative,
-    public: isPublic
-  } = playlist;
+  const { id, name, images, owner, followers, tracks } = playlist;
   const userIsOwner = user.id === playlist.owner.id;
   const toaster = useRef<Toaster>();
   const duration = ms(
     tracks.items.reduce((d, item) => d + (item.track?.duration_ms || 0), 0),
     {
       unitCount: 2,
-      secondsDecimalDigits: 0
+      secondsDecimalDigits: 0,
     }
   );
 
@@ -72,11 +60,11 @@ const PlaylistHead = (props: Props) => {
         icon: "random",
         message: (
           <ProgressBar
-            className="PlaylistHead__menu__toast-progress"
+            className="PlaylistHead__toast-progress"
             intent={Intent.PRIMARY}
             value={100}
           />
-        )
+        ),
       },
       "pending"
     );
@@ -89,7 +77,7 @@ const PlaylistHead = (props: Props) => {
       toaster.current?.show({
         icon: "tick",
         message: "So random",
-        intent: Intent.SUCCESS
+        intent: Intent.SUCCESS,
       });
 
       props.fetchPlaylistById(id);
@@ -97,7 +85,7 @@ const PlaylistHead = (props: Props) => {
       toaster.current?.show({
         icon: "warning-sign",
         message: resultAction?.payload?.message || "Unknown error",
-        intent: Intent.DANGER
+        intent: Intent.DANGER,
       });
     }
   };
@@ -107,33 +95,6 @@ const PlaylistHead = (props: Props) => {
       {new Intl.NumberFormat().format(followers.total)}{" "}
       {pluralize("Followers", followers.total)}
     </Tag>
-  );
-
-  const ownerMenuItems = (
-    <>
-      <MenuItem icon="edit" text="Rename" />
-      <MenuItem
-        icon={isPublic ? "lock" : "unlock"}
-        text={`Make ${isPublic ? "Private" : "Public"}`}
-      />
-      <MenuItem
-        icon={collaborative ? "person" : "people"}
-        text={`Make ${collaborative ? "Non-" : ""}Collaborative`}
-      />
-      <MenuItem
-        icon="random"
-        text="Randomise Order"
-        onClick={handleRandomise}
-        disabled={randomiseState === "pending"}
-      />
-    </>
-  );
-
-  const menu = (
-    <Menu>
-      {userIsOwner && ownerMenuItems}
-      <MenuItem icon="heart" text="Unfollow" />
-    </Menu>
   );
 
   return (
@@ -150,11 +111,6 @@ const PlaylistHead = (props: Props) => {
           <div className="PlaylistHead__title">
             <h3 className="bp3-heading">{name}</h3>
             <div className="PlaylistHead__tag">{tag}</div>
-            <div className="PlaylistHead__menu">
-              <Popover content={menu} position={Position.RIGHT_BOTTOM}>
-                <Button icon="more" />
-              </Popover>
-            </div>
           </div>
           <div className="bp3-running-text">
             <div className="bp3-text-muted">By {owner.display_name}</div>
@@ -164,6 +120,7 @@ const PlaylistHead = (props: Props) => {
               {duration}
             </div>
           </div>
+          {userIsOwner && <Button icon="random" onClick={handleRandomise} />}
         </div>
       </div>
     </>
