@@ -5,5 +5,6 @@
   flex-direction: column;
   height: 100%;
   width: 300px;
+  padding: $pt-grid-size / 2;
   background-color: darken($pt-dark-app-background-color, 5%);
 }

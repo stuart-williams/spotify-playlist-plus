@@ -1,6 +1,13 @@
 .Layout {
   display: flex;
+  flex-direction: column;
   height: 100vh;
+  min-width: 800px;
+}
+
+.Layout__body {
+  display: flex;
+  height: 100%;
   overflow: hidden;
 }
 
