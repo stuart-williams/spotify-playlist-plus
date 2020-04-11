@@ -42,6 +42,10 @@ const PlaylistHead = (props: Props) => {
     </Tag>
   );
 
+  const controls = (
+    <PlaylistControls className="PlaylistHead__controls" playlist={playlist} />
+  );
+
   return (
     <div className="PlaylistHead">
       <div className="PlaylistHead__image">
@@ -60,7 +64,7 @@ const PlaylistHead = (props: Props) => {
             {duration}
           </div>
         </div>
-        {isOwner && <PlaylistControls playlist={playlist} />}
+        {isOwner && controls}
       </div>
     </div>
   );

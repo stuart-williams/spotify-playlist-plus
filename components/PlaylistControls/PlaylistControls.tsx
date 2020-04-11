@@ -2,6 +2,7 @@ import "./PlaylistControls.scss";
 
 import React, { useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
+import classNames from "classnames";
 import { RootState } from "../../redux";
 import {
   randomise,
@@ -37,6 +38,7 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
+  className?: string;
   playlist: SpotifyApi.PlaylistObjectFull;
 };
 
@@ -132,7 +134,7 @@ const PlaylistControls = (props: Props) => {
   );
 
   return (
-    <>
+    <div className={classNames("PlaylistControls", props.className)}>
       <Toaster
         ref={(ref: Toaster) => (toaster.current = ref)}
         position={Position.TOP}
@@ -151,7 +153,7 @@ const PlaylistControls = (props: Props) => {
           </Button>
         </Popover>
       </ButtonGroup>
-    </>
+    </div>
   );
 };
 
