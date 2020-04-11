@@ -113,61 +113,67 @@ const PlaylistControls = (props: Props) => {
   };
 
   const handleSortTempoAsc = async () => {
-    pendingToast({ icon: "sort-numerical" });
+    pendingToast({ icon: "sort-asc" });
     handleSortByAudioFeature({ key: "tempo", order: "ASC" });
   };
 
   const handleSortTempoDesc = async () => {
-    pendingToast({ icon: "sort-numerical-desc" });
+    pendingToast({ icon: "sort-desc" });
     handleSortByAudioFeature({ key: "tempo", order: "DESC" });
   };
 
   const handleSortDanceabilityAsc = async () => {
-    pendingToast({ icon: "sort-numerical" });
+    pendingToast({ icon: "sort-asc" });
     handleSortByAudioFeature({ key: "danceability", order: "ASC" });
   };
 
   const handleSortDanceabilityDesc = async () => {
-    pendingToast({ icon: "sort-numerical-desc" });
+    pendingToast({ icon: "sort-desc" });
     handleSortByAudioFeature({ key: "danceability", order: "DESC" });
   };
 
   const handleSortMoodAsc = async () => {
-    pendingToast({ icon: "sort-numerical" });
+    pendingToast({ icon: "sort-asc" });
     handleSortByAudioFeature({ key: "valence", order: "ASC" });
   };
 
   const handleSortMoodDesc = async () => {
-    pendingToast({ icon: "sort-numerical-desc" });
+    pendingToast({ icon: "sort-desc" });
     handleSortByAudioFeature({ key: "valence", order: "DESC" });
   };
 
   const menu = (
     <Menu>
       <MenuItem
-        icon="sort-numerical"
-        text="Tempo"
+        icon="sort-asc"
+        text="Tempo (Slow to Fast)"
         onClick={handleSortTempoAsc}
       />
       <MenuItem
-        icon="sort-numerical-desc"
-        text="Tempo"
+        icon="sort-desc"
+        text="Tempo (Fast to Slow)"
         onClick={handleSortTempoDesc}
       />
+      <Menu.Divider />
       <MenuItem
-        icon="sort-numerical"
-        text="Danceability"
+        icon="sort-asc"
+        text="Danceability (Low to High)"
         onClick={handleSortDanceabilityAsc}
       />
       <MenuItem
-        icon="sort-numerical-desc"
-        text="Danceability"
+        icon="sort-desc"
+        text="Danceability (High to Low)"
         onClick={handleSortDanceabilityDesc}
       />
-      <MenuItem icon="sort-numerical" text="Mood" onClick={handleSortMoodAsc} />
+      <Menu.Divider />
       <MenuItem
-        icon="sort-numerical-desc"
-        text="Mood"
+        icon="sort-asc"
+        text="Mood (Sad to Happy)"
+        onClick={handleSortMoodAsc}
+      />
+      <MenuItem
+        icon="sort-desc"
+        text="Mood (Happy to Sad)"
         onClick={handleSortMoodDesc}
       />
     </Menu>
@@ -188,7 +194,7 @@ const PlaylistControls = (props: Props) => {
           Randomise
         </Button>
         <Popover content={menu} position={Position.RIGHT_BOTTOM}>
-          <Button icon="sort-asc" disabled={sortState === "pending"}>
+          <Button icon="sort" disabled={sortState === "pending"}>
             Sort
           </Button>
         </Popover>
