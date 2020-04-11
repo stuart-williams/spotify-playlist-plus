@@ -52,7 +52,7 @@ const reorderTracks = async (
   const tmp = [...unordered];
   const it = ordered[Symbol.iterator]();
 
-  const next = async (snapshotId?: string): Promise<any> => {
+  const next = async (snapshotId?: string): Promise<void> => {
     const { done, value } = it.next();
 
     if (!done) {
@@ -70,7 +70,7 @@ const reorderTracks = async (
 };
 
 export const randomise = async (playlist: SpotifyApi.PlaylistObjectFull) => {
-  const unordered = playlist.tracks.items.map(({ track }) => track.id);
+  const unordered = playlist.tracks.items.map((item) => item.track.id);
   const ordered = shuffle(unordered);
 
   return reorderTracks(playlist.id, unordered, ordered);
@@ -95,7 +95,7 @@ export const sortByAudioFeature = async ({
       const bv = b[key];
       return order === "ASC" ? av - bv : bv - av;
     })
-    .map(({ id }) => id);
+    .map((item) => item.id);
 
   return reorderTracks(playlist.id, unordered, ordered);
 };
