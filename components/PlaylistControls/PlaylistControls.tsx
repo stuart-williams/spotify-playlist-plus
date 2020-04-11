@@ -1,6 +1,6 @@
 import "./PlaylistControls.scss";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import {

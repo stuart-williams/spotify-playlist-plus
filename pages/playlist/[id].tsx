@@ -20,12 +20,12 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     const ssrRequests = () =>
       Promise.all([
         userApi.getCurrentUser(ctx),
-        playlistApi.fetchMyPlaylists(ctx)
+        playlistApi.fetchMyPlaylists(ctx),
       ]);
 
     const [playlist, ssrResponses] = await Promise.all([
-      playlistApi.fetchPlaylistById(String(ctx.query.id), ctx),
-      ctx.req && ssrRequests()
+      playlistApi.fetchById(String(ctx.query.id), ctx),
+      ctx.req && ssrRequests(),
     ]);
 
     ctx.store.dispatch(playlistActions.setFocusedPlaylist(playlist.data));

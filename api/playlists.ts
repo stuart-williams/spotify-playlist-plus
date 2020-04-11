@@ -1,30 +1,32 @@
 import { NextPageContext } from "next";
+import arrayMove from "array-move";
 import fetch from "../common/fetch";
 import shuffle from "../common/shuffle";
+import * as tracksApi from "../api/tracks";
 
 export const fetchMyPlaylists = (ctx?: Pick<NextPageContext, "req" | "res">) =>
   fetch<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>(
     {
       url: "me/playlists",
       params: {
-        limit: 50
-      }
+        limit: 50,
+      },
     },
     ctx
   );
 
-export const fetchPlaylistById = (
+export const fetchById = (
   id: string,
   ctx?: Pick<NextPageContext, "req" | "res">
 ) =>
   fetch<SpotifyApi.PlaylistObjectFull>(
     {
-      url: `playlists/${id}`
+      url: `playlists/${id}`,
     },
     ctx
   );
 
-export const reorderPlaylistTrack = (
+export const reorderTrack = (
   id: string,
   rangeStart: number,
   insertBefore: number,
@@ -36,13 +38,11 @@ export const reorderPlaylistTrack = (
     data: {
       range_start: rangeStart,
       insert_before: insertBefore,
-      snapshot_id: snapshotId
-    }
+      snapshot_id: snapshotId,
+    },
   });
 
-export const randomisePlaylist = async (
-  playlist: SpotifyApi.PlaylistObjectFull
-) => {
+export const randomise = async (playlist: SpotifyApi.PlaylistObjectFull) => {
   const { id, tracks } = playlist;
   const ar = tracks.items.map(({ track }) => track.name);
   const it = shuffle<string>(ar);
@@ -54,14 +54,8 @@ export const randomisePlaylist = async (
       return;
     }
 
-    const r1 = await reorderPlaylistTrack(
-      id,
-      value.swap[0],
-      value.swap[1],
-      snapshotId
-    );
-
-    const r2 = await reorderPlaylistTrack(
+    const r1 = await reorderTrack(id, value.swap[0], value.swap[1], snapshotId);
+    const r2 = await reorderTrack(
       id,
       value.swap[1],
       value.swap[0],
@@ -69,6 +63,68 @@ export const randomisePlaylist = async (
     );
 
     return next(r2.data.snapshot_id);
+  };
+
+  return next();
+};
+
+export const sortByAudioFeature = async <
+  K extends keyof Pick<SpotifyApi.AudioFeaturesObject, "tempo">
+>(
+  playlist: SpotifyApi.PlaylistObjectFull,
+  key: K,
+  order: "ASC" | "DESC" = "ASC"
+) => {
+  const ids = playlist.tracks.items.map((item) => item.track.id);
+  const response = await tracksApi.fetchAudioFeatures(ids);
+  const audioFeatures = response.data.audio_features;
+  const sortedAudioFeatures = audioFeatures.sort((a, b) => {
+    const av = a[key];
+    const bv = b[key];
+    return order === "ASC" ? av - bv : bv - av;
+  });
+  const sortedIds = sortedAudioFeatures.map(({ id }) => id);
+
+  console.log(
+    playlist.tracks.items
+      .map((item): [string, number, string] => {
+        const { id, name } = item.track;
+        const feats = audioFeatures.find((o) => o.id === id);
+        return [name, feats?.tempo || 0, id];
+      })
+      .sort((a, b) => (order === "ASC" ? a[1] - b[1] : b[1] - a[1]))
+  );
+
+  const gen = function* () {
+    for (const item of sortedIds) {
+      yield item;
+    }
+  };
+
+  const it = gen();
+
+  let tmp = [...ids];
+
+  const next = async (snapshotId?: string): Promise<any> => {
+    const { done, value } = it.next();
+
+    if (done) {
+      return;
+    }
+
+    const rangeStart = tmp.findIndex((id) => id === value);
+    const insertBefore = sortedIds.findIndex((id) => id === value);
+
+    const { data } = await reorderTrack(
+      playlist.id,
+      rangeStart,
+      insertBefore,
+      snapshotId
+    );
+
+    tmp = arrayMove(tmp, rangeStart, insertBefore);
+
+    return next(data.snapshot_id);
   };
 
   return next();

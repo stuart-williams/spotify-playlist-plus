@@ -15,8 +15,8 @@ const initialState = {
   list: {},
   focused: {},
   randomise: {
-    state: "idle"
-  }
+    state: "idle",
+  },
 };
 
 // Actions Creators
@@ -31,8 +31,8 @@ export const fetchMyPlaylists = createAsyncThunk(
 export const fetchPlaylistById = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   string
->("playlists/fetchPlaylistById", async id => {
-  const { data } = await playlistApi.fetchPlaylistById(id);
+>("playlists/fetchPlaylistById", async (id) => {
+  const { data } = await playlistApi.fetchById(id);
   return data;
 });
 
@@ -44,7 +44,7 @@ export const randomisePlaylist = createAsyncThunk<
   }
 >("playlists/randomisePlaylist", async (playlist, { rejectWithValue }) => {
   try {
-    await playlistApi.randomisePlaylist(playlist);
+    await playlistApi.randomise(playlist);
   } catch (error) {
     return rejectWithValue(error.response.data.error as SpotifyApi.ErrorObject);
   }
@@ -66,9 +66,9 @@ const { reducer, actions } = createSlice({
       action: PayloadAction<SpotifyApi.PlaylistObjectFull>
     ) => {
       state.focused = action.payload;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     // List
     builder.addCase(fetchMyPlaylists.fulfilled, (state, action) => {
       state.list = action.payload;
@@ -80,18 +80,18 @@ const { reducer, actions } = createSlice({
     });
 
     // Randomise
-    builder.addCase(randomisePlaylist.pending, state => {
+    builder.addCase(randomisePlaylist.pending, (state) => {
       state.randomise.state = "pending";
     });
 
-    builder.addCase(randomisePlaylist.fulfilled, state => {
+    builder.addCase(randomisePlaylist.fulfilled, (state) => {
       state.randomise.state = "idle";
     });
 
-    builder.addCase(randomisePlaylist.rejected, state => {
+    builder.addCase(randomisePlaylist.rejected, (state) => {
       state.randomise.state = "idle";
     });
-  }
+  },
 });
 
 export { actions };
