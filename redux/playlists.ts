@@ -20,14 +20,6 @@ const initialState = {
 };
 
 // Actions Creators
-export const fetchMyPlaylists = createAsyncThunk(
-  "playlists/fetchMyPlaylists",
-  async () => {
-    const { data } = await playlistApi.fetchMyPlaylists();
-    return data;
-  }
-);
-
 export const fetchPlaylistById = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   string
@@ -69,11 +61,6 @@ const { reducer, actions } = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // List
-    builder.addCase(fetchMyPlaylists.fulfilled, (state, action) => {
-      state.list = action.payload;
-    });
-
     // Focussed
     builder.addCase(fetchPlaylistById.fulfilled, (state, action) => {
       state.focused = action.payload;

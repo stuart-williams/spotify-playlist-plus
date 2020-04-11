@@ -2,13 +2,12 @@ import "./PlaylistTracks.scss";
 
 import React from "react";
 import ms from "pretty-ms";
-import { HTMLTable, Tag } from "@blueprintjs/core";
+import { HTMLTable } from "@blueprintjs/core";
 
 type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
 };
 
-// TODO: extrack <Track />
 const PlaylistTracks = (props: Props) => {
   const { tracks, collaborative } = props.playlist;
 
@@ -21,7 +20,7 @@ const PlaylistTracks = (props: Props) => {
 
     const duration = ms(track.duration_ms, {
       colonNotation: true,
-      secondsDecimalDigits: 0
+      secondsDecimalDigits: 0,
     });
 
     return (
@@ -30,7 +29,6 @@ const PlaylistTracks = (props: Props) => {
           <div>
             {track.name}
             <div className="bp3-text-muted bp3-text-small">
-              {track.explicit && <Tag minimal={true}>EXPLICIT</Tag>}{" "}
               {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
               {track.artists.map(({ name }) => name).join(", ")}
               {" • "}
@@ -45,7 +43,7 @@ const PlaylistTracks = (props: Props) => {
 
   return (
     <div className="PlaylistTracks">
-      <HTMLTable bordered={false} striped={true} interactive={true}>
+      <HTMLTable bordered={false} striped={true}>
         <tbody>{tracks.items.map(renderTrack)}</tbody>
       </HTMLTable>
     </div>
