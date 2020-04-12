@@ -1,0 +1,8 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
+.Track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $pt-grid-size 0;
+}
