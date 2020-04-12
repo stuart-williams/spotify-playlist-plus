@@ -60,10 +60,6 @@ const PlaylistHead = (props: Props) => {
     <div className="bp3-text-muted bp3-text-small">{formatStats(playlist)}</div>
   );
 
-  const controls = isOwner && !isEmpty && (
-    <PlaylistControls className="PlaylistHead__controls" playlist={playlist} />
-  );
-
   return (
     <div className="PlaylistHead">
       <CoverArtImage
@@ -83,7 +79,7 @@ const PlaylistHead = (props: Props) => {
           <div className="bp3-text-muted">By {owner.display_name}</div>
           {stats}
         </div>
-        {controls}
+        {isOwner && !isEmpty && <PlaylistControls playlist={playlist} />}
       </div>
     </div>
   );
