@@ -4,8 +4,7 @@ import React from "react";
 import classNames from "classnames";
 import ms from "pretty-ms";
 import { Classes } from "@blueprintjs/core";
-
-const DIVIDER = " • ";
+import Constants from "../../common/constants";
 
 const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
   const duration = ms(track.duration_ms, {
@@ -22,7 +21,7 @@ const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
       >
         {added_by.id}
       </a>
-      {DIVIDER}
+      {Constants.DIVIDER}
     </>
   );
 
@@ -49,7 +48,7 @@ const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
         <div className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
           {addedBy}
           {artists}
-          {DIVIDER}
+          {Constants.DIVIDER}
           <a
             href={track.album.external_urls.spotify}
             target="_blank"

@@ -10,8 +10,7 @@ import { getUser } from "../../redux/user";
 import CoverArtImage from "../CoverArtImage";
 import PlaylistControls from "../PlaylistControls";
 import { Classes } from "@blueprintjs/core";
-
-const DIVIDER = " • ";
+import Constants from "../../common/constants";
 
 const mapState = (state: RootState) => ({
   user: getUser(state),
@@ -49,7 +48,7 @@ const formatStats = ({
     );
   }
 
-  return stats.join(DIVIDER);
+  return stats.join(Constants.DIVIDER);
 };
 
 const PlaylistHead = (props: Props) => {

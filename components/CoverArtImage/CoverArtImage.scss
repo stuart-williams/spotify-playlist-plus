@@ -3,7 +3,7 @@
 .CoverArtImage {
   position: relative;
   color: $pt-dark-text-color-muted;
-  background-color: darken($pt-dark-app-background-color, 5%);
+  background-color: $pt-dark-app-background-color;
 }
 
 .CoverArtImage,
