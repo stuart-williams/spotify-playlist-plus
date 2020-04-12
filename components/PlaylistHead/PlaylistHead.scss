@@ -2,6 +2,7 @@
 
 .PlaylistHead {
   display: flex;
+  padding: $pt-grid-size;
 }
 
 .PlaylistHead__cover-art-image {

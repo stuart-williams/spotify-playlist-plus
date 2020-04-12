@@ -1,6 +1,6 @@
 import { NextPageContext } from "next";
 import shuffle from "lodash.shuffle";
-import move from "array-move";
+import arrayMove from "array-move";
 import fetch from "../common/fetch";
 import * as tracksApi from "../api/tracks";
 
@@ -60,7 +60,7 @@ const reorderTracks = async (
       const to = ordered.findIndex((id) => id === value);
       const { data } = await reorderTrack(playlistId, from, to, snapshotId);
 
-      move.mutate(tmp, from, to);
+      arrayMove.mutate(tmp, from, to);
 
       return next(data.snapshot_id);
     }
