@@ -1,3 +1,4 @@
 import React from "react";
+import Entry from "../components/Entry";
 
-export default () => <a href={process.env.AUTHORIZE_URL}>Login</a>;
+export default () => <Entry />;

@@ -18,7 +18,7 @@ const App = ({
     <Head>
       <link rel="shortcut icon" href="/favicon.ico" />
     </Head>
-    <NextSeo title="Spotify – Playlist +" />
+    <NextSeo title="Playlist +" />
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>

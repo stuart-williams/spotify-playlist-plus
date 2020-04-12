@@ -4,8 +4,9 @@ import { setCookie } from "nookies";
 import { fetchToken } from "../common/fetch";
 import redirect from "../common/redirect";
 import * as debug from "../common/debug";
+import Entry from "../components/Entry";
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const { error, code } = ctx.query;
 
@@ -16,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     const { data } = await fetchToken(String(code));
 
     setCookie(ctx, process.env.TOKEN_COOKIE, data.access_token, {
-      maxAge: data.expires_in
+      maxAge: data.expires_in,
     });
 
     redirect("/", ctx);
@@ -25,13 +26,8 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   }
 
   return {
-    props: {}
+    props: {},
   };
 };
 
-export default () => (
-  <>
-    <h1>Oops</h1>
-    <a href={process.env.AUTHORIZE_URL}>Login</a>
-  </>
-);
+export default () => <Entry />;

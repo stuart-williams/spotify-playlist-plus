@@ -5,18 +5,28 @@ import Document, {
   NextScript,
   DocumentContext,
 } from "next/document";
+import { parseCookies } from "nookies";
 
-class MyDocument extends Document {
+interface Props {
+  classes: string;
+}
+
+class MyDocument extends Document<Props> {
   static async getInitialProps(ctx: DocumentContext) {
+    const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
     const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
+
+    return {
+      ...initialProps,
+      classes: token ? "bp3-dark" : "",
+    };
   }
 
   render() {
     return (
-      <Html lang="en" className="bp3-dark">
+      <Html lang="en" className={this.props.classes}>
         <Head />
-        <body className="bp3-dark">
+        <body className={this.props.classes}>
           <Main />
           <NextScript />
         </body>

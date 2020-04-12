@@ -2,8 +2,9 @@ import { NextPageContext } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../common/redirect";
 import * as playlistApi from "../api/playlists";
+import Entry from "../components/Entry";
 
-const Page = () => <a href={process.env.AUTHORIZE_URL}>Login</a>;
+const Page = () => <Entry />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
