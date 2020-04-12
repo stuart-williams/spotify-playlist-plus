@@ -1,4 +1,4 @@
 import debug from "debug";
 
-export const error = debug("spp:error");
-export const info = debug("spp:info");
+export const error = debug("spotify-playlist-plus:error");
+export const info = debug("spotify-playlist-plus:info");
