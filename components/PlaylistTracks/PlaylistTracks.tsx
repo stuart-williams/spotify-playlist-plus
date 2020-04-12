@@ -2,7 +2,8 @@ import "./PlaylistTracks.scss";
 
 import React from "react";
 import ms from "pretty-ms";
-import { HTMLTable } from "@blueprintjs/core";
+
+const DIVIDER = " • ";
 
 type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
@@ -23,30 +24,65 @@ const PlaylistTracks = (props: Props) => {
       secondsDecimalDigits: 0,
     });
 
+    const addedBy = collaborative && isNaN(+added_by.id) && (
+      <>
+        <a
+          href={added_by.external_urls.spotify}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {added_by.id}
+        </a>
+        {DIVIDER}
+      </>
+    );
+
+    const artists = track.artists.map(({ id, name, external_urls }, i, arr) => (
+      <span key={id}>
+        <a
+          href={external_urls.spotify}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {name}
+        </a>
+        {arr[i + 1] ? ", " : ""}
+      </span>
+    ));
+
     return (
-      <tr key={track.id}>
-        <td className="PlaylistTracks__track bp3-running-text">
-          <div>
+      <li key={track.id} className="PlaylistTracks__track bp3-running-text">
+        <div>
+          <a
+            className="bp3-text-large"
+            href={track.external_urls.spotify}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {track.name}
-            <div className="bp3-text-muted bp3-text-small">
-              {collaborative && isNaN(+added_by.id) && `${added_by.id}  • `}
-              {track.artists.map(({ name }) => name).join(", ")}
-              {" • "}
+          </a>
+          <div className="bp3-text-muted bp3-text-small">
+            {addedBy}
+            {artists}
+            {DIVIDER}
+            <a
+              href={track.album.external_urls.spotify}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {track.album.name}
-            </div>
+            </a>
           </div>
-          {duration}
-        </td>
-      </tr>
+        </div>
+        {duration}
+      </li>
     );
   };
 
   return (
-    <div className="PlaylistTracks">
-      <HTMLTable bordered={false}>
-        <tbody>{tracks.items.map(renderTrack)}</tbody>
-      </HTMLTable>
-    </div>
+    <ul className="PlaylistTracks bp3-list-unstyled">
+      {tracks.items.map(renderTrack)}
+    </ul>
   );
 };
 

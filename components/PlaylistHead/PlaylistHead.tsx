@@ -9,6 +9,8 @@ import { getUser } from "../../redux/user";
 import CoverArtImage from "../CoverArtImage";
 import PlaylistControls from "../PlaylistControls";
 
+const DIVIDER = " • ";
+
 const mapState = (state: RootState) => ({
   user: getUser(state),
 });
@@ -45,12 +47,12 @@ const formatStats = ({
     );
   }
 
-  return stats.join(" • ");
+  return stats.join(DIVIDER);
 };
 
 const PlaylistHead = (props: Props) => {
   const { user, playlist } = props;
-  const { name, images, owner } = playlist;
+  const { name, images, owner, external_urls } = playlist;
   const isOwner = user.id === playlist.owner.id;
   const isEmpty = !playlist.tracks.items.length;
 
@@ -70,7 +72,13 @@ const PlaylistHead = (props: Props) => {
         alt={name}
       />
       <div>
-        <h3 className="bp3-heading">{name}</h3>
+        <a
+          href={external_urls.spotify}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <h3 className="bp3-heading">{name}</h3>
+        </a>
         <div className="bp3-running-text">
           <div className="bp3-text-muted">By {owner.display_name}</div>
           {stats}

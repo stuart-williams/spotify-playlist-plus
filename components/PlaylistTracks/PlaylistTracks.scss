@@ -1,15 +1,14 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
 .PlaylistTracks {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.PlaylistTracks td {
-  box-shadow: none !important;
-}
-
-.PlaylistTracks__track {
+li.PlaylistTracks__track {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: $pt-grid-size 0;
 }
