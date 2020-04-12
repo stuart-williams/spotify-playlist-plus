@@ -1,8 +1,23 @@
 @import "~@blueprintjs/core/src/common/variables.scss";
 
 .PlaylistHead {
+  position: relative;
   display: flex;
   padding: $pt-grid-size;
+}
+
+.PlaylistHead::after {
+  content: "";
+  position: absolute;
+  height: 15px;
+  bottom: -15px;
+  left: 0px;
+  right: 0px;
+  background: linear-gradient(
+    to bottom,
+    $pt-dark-app-background-color,
+    rgba($pt-dark-app-background-color, 0)
+  );
 }
 
 .PlaylistHead__cover-art-image {
