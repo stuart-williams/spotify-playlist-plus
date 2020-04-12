@@ -1,6 +1,7 @@
 import "./PlaylistHead.scss";
 
 import React from "react";
+import classNames from "classnames";
 import { connect, ConnectedProps } from "react-redux";
 import pluralize from "pluralize";
 import ms from "pretty-ms";
@@ -8,6 +9,7 @@ import { RootState } from "../../redux";
 import { getUser } from "../../redux/user";
 import CoverArtImage from "../CoverArtImage";
 import PlaylistControls from "../PlaylistControls";
+import { Classes } from "@blueprintjs/core";
 
 const DIVIDER = " • ";
 
@@ -57,7 +59,9 @@ const PlaylistHead = (props: Props) => {
   const isEmpty = !playlist.tracks.items.length;
 
   const stats = !isEmpty && (
-    <div className="bp3-text-muted bp3-text-small">{formatStats(playlist)}</div>
+    <div className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
+      {formatStats(playlist)}
+    </div>
   );
 
   return (
@@ -73,10 +77,10 @@ const PlaylistHead = (props: Props) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h3 className="bp3-heading">{name}</h3>
+          <h3 className={Classes.HEADING}>{name}</h3>
         </a>
-        <div className="bp3-running-text">
-          <div className="bp3-text-muted">By {owner.display_name}</div>
+        <div className={Classes.RUNNING_TEXT}>
+          <div className={Classes.TEXT_MUTED}>By {owner.display_name}</div>
           {stats}
         </div>
         {isOwner && !isEmpty && <PlaylistControls playlist={playlist} />}

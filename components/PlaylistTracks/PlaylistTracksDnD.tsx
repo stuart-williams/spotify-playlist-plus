@@ -1,7 +1,9 @@
 import "./PlaylistTracks.scss";
 
 import React, { useState, useEffect } from "react";
+import classNames from "classnames";
 import arrayMove from "array-move";
+import * as playlistsApi from "../../api/playlists";
 import {
   DragDropContext,
   Droppable,
@@ -13,7 +15,7 @@ import {
   resetServerContext,
 } from "react-beautiful-dnd";
 import Track from "../Track";
-import * as playlistsApi from "../../api/playlists";
+import { Classes } from "@blueprintjs/core";
 
 type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
@@ -69,7 +71,7 @@ const PlaylistTracks = ({ playlist }: Props) => {
 
   const renderDroppable = (provided: DroppableProvided) => (
     <ul
-      className="PlaylistTracks bp3-list-unstyled"
+      className={classNames("PlaylistTracks", Classes.LIST_UNSTYLED)}
       {...provided.droppableProps}
       ref={provided.innerRef}
     >

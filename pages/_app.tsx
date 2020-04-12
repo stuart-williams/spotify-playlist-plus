@@ -1,4 +1,5 @@
 import "normalize.scss/normalize.scss";
+import "../styles/main.scss";
 
 import React from "react";
 import Head from "next/head";
@@ -11,7 +12,7 @@ import { makeStore } from "../redux";
 const App = ({
   Component,
   pageProps,
-  store
+  store,
 }: AppProps & ReduxWrapperAppProps) => (
   <>
     <Head>
@@ -26,10 +27,10 @@ const App = ({
 
 App.getInitialProps = async ({ Component, ctx }: AppContext) => ({
   pageProps: {
-    ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {})
-  }
+    ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+  },
 });
 
 export default withRedux(makeStore, {
-  debug: process.env.NODE_ENV === "development"
+  debug: process.env.NODE_ENV === "development",
 })(App);

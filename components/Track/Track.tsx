@@ -1,7 +1,9 @@
 import "./Track.scss";
 
 import React from "react";
+import classNames from "classnames";
 import ms from "pretty-ms";
+import { Classes } from "@blueprintjs/core";
 
 const DIVIDER = " • ";
 
@@ -34,17 +36,17 @@ const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
   ));
 
   return (
-    <div className="Track bp3-running-text">
+    <div className={classNames("Track", Classes.RUNNING_TEXT)}>
       <div>
         <a
-          className="bp3-text-large"
+          className={Classes.TEXT_LARGE}
           href={track.external_urls.spotify}
           target="_blank"
           rel="noopener noreferrer"
         >
           {track.name}
         </a>
-        <div className="bp3-text-muted bp3-text-small">
+        <div className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
           {addedBy}
           {artists}
           {DIVIDER}

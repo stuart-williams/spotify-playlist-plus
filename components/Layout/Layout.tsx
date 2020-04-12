@@ -1,4 +1,3 @@
-import "../../styles/main.scss";
 import "./Layout.scss";
 
 import React, { ReactNode } from "react";

@@ -1,13 +1,15 @@
 import "./PlaylistsMenu.scss";
 
 import React from "react";
+import classNames from "classnames";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import { getListOfPlaylists } from "../../redux/playlists";
 import Link from "next/link";
+import { Classes } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
-  playlists: getListOfPlaylists(state)
+  playlists: getListOfPlaylists(state),
 });
 
 const connector = connect(mapState);
@@ -22,8 +24,10 @@ const PlaylistsMenu = (props: Props) => {
   const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => (
     <li key={playlist.id}>
       <Link href="/playlist/[id]" as={`/playlist/${playlist.id}`}>
-        <a className="bp3-menu-item">
-          <span className="bp3-text-overflow-ellipsis bp3-fill">
+        <a className={Classes.MENU_ITEM}>
+          <span
+            className={classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, Classes.FILL)}
+          >
             {playlist.name}
           </span>
         </a>
@@ -33,7 +37,7 @@ const PlaylistsMenu = (props: Props) => {
 
   return (
     <div className="Playlists">
-      <ul className="Playlists__scroll bp3-list-unstyled">
+      <ul className={classNames("Playlists__scroll", Classes.LIST_UNSTYLED)}>
         {props.playlists.map(renderMenuItem)}
       </ul>
     </div>
