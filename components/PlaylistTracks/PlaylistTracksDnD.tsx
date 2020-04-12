@@ -1,5 +1,3 @@
-import "./PlaylistTracks.scss";
-
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import arrayMove from "array-move";

@@ -1,5 +1,3 @@
-import "./Playlist.scss";
-
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";

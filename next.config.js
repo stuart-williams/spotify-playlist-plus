@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const { stringify } = require("querystring");
-const withSass = require("@zeit/next-sass");
 
 const ACCOUNTS_URL = "https://accounts.spotify.com";
 const SCOPES = [
@@ -10,10 +9,10 @@ const SCOPES = [
   "playlist-read-private",
   "playlist-read-collaborative",
   "playlist-modify-private",
-  "playlist-modify-public"
+  "playlist-modify-public",
 ];
 
-module.exports = withSass({
+module.exports = {
   env: {
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
@@ -22,10 +21,10 @@ module.exports = withSass({
       client_id: process.env.CLIENT_ID,
       response_type: "code",
       redirect_uri: process.env.REDIRECT_URI,
-      scope: SCOPES.join(" ")
+      scope: SCOPES.join(" "),
     })}`,
     TOKEN_COOKIE: "spp_token",
     API_URL: "https://api.spotify.com/v1",
-    ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`
-  }
-});
+    ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`,
+  },
+};

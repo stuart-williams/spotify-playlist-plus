@@ -1,5 +1,3 @@
-import "./PlaylistTracks.scss";
-
 import React from "react";
 import classNames from "classnames";
 import Track from "../Track";

@@ -1,5 +1,3 @@
-import "./PlaylistControls.scss";
-
 import React, { useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import classNames from "classnames";

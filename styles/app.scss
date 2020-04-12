@@ -1,0 +1,23 @@
+@import "~normalize.scss/normalize.scss";
+@import "./variables.scss";
+@import "~@blueprintjs/core/src/blueprint.scss";
+
+// Components
+@import "../components/Layout/Layout.scss";
+@import "../components/CoverArtImage/CoverArtImage.scss";
+@import "../components/Navigation/Navigation.scss";
+@import "../components/Playlist/Playlist.scss";
+@import "../components/PlaylistControls/PlaylistControls.scss";
+@import "../components/PlaylistHead/PlaylistHead.scss";
+@import "../components/PlaylistsMenu/PlaylistsMenu.scss";
+@import "../components/PlaylistTracks/PlaylistTracks.scss";
+@import "../components/Track/Track.scss";
+
+.bp3-dark {
+  background-color: $pt-dark-app-background-color;
+}
+
+.bp3-dark a,
+.bp3-dark a:hover {
+  color: inherit;
+}

@@ -1,5 +1,3 @@
-import "./Navigation.scss";
-
 import React from "react";
 import PlaylistsMenu from "../PlaylistsMenu";
 

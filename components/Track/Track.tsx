@@ -1,5 +1,3 @@
-import "./Track.scss";
-
 import React from "react";
 import classNames from "classnames";
 import ms from "pretty-ms";
