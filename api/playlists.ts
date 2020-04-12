@@ -28,18 +28,18 @@ export const getPlaylistById = (
     ctx
   );
 
-const reorderTrack = (
+export const reorderTrack = (
   id: string,
-  rangeStart: number,
-  insertBefore: number,
+  from: number,
+  to: number,
   snapshotId?: string
 ) =>
   fetch<SpotifyApi.ReorderPlaylistTracksResponse>({
     method: "put",
     url: `playlists/${id}/tracks`,
     data: {
-      range_start: rangeStart,
-      insert_before: insertBefore,
+      range_start: from,
+      insert_before: to > from ? to + 1 : to,
       snapshot_id: snapshotId,
     },
   });

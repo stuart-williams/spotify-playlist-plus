@@ -1,6 +1,6 @@
 import "./PlaylistTracks.scss";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import arrayMove from "array-move";
 import {
   DragDropContext,
@@ -12,6 +12,7 @@ import {
   resetServerContext,
 } from "react-beautiful-dnd";
 import Track from "../Track";
+import * as playlistsApi from "../../api/playlists";
 
 type Props = {
   playlist: SpotifyApi.PlaylistObjectFull;
@@ -20,11 +21,17 @@ type Props = {
 const PlaylistTracks = ({ playlist }: Props) => {
   const [tracks, setTracks] = useState(playlist.tracks.items);
 
+  useEffect(() => {
+    setTracks(playlist.tracks.items);
+  }, [playlist.snapshot_id]);
+
   const handleDragEnd = (result: DropResult) => {
     if (result.destination) {
-      setTracks(
-        arrayMove(tracks, result.source.index, result.destination.index)
-      );
+      const from = result.source.index;
+      const to = result.destination.index;
+
+      playlistsApi.reorderTrack(playlist.id, from, to);
+      setTracks(arrayMove(tracks, from, to));
     }
   };
 
