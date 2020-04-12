@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Head from "next/head";
+import { NextSeo } from "next-seo";
 import {
   Alignment,
   Navbar,
@@ -15,8 +16,9 @@ interface Props {
 export default ({ primaryPanel }: Props) => (
   <>
     <Head>
-      <link rel="stylesheet" href="/css/app.css" />
+      <link rel="stylesheet" href="/css/app.min.css" />
     </Head>
+    <NextSeo noindex={true} nofollow={true} />
     <div className="Layout">
       <Navbar>
         <NavbarGroup align={Alignment.LEFT}>

@@ -4,7 +4,7 @@ import Head from "next/head";
 export default () => (
   <>
     <Head>
-      <link rel="stylesheet" href="/css/main.css" />
+      <link rel="stylesheet" href="/css/main.min.css" />
     </Head>
     <div className="Entry">
       <h1>Playlist +</h1>
