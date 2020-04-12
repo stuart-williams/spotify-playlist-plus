@@ -1,0 +1,9 @@
+{
+    "build": {
+        "env": {
+            "CLIENT_ID": "@client-id",
+            "CLIENT_SECRET": "@client-secret",
+            "REDIRECT_URI": "@redirect-uri"
+        }
+    }
+}
