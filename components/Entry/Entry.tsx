@@ -9,7 +9,10 @@ export default () => {
       </Head>
       <div className="Entry">
         <h1>Playlist +</h1>
-        <a href={process.env.AUTHORIZE_URL}>Login</a>
+        <h3>Advanced playlist management for Spotify</h3>
+        <a className="button" href={process.env.AUTHORIZE_URL}>
+          Connect with Spotify
+        </a>
       </div>
     </>
   );

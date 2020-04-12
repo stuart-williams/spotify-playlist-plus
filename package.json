@@ -26,6 +26,7 @@
     "next-seo": "^4.4.0",
     "nookies": "^2.2.2",
     "normalize.scss": "^0.1.0",
+    "picnic": "^6.5.2",
     "pluralize": "^8.0.0",
     "pretty-ms": "^6.0.1",
     "react": "16.13.1",
