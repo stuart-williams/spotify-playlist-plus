@@ -10,7 +10,7 @@ import Layout from "../components/Layout";
 import { NonIdealState } from "@blueprintjs/core";
 
 const Page = () => (
-  <Layout primaryPanel={<NonIdealState title="No search results" />} />
+  <Layout primaryPanel={<NonIdealState title="Nothing to see here..." />} />
 );
 
 Page.getInitialProps = async (ctx: NextPageContext) => {

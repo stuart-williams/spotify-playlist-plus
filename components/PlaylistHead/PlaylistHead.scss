@@ -4,31 +4,8 @@
   display: flex;
 }
 
-.PlaylistHead__image,
-.PlaylistHead__image img {
-  height: 150px;
-  width: 150px;
-}
-
-.PlaylistHead__meta {
-  padding: $pt-grid-size;
-}
-
-.PlaylistHead__title {
-  display: flex;
-  align-items: center;
-}
-
-.PlaylistHead__title .bp3-heading {
-  margin: 0;
-}
-
-.PlaylistHead__title {
-  margin-bottom: $pt-grid-size / 2;
-}
-
-.PlaylistHead__tag {
-  margin-left: $pt-grid-size;
+.PlaylistHead__cover-art-image {
+  margin-right: $pt-grid-size;
 }
 
 .PlaylistHead__controls {

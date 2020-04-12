@@ -6,8 +6,7 @@ import pluralize from "pluralize";
 import ms from "pretty-ms";
 import { RootState } from "../../redux";
 import { getUser } from "../../redux/user";
-import { Tag } from "@blueprintjs/core";
-import Img from "react-image";
+import CoverArtImage from "../CoverArtImage";
 import PlaylistControls from "../PlaylistControls";
 
 const mapState = (state: RootState) => ({
@@ -23,10 +22,10 @@ type Props = PropsFromRedux & {
   playlist: SpotifyApi.PlaylistObjectFull;
 };
 
-const PlaylistHead = (props: Props) => {
-  const { user, playlist } = props;
-  const { name, images, owner, followers, tracks } = playlist;
-  const isOwner = user.id === playlist.owner.id;
+const formatStats = ({
+  tracks,
+  followers,
+}: SpotifyApi.PlaylistObjectFull): string => {
   const duration = ms(
     tracks.items.reduce((d, item) => d + (item.track?.duration_ms || 0), 0),
     {
@@ -35,36 +34,48 @@ const PlaylistHead = (props: Props) => {
     }
   );
 
-  const tag = !!followers.total && (
-    <Tag>
-      {new Intl.NumberFormat().format(followers.total)}{" "}
-      {pluralize("Followers", followers.total)}
-    </Tag>
+  const stats = [`${tracks.total} Songs`, duration];
+
+  if (followers.total) {
+    stats.push(
+      `${new Intl.NumberFormat().format(followers.total)} ${pluralize(
+        "Followers",
+        followers.total
+      )}`
+    );
+  }
+
+  return stats.join(" • ");
+};
+
+const PlaylistHead = (props: Props) => {
+  const { user, playlist } = props;
+  const { name, images, owner } = playlist;
+  const isOwner = user.id === playlist.owner.id;
+  const isEmpty = !playlist.tracks.items.length;
+
+  const stats = !isEmpty && (
+    <div className="bp3-text-muted bp3-text-small">{formatStats(playlist)}</div>
   );
 
-  const controls = (
+  const controls = isOwner && !isEmpty && (
     <PlaylistControls className="PlaylistHead__controls" playlist={playlist} />
   );
 
   return (
     <div className="PlaylistHead">
-      <div className="PlaylistHead__image">
-        <Img src={images?.[0]?.url} alt={name} />
-      </div>
-      <div className="PlaylistHead__meta">
-        <div className="PlaylistHead__title">
-          <h3 className="bp3-heading">{name}</h3>
-          <div className="PlaylistHead__tag">{tag}</div>
-        </div>
+      <CoverArtImage
+        className="PlaylistHead__cover-art-image"
+        src={images?.[0]?.url}
+        alt={name}
+      />
+      <div>
+        <h3 className="bp3-heading">{name}</h3>
         <div className="bp3-running-text">
           <div className="bp3-text-muted">By {owner.display_name}</div>
-          <div className="bp3-text-muted bp3-text-small">
-            {tracks.total}
-            {" Songs • "}
-            {duration}
-          </div>
+          {stats}
         </div>
-        {isOwner && controls}
+        {controls}
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ const PlaylistTracks = (props: Props) => {
 
   return (
     <div className="PlaylistTracks">
-      <HTMLTable bordered={false} striped={true}>
+      <HTMLTable bordered={false}>
         <tbody>{tracks.items.map(renderTrack)}</tbody>
       </HTMLTable>
     </div>

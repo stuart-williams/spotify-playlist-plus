@@ -1,0 +1,22 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
+.CoverArtImage {
+  position: relative;
+  color: $pt-dark-text-color-muted;
+  background-color: darken($pt-dark-app-background-color, 5%);
+}
+
+.CoverArtImage,
+.CoverArtImage img {
+  height: 120px;
+  width: 120px;
+}
+
+.CoverArtImage svg {
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
