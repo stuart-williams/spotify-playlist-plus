@@ -2,7 +2,12 @@ import "../../styles/main.scss";
 import "./Layout.scss";
 
 import React, { ReactNode } from "react";
-import { Alignment, Navbar, NavbarGroup } from "@blueprintjs/core";
+import {
+  Alignment,
+  Navbar,
+  NavbarGroup,
+  NavbarHeading,
+} from "@blueprintjs/core";
 import Navigation from "../Navigation";
 
 interface Props {
@@ -12,11 +17,8 @@ interface Props {
 export default ({ primaryPanel }: Props) => (
   <div className="Layout">
     <Navbar>
-      <NavbarGroup align={Alignment.RIGHT}>
-        {/* <NavbarHeading>Playlist +</NavbarHeading>
-        <NavbarDivider />
-        <Button className={Classes.MINIMAL} icon="home" text="Home" />
-        <Button className={Classes.MINIMAL} icon="document" text="Files" /> */}
+      <NavbarGroup align={Alignment.LEFT}>
+        <NavbarHeading>Playlist +</NavbarHeading>
       </NavbarGroup>
     </Navbar>
     <div className="Layout__body">

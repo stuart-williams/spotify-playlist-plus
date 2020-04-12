@@ -13,7 +13,6 @@ import {
 import { SortByAudioFeatureOptions } from "../../api/playlists";
 import {
   Button,
-  ButtonGroup,
   Toaster,
   IToastProps,
   ProgressBar,
@@ -21,6 +20,7 @@ import {
   Intent,
   Menu,
   MenuItem,
+  MenuDivider,
   Popover,
 } from "@blueprintjs/core";
 
@@ -144,38 +144,44 @@ const PlaylistControls = (props: Props) => {
 
   const menu = (
     <Menu>
-      <MenuItem
-        icon="sort-asc"
-        text="Tempo (Slow to Fast)"
-        onClick={handleSortTempoAsc}
-      />
-      <MenuItem
-        icon="sort-desc"
-        text="Tempo (Fast to Slow)"
-        onClick={handleSortTempoDesc}
-      />
-      <Menu.Divider />
-      <MenuItem
-        icon="sort-asc"
-        text="Danceability (Low to High)"
-        onClick={handleSortDanceabilityAsc}
-      />
-      <MenuItem
-        icon="sort-desc"
-        text="Danceability (High to Low)"
-        onClick={handleSortDanceabilityDesc}
-      />
-      <Menu.Divider />
-      <MenuItem
-        icon="sort-asc"
-        text="Mood (Sad to Happy)"
-        onClick={handleSortMoodAsc}
-      />
-      <MenuItem
-        icon="sort-desc"
-        text="Mood (Happy to Sad)"
-        onClick={handleSortMoodDesc}
-      />
+      <MenuDivider title="Sort" />
+      <MenuItem icon="random" text="Randomise" onClick={handleRandomise} />
+      <MenuItem icon="sort" text="Tempo">
+        <MenuItem
+          icon="sort-asc"
+          text="Slow to Fast"
+          onClick={handleSortTempoAsc}
+        />
+        <MenuItem
+          icon="sort-desc"
+          text="Fast to Slow"
+          onClick={handleSortTempoDesc}
+        />
+      </MenuItem>
+      <MenuItem icon="sort" text="Danceability">
+        <MenuItem
+          icon="sort-asc"
+          text="Low to High"
+          onClick={handleSortDanceabilityAsc}
+        />
+        <MenuItem
+          icon="sort-desc"
+          text="High to Low"
+          onClick={handleSortDanceabilityDesc}
+        />
+      </MenuItem>
+      <MenuItem icon="sort" text="Mood">
+        <MenuItem
+          icon="sort-asc"
+          text="Sad to Happy"
+          onClick={handleSortMoodAsc}
+        />
+        <MenuItem
+          icon="sort-desc"
+          text="Happy to Sad"
+          onClick={handleSortMoodDesc}
+        />
+      </MenuItem>
     </Menu>
   );
 
@@ -185,20 +191,13 @@ const PlaylistControls = (props: Props) => {
         ref={(ref: Toaster) => (toaster.current = ref)}
         position={Position.TOP}
       />
-      <ButtonGroup>
-        <Button
-          icon="random"
-          disabled={sortState === "pending"}
-          onClick={handleRandomise}
-        >
-          Randomise
-        </Button>
-        <Popover content={menu} position={Position.RIGHT_BOTTOM}>
-          <Button icon="sort" disabled={sortState === "pending"}>
-            Sort
-          </Button>
-        </Popover>
-      </ButtonGroup>
+      <Popover
+        content={menu}
+        position={Position.RIGHT_BOTTOM}
+        autoFocus={false}
+      >
+        <Button icon="more" minimal={true} disabled={sortState === "pending"} />
+      </Popover>
     </div>
   );
 };
