@@ -1,4 +1,4 @@
-@import "~@blueprintjs/core/src/common/variables.scss";
+@import "../../styles/variables.scss";
 
 .PlaylistHead {
   position: relative;
@@ -15,8 +15,8 @@
   right: 0px;
   background: linear-gradient(
     to bottom,
-    $pt-dark-app-background-color,
-    rgba($pt-dark-app-background-color, 0)
+    $dark-playlist-background-color,
+    rgba($dark-playlist-background-color, 0)
   );
 }
 

@@ -1,7 +1,8 @@
-@import "~@blueprintjs/core/src/common/variables.scss";
+@import "../../styles/variables.scss";
 
 .Playlist {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: $dark-playlist-background-color;
 }

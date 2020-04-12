@@ -1,0 +1,9 @@
+@import "~@blueprintjs/core/src/common/variables.scss";
+
+$dark-gray5: #282828;
+$pt-dark-app-background-color: #121212;
+$pt-dark-text-color-muted: #b3b3b3;
+$pt-dark-icon-color: $white;
+$dark-menu-background-color: $dark-gray5;
+$dark-navbar-background-color: $dark-gray5;
+$dark-playlist-background-color: lighten($pt-dark-app-background-color, 4%);

@@ -1,4 +1,4 @@
-@import "~@blueprintjs/core/src/common/variables.scss";
+@import "../../styles/variables.scss";
 
 .Navigation {
   display: flex;
@@ -6,5 +6,4 @@
   height: 100%;
   width: 300px;
   padding: $pt-grid-size / 2;
-  background-color: darken($pt-dark-app-background-color, 5%);
 }
