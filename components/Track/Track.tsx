@@ -4,24 +4,29 @@ import ms from "pretty-ms";
 import { Classes } from "@blueprintjs/core";
 import Constants from "../../common/constants";
 
-const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
+interface Props {
+  track: SpotifyApi.TrackObjectFull;
+}
+
+const Track = (props: Props) => {
+  const { track } = props;
   const duration = ms(track.duration_ms, {
     colonNotation: true,
     secondsDecimalDigits: 0,
   });
 
-  const addedBy = isNaN(+added_by.id) && (
-    <>
-      <a
-        href={added_by.external_urls.spotify}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {added_by.id}
-      </a>
-      {Constants.DIVIDER}
-    </>
-  );
+  // const addedBy = isNaN(+added_by.id) && (
+  //   <>
+  //     <a
+  //       href={added_by.external_urls.spotify}
+  //       target="_blank"
+  //       rel="noopener noreferrer"
+  //     >
+  //       {added_by.id}
+  //     </a>
+  //     {Constants.DIVIDER}
+  //   </>
+  // );
 
   const artists = track.artists.map(({ id, name, external_urls }, i, arr) => (
     <span key={id}>
@@ -44,7 +49,7 @@ const Track = ({ track, added_by }: SpotifyApi.PlaylistTrackObject) => {
           {track.name}
         </a>
         <div className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
-          {addedBy}
+          {/* {addedBy} */}
           {artists}
           {Constants.DIVIDER}
           <a

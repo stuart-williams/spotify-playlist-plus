@@ -12,14 +12,14 @@ const { reducer, actions } = createSlice({
     setUser: (
       state,
       action: PayloadAction<SpotifyApi.CurrentUsersProfileResponse>
-    ) => action.payload
-  }
+    ) => action.payload,
+  },
 });
 
 export { actions };
 export default reducer;
 
 // Selectors
-export const getUser = (
+export const selectUser = (
   state: RootState
 ): SpotifyApi.CurrentUsersProfileResponse => state.user;

@@ -4,14 +4,14 @@ import { connect, ConnectedProps } from "react-redux";
 import pluralize from "pluralize";
 import ms from "pretty-ms";
 import { RootState } from "../../redux";
-import { getUser } from "../../redux/user";
+import { selectUser } from "../../redux/user";
 import CoverArtImage from "../CoverArtImage";
 import PlaylistControls from "../PlaylistControls";
 import { Classes } from "@blueprintjs/core";
 import Constants from "../../common/constants";
 
 const mapState = (state: RootState) => ({
-  user: getUser(state),
+  user: selectUser(state),
 });
 
 const connector = connect(mapState);

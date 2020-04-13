@@ -1,15 +1,15 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { getUser } from "../../redux/user";
-import { getPlaylist } from "../../redux/playlists";
+import { selectUser } from "../../redux/user";
+import { selectPlaylist } from "../../redux/playlists";
 import PlaylistHead from "../PlaylistHead";
 import { PlaylistTracks, PlaylistTracksDnD } from "../PlaylistTracks";
 import { NonIdealState, AnchorButton } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
-  user: getUser(state),
-  playlist: getPlaylist(state),
+  user: selectUser(state),
+  playlist: selectPlaylist(state),
 });
 
 const connector = connect(mapState);

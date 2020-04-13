@@ -6,6 +6,7 @@ const ACCOUNTS_URL = "https://accounts.spotify.com";
 const SCOPES = [
   "user-read-private",
   "user-read-email",
+  "user-top-read",
   "playlist-read-private",
   "playlist-read-collaborative",
   "playlist-modify-private",

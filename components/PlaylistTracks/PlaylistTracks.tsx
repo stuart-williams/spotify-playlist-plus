@@ -12,7 +12,7 @@ const PlaylistTracks = ({ playlist }: Props) => {
     if (item.track) {
       return (
         <li key={item.track.id}>
-          <Track {...item} />
+          <Track track={item.track} />
         </li>
       );
     }

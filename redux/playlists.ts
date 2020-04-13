@@ -112,11 +112,12 @@ export { actions };
 export default reducer;
 
 // Selectors
-export const getListOfPlaylists = (
+export const selectListOfPlaylists = (
   state: RootState
 ): SpotifyApi.PlaylistObjectSimplified[] => state.playlists.list?.items || [];
 
-export const getPlaylist = (state: RootState): SpotifyApi.PlaylistObjectFull =>
-  state.playlists.playlist;
+export const selectPlaylist = (
+  state: RootState
+): SpotifyApi.PlaylistObjectFull => state.playlists.playlist;
 
-export const getSortState = (state: RootState) => state.playlists.sortState;
+export const selectSortState = (state: RootState) => state.playlists.sortState;

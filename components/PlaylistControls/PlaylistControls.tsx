@@ -6,7 +6,7 @@ import {
   randomise,
   sortByAudioFeature,
   getPlaylistById,
-  getSortState,
+  selectSortState,
 } from "../../redux/playlists";
 import { SortByAudioFeatureOptions } from "../../api/playlists";
 import {
@@ -23,7 +23,7 @@ import {
 } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
-  sortState: getSortState(state),
+  sortState: selectSortState(state),
 });
 
 const mapDispatch = {

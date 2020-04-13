@@ -52,7 +52,7 @@ const PlaylistTracks = ({ playlist }: Props) => {
         {...provided.dragHandleProps}
         style={style}
       >
-        <Track {...item} />
+        <Track track={item.track} />
       </li>
     );
   };

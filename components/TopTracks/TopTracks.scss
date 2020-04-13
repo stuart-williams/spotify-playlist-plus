@@ -1,0 +1,38 @@
+.TopTracks {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $dark-playlist-background-color;
+}
+
+.TopTracks__head {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: $pt-grid-size;
+}
+
+.TopTracks__head::after {
+  content: "";
+  position: absolute;
+  height: 15px;
+  bottom: -15px;
+  left: 0px;
+  right: 0px;
+  background: linear-gradient(
+    to bottom,
+    $dark-playlist-background-color,
+    rgba($dark-playlist-background-color, 0)
+  );
+}
+
+.TopTracks__tab {
+  margin: 0;
+}
+
+.TopTracks__tracks {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}

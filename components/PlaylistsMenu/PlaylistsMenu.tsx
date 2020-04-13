@@ -2,12 +2,12 @@ import React from "react";
 import classNames from "classnames";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { getListOfPlaylists } from "../../redux/playlists";
+import { selectListOfPlaylists } from "../../redux/playlists";
 import Link from "next/link";
 import { Classes } from "@blueprintjs/core";
 
 const mapState = (state: RootState) => ({
-  playlists: getListOfPlaylists(state),
+  playlists: selectListOfPlaylists(state),
 });
 
 const connector = connect(mapState);
