@@ -1,7 +1,16 @@
 .Track {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: $pt-grid-size;
   background-color: $dark-playlist-background-color;
+}
+
+.Track__cover-art-image,
+.Track__cover-art-image img {
+  height: 40px;
+  width: 40px;
+  margin-right: $pt-grid-size;
+}
+
+.Track__body {
+  flex: 1;
 }

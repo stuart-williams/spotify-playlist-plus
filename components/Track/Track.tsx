@@ -3,6 +3,7 @@ import classNames from "classnames";
 import ms from "pretty-ms";
 import { Classes } from "@blueprintjs/core";
 import Constants from "../../common/constants";
+import CoverArtImage from "../CoverArtImage";
 
 interface Props {
   track: SpotifyApi.TrackObjectFull;
@@ -39,7 +40,12 @@ const Track = (props: Props) => {
 
   return (
     <div className={classNames("Track", Classes.RUNNING_TEXT)}>
-      <div>
+      <CoverArtImage
+        className="Track__cover-art-image"
+        src={track.album.images?.[0]?.url}
+        alt={track.name}
+      />
+      <div className="Track__body">
         <a
           className={Classes.TEXT_LARGE}
           href={track.external_urls.spotify}
