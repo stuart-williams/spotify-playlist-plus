@@ -16,13 +16,29 @@ const initialState = {
 };
 
 // Actions Creators
-export const getPlaylistById = createAsyncThunk(
-  "playlists/getPlaylistById",
-  async (id: string) => {
+export const getListOfPlaylists = createAsyncThunk<
+  SpotifyApi.ListOfCurrentUsersPlaylistsResponse
+>("playlists/getListOfPlaylists", async () => {
+  const { data } = await playlistApi.getListOfPlaylists();
+  return data;
+});
+
+export const getPlaylistById = createAsyncThunk<
+  SpotifyApi.PlaylistObjectFull,
+  string,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("playlists/getPlaylistById", async (id, thunkApi) => {
+  try {
     const { data } = await playlistApi.getPlaylistById(id);
     return data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
   }
-);
+});
 
 export const randomise = createAsyncThunk<
   void,
@@ -75,6 +91,11 @@ const { reducer, actions } = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // List of Playlists
+    builder.addCase(getListOfPlaylists.fulfilled, (state, action) => {
+      state.list = action.payload;
+    });
+
     // Focussed
     builder.addCase(getPlaylistById.fulfilled, (state, action) => {
       state.playlist = action.payload;

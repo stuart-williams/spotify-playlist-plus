@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import * as tracksApi from "../api/tracks";
+import * as topApi from "../api/top";
 
 // State
 export interface State {
@@ -14,10 +14,36 @@ const initialState = {
 // Actions Creators
 export const getTopTracks = createAsyncThunk<
   SpotifyApi.UsersTopTracksResponse,
-  tracksApi.TimeRange
->("tracks/getTopTracks", async (timeRange) => {
-  const { data } = await tracksApi.getTopTracks(timeRange);
-  return data;
+  topApi.TimeRange,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("tracks/getTopTracks", async (timeRange, thunkApi) => {
+  try {
+    const { data } = await topApi.getTopTracks(timeRange);
+    return data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
+});
+
+export const createTopTracksPlaylist = createAsyncThunk<
+  SpotifyApi.PlaylistObjectFull,
+  topApi.CreateTopTracksPlaylistOptions,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("tracks/createTopTracksPlaylist", async (options, thunkApi) => {
+  try {
+    const playlist = await topApi.createTopTracksPlaylist(options);
+    return playlist;
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
 });
 
 // Reducer

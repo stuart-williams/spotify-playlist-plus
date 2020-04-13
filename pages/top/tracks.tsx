@@ -7,7 +7,7 @@ import { actions as playlistActions } from "../../redux/playlists";
 import { actions as topActions } from "../../redux/top";
 import * as userApi from "../../api/user";
 import * as playlistApi from "../../api/playlists";
-import * as tracksApi from "../../api/tracks";
+import * as topApi from "../../api/top";
 import Layout from "../../components/Layout";
 import TopTracks from "../../components/TopTracks";
 
@@ -22,7 +22,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     const [user, list, top] = await Promise.all([
       userApi.getUser(ctx),
       playlistApi.getListOfPlaylists(ctx),
-      tracksApi.getTopTracks("long_term", ctx),
+      topApi.getTopTracks("long_term", ctx),
     ]);
 
     ctx.store.dispatch(userActions.setUser(user.data));

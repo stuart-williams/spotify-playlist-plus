@@ -7,8 +7,6 @@
 
 .TopTracks__head {
   position: relative;
-  display: flex;
-  flex-direction: column;
   padding: $pt-grid-size;
 }
 
@@ -24,6 +22,10 @@
     $dark-playlist-background-color,
     rgba($dark-playlist-background-color, 0)
   );
+}
+
+.TopTracks__tabs {
+  margin-top: $pt-grid-size;
 }
 
 .TopTracks__tab {
