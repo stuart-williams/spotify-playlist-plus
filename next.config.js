@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const withSass = require("@zeit/next-sass");
 const { stringify } = require("querystring");
 
 const ACCOUNTS_URL = "https://accounts.spotify.com";
@@ -13,7 +14,7 @@ const SCOPES = [
   "playlist-modify-public",
 ];
 
-module.exports = {
+module.exports = withSass({
   env: {
     DOMAIN: "https://spotify-playlist-plus.now.sh",
     CLIENT_ID: process.env.CLIENT_ID,
@@ -32,4 +33,4 @@ module.exports = {
     GA_DEBUG: process.env.GA_DEBUG,
     REDUX_DEBUG: process.env.REDUX_DEBUG,
   },
-};
+});

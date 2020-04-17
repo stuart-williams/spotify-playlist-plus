@@ -1,3 +1,5 @@
+import "../styles/main.scss";
+
 import React from "react";
 import Head from "next/head";
 import { AppContext, AppProps } from "next/app";

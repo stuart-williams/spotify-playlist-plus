@@ -1,17 +1,21 @@
 import React from "react";
-import Head from "next/head";
+import { NonIdealState, AnchorButton } from "@blueprintjs/core";
 
-export default () => (
-  <>
-    <Head>
-      <link rel="stylesheet" href="/css/main.min.css" />
-    </Head>
+export default () => {
+  const action = (
+    <AnchorButton href={process.env.AUTHORIZE_URL}>
+      Connect with Spotify
+    </AnchorButton>
+  );
+
+  return (
     <div className="Entry">
-      <h1>Playlist +</h1>
-      <h3>Advanced playlist management for Spotify</h3>
-      <a className="button" href={process.env.AUTHORIZE_URL}>
-        Connect with Spotify
-      </a>
+      <NonIdealState
+        icon="user"
+        title="Let's get started"
+        description="Connect with Spotify to see your playlists."
+        action={action}
+      />
     </div>
-  </>
-);
+  );
+};

@@ -1,15 +1,6 @@
 .Entry {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1em;
-}
-
-.Entry .button {
-  font-size: 1.2em;
-  background: #1db954;
-  border-radius: 500px;
+  height: 100%;
+  background-color: $dark-playlist-background-color;
 }
