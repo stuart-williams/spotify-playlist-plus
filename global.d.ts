@@ -1,5 +1,6 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
+    DOMAIN: string;
     CLIENT_ID: string;
     CLIENT_SECRET: string;
     REDIRECT_URI: string;

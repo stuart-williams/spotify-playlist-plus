@@ -1,5 +1,5 @@
 import React from "react";
-import { NextPageContext } from "next";
+import { NextPage, NextPageContext } from "next";
 import { parseCookies } from "nookies";
 import redirect from "../../common/redirect";
 import { actions as userActions } from "../../redux/user";
@@ -9,9 +9,15 @@ import * as playlistApi from "../../api/playlists";
 import Layout from "../../components/Layout";
 import Playlist from "../../components/Playlist";
 
-const Page = () => <Layout primaryPanel={<Playlist />} />;
+interface Props {
+  title?: string;
+}
 
-Page.getInitialProps = async (ctx: NextPageContext) => {
+const Page: NextPage<Props> = ({ title }) => (
+  <Layout title={title} primaryPanel={<Playlist />} />
+);
+
+Page.getInitialProps = async (ctx: NextPageContext): Promise<Props> => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
 
   if (!token) {
@@ -32,6 +38,10 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
       ctx.store.dispatch(userActions.setUser(user.data));
       ctx.store.dispatch(playlistActions.setListOfPlaylists(list.data));
     }
+
+    return {
+      title: playlist.data.name,
+    };
   }
 
   return {};

@@ -11,7 +11,7 @@ import * as topApi from "../../api/top";
 import Layout from "../../components/Layout";
 import TopTracks from "../../components/TopTracks";
 
-const Page = () => <Layout primaryPanel={<TopTracks />} />;
+const Page = () => <Layout title="Top Tracks" primaryPanel={<TopTracks />} />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);

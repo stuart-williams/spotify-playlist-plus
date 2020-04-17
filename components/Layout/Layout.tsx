@@ -8,17 +8,23 @@ import {
   NavbarHeading,
 } from "@blueprintjs/core";
 import Navigation from "../Navigation";
+import SEO from "../../common/seo";
 
 interface Props {
+  title?: string;
   primaryPanel: ReactNode;
 }
 
-export default ({ primaryPanel }: Props) => (
+export default ({ title, primaryPanel }: Props) => (
   <>
     <Head>
       <link rel="stylesheet" href="/css/app.min.css" />
     </Head>
-    <NextSeo noindex={true} nofollow={true} />
+    <NextSeo
+      noindex={true}
+      nofollow={true}
+      title={title ? `${title} | ${SEO.title}` : undefined}
+    />
     <div className="Layout">
       <Navbar>
         <NavbarGroup align={Alignment.LEFT}>

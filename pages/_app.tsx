@@ -2,10 +2,11 @@ import React from "react";
 import Head from "next/head";
 import { AppContext, AppProps } from "next/app";
 import dynamic from "next/dynamic";
-import { NextSeo } from "next-seo";
+import { DefaultSeo } from "next-seo";
 import { Provider } from "react-redux";
 import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
 import { makeStore } from "../redux";
+import SEO from "../common/seo";
 
 const GA = dynamic(() => import("../components/GA"), { ssr: false });
 
@@ -18,10 +19,7 @@ const App = ({
     <Head>
       <link rel="shortcut icon" href="/favicon.ico" />
     </Head>
-    <NextSeo
-      title="Playlist +"
-      description="Advanced playlist management for Spotify"
-    />
+    <DefaultSeo {...SEO} />
     <GA />
     <Provider store={store}>
       <Component {...pageProps} />
