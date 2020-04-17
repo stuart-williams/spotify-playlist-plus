@@ -1,10 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import { AppContext, AppProps } from "next/app";
+import dynamic from "next/dynamic";
 import { NextSeo } from "next-seo";
 import { Provider } from "react-redux";
 import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
 import { makeStore } from "../redux";
+
+const GA = dynamic(() => import("../components/GA"), { ssr: false });
 
 const App = ({
   Component,
@@ -19,6 +22,7 @@ const App = ({
       title="Playlist +"
       description="Advanced playlist management for Spotify"
     />
+    <GA />
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
@@ -32,5 +36,5 @@ App.getInitialProps = async ({ Component, ctx }: AppContext) => ({
 });
 
 export default withRedux(makeStore, {
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.REDUX_DEBUG === "true",
 })(App);

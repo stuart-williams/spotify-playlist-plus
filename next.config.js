@@ -27,5 +27,8 @@ module.exports = {
     TOKEN_COOKIE: "spp_token",
     API_URL: "https://api.spotify.com/v1",
     ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`,
+    GA_TRACKING_ID: "UA-163843172-1",
+    GA_DEBUG: process.env.GA_DEBUG,
+    REDUX_DEBUG: process.env.REDUX_DEBUG,
   },
 };
