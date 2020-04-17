@@ -20,6 +20,7 @@ const App = ({
   <>
     <Head>
       <link rel="shortcut icon" href="/favicon.ico" />
+      <link rel="preconnect" href="https://api.spotify.com" />
     </Head>
     <DefaultSeo {...SEO} />
     <GA />
