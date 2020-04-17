@@ -16,7 +16,7 @@ import {
   Popover,
 } from "@blueprintjs/core";
 import Navigation from "../Navigation";
-import SimpleIcon from "../SimpleIcon";
+import Icon from "../Icon";
 import SEO from "../../common/seo";
 
 const mapState = (state: RootState) => ({
@@ -34,13 +34,15 @@ type Props = PropsFromRedux & {
 };
 
 const Layout = ({ user, title, primaryPanel }: Props) => {
+  const isLoggedIn = !!user.id;
+
   const accountMenu = (
     <Menu>
       <MenuItem text="Logout" icon="log-out" href="/logout" />
     </Menu>
   );
 
-  const accountIcon = !!user.id && (
+  const accountIcon = isLoggedIn && (
     <Popover content={accountMenu} autoFocus={false}>
       <Button icon="user" minimal={true}>
         {user.display_name}
@@ -59,7 +61,7 @@ const Layout = ({ user, title, primaryPanel }: Props) => {
           <NavbarGroup align={Alignment.RIGHT}>
             <AnchorButton
               href={process.env.REPO_URL}
-              icon={<SimpleIcon path={githubIcon.path} />}
+              icon={<Icon path={githubIcon.path} />}
               minimal={true}
               target="_blank"
               rel="noopener noreferrer"
@@ -68,7 +70,7 @@ const Layout = ({ user, title, primaryPanel }: Props) => {
           </NavbarGroup>
         </Navbar>
         <div className="Layout__body">
-          <Navigation />
+          {isLoggedIn && <Navigation />}
           <div className="Layout__primary-panel">{primaryPanel}</div>
         </div>
       </div>

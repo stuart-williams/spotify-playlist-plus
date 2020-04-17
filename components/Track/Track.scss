@@ -11,6 +11,11 @@
   margin-right: $pt-grid-size;
 }
 
+.Track__cover-art-image svg {
+  height: 16px;
+  width: 16px;
+}
+
 .Track__body {
   flex: 1;
 }
