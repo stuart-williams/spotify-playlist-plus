@@ -17,7 +17,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
 
   if (!token) {
-    redirect("/login", ctx);
+    redirect("/", ctx);
   } else {
     const [user, list, top] = await Promise.all([
       userApi.getUser(ctx),

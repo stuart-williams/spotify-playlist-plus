@@ -21,7 +21,7 @@ Page.getInitialProps = async (ctx: NextPageContext): Promise<Props> => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
 
   if (!token) {
-    redirect("/login", ctx);
+    redirect("/", ctx);
   } else {
     const ssrRequests = () =>
       Promise.all([userApi.getUser(ctx), playlistApi.getListOfPlaylists(ctx)]);

@@ -5,7 +5,7 @@ import { stringify } from "querystring";
 import redirect from "./redirect";
 
 const instance = axios.create({
-  baseURL: process.env.API_URL
+  baseURL: process.env.API_URL,
 });
 
 export default <T = any>(
@@ -15,10 +15,10 @@ export default <T = any>(
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-  return instance(config).catch(error => {
+  return instance(config).catch((error) => {
     switch (error.response.status) {
       case 401:
-        redirect("/login", ctx);
+        redirect("/logout", ctx);
     }
 
     return Promise.reject(error);
@@ -33,13 +33,13 @@ export const fetchToken = (code: string) =>
     data: stringify({
       grant_type: "authorization_code",
       code,
-      redirect_uri: process.env.REDIRECT_URI
+      redirect_uri: process.env.REDIRECT_URI,
     }),
     headers: {
-      "content-type": "application/x-www-form-urlencoded"
+      "content-type": "application/x-www-form-urlencoded",
     },
     auth: {
       username: process.env.CLIENT_ID,
-      password: process.env.CLIENT_SECRET
-    }
+      password: process.env.CLIENT_SECRET,
+    },
   });
