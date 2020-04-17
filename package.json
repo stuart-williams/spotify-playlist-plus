@@ -33,6 +33,7 @@
     "react-ga": "^2.7.0",
     "react-image": "^2.4.0",
     "react-redux": "^7.2.0",
+    "react-visibility-sensor": "^5.1.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "simple-icons": "^2.9.0"
