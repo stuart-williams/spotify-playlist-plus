@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { NextSeo } from "next-seo";
 import { connect, ConnectedProps } from "react-redux";
+import githubIcon from "simple-icons/icons/github";
 import { RootState } from "../../redux";
 import { selectUser } from "../../redux/user";
 import {
@@ -9,11 +10,13 @@ import {
   NavbarGroup,
   NavbarHeading,
   Button,
+  AnchorButton,
   Menu,
   MenuItem,
   Popover,
 } from "@blueprintjs/core";
 import Navigation from "../Navigation";
+import SimpleIcon from "../SimpleIcon";
 import SEO from "../../common/seo";
 
 const mapState = (state: RootState) => ({
@@ -39,7 +42,9 @@ const Layout = ({ user, title, primaryPanel }: Props) => {
 
   const accountIcon = !!user.id && (
     <Popover content={accountMenu} autoFocus={false}>
-      <Button icon="user" minimal={true} />
+      <Button icon="user" minimal={true}>
+        {user.display_name}
+      </Button>
     </Popover>
   );
 
@@ -51,7 +56,16 @@ const Layout = ({ user, title, primaryPanel }: Props) => {
           <NavbarGroup align={Alignment.LEFT}>
             <NavbarHeading>{SEO.title}</NavbarHeading>
           </NavbarGroup>
-          <NavbarGroup align={Alignment.RIGHT}>{accountIcon}</NavbarGroup>
+          <NavbarGroup align={Alignment.RIGHT}>
+            <AnchorButton
+              href={process.env.REPO_URL}
+              icon={<SimpleIcon path={githubIcon.path} />}
+              minimal={true}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+            {accountIcon}
+          </NavbarGroup>
         </Navbar>
         <div className="Layout__body">
           <Navigation />

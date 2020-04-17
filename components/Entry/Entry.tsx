@@ -12,7 +12,7 @@ export default () => {
     <div className="Entry">
       <NonIdealState
         icon="user"
-        title="Let's get started"
+        title="Let's get started!"
         description="Connect with Spotify to see your playlists."
         action={action}
       />
