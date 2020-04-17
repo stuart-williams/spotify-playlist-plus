@@ -10,6 +10,7 @@ import {
   createTopTracksPlaylist,
   selectTopTracks,
 } from "../../redux/top";
+import { trackCreatedTopTracksPlaylist } from "../../common/analytics";
 import * as topApi from "../../api/top";
 import Track from "../Track";
 import {
@@ -76,6 +77,7 @@ const TopTracks = (props: Props) => {
         intent: Intent.SUCCESS,
       });
 
+      trackCreatedTopTracksPlaylist(range);
       redirect(`/playlist/${resultAction.payload.id}`);
     } else {
       toaster.current?.show({
