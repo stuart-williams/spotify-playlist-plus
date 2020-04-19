@@ -7,10 +7,12 @@ import * as topApi from "../api/top";
 // State
 export interface State {
   tracks: SpotifyApi.UsersTopTracksResponse;
+  artists: topApi.TopArtistsTopTopTracksResponse;
 }
 
 const initialState = {
   tracks: {},
+  artists: {},
 };
 
 // Actions Creators
@@ -22,7 +24,7 @@ export const getTopTracks = createAsyncThunk<
   }
 >("tracks/getTopTracks", async (range, thunkApi) => {
   try {
-    const { data } = await topApi.getTop("tracks", {
+    const { data } = await topApi.getTopTracks({
       limit: 50,
       time_range: range,
     });
@@ -69,6 +71,12 @@ const { reducer, actions } = createSlice({
     ) => {
       state.tracks = action.payload;
     },
+    setTopArtists: (
+      state,
+      action: PayloadAction<topApi.TopArtistsTopTopTracksResponse>
+    ) => {
+      state.artists = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getTopTracks.fulfilled, (state, action) => {
@@ -84,3 +92,7 @@ export default reducer;
 export const selectTopTracks = (
   state: RootState
 ): SpotifyApi.UsersTopTracksResponse => state.top.tracks;
+
+export const selectTopArtistsTracks = (
+  state: RootState
+): SpotifyApi.TrackObjectFull[] => state.top.artists?.items;

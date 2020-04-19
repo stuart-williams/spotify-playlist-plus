@@ -3,7 +3,6 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
-import { selectUser } from "../../redux/user";
 import {
   getTopTracks,
   createTopTracksPlaylist,
@@ -25,7 +24,6 @@ import Router from "next/router";
 import Constants from "../../common/constants";
 
 const mapState = (state: RootState) => ({
-  user: selectUser(state),
   tracks: selectTopTracks(state),
 });
 
@@ -39,12 +37,11 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  user: SpotifyApi.CurrentUsersProfileResponse;
   tracks: SpotifyApi.UsersTopTracksResponse;
 };
 
 const TopTracks = (props: Props) => {
-  const { user, tracks } = props;
+  const { tracks } = props;
   const toaster = useRef<Toaster>();
   const currTimeRange = (tracks.href.match(
     /time_range=(long_term|short_term)/

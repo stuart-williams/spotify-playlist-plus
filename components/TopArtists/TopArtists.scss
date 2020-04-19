@@ -1,0 +1,13 @@
+.TopArtists {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $dark-playlist-background-color;
+}
+
+.TopArtists__tracks {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}

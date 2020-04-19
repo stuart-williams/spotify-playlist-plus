@@ -4,15 +4,15 @@ import { authCheck, commonUpstream } from "../../common/gip";
 import { actions as topActions } from "../../redux/top";
 import * as topApi from "../../api/top";
 import Layout from "../../components/Layout";
+import TopArtists from "../../components/TopArtists";
 
-const Page = () => <Layout title="Top Artists" primaryPanel={<div />} />;
+const Page = () => <Layout title="Top Artists" primaryPanel={<TopArtists />} />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   authCheck(ctx);
 
   const [top] = await Promise.all([
-    topApi.getTop(
-      "artists",
+    topApi.getTopArtistsTopTopTracks(
       {
         limit: 5,
         time_range: "long_term",
@@ -22,9 +22,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
     commonUpstream(ctx),
   ]);
 
-  console.log(top);
-
-  // ctx.store.dispatch(topActions.setTopTracks(top.data));
+  ctx.store.dispatch(topActions.setTopArtists(top));
 
   return {};
 };
