@@ -28,6 +28,27 @@ export const getPlaylistById = (
     ctx
   );
 
+export const createPlaylist = (userId: string, name: string) =>
+  fetch<SpotifyApi.PlaylistObjectFull>({
+    method: "post",
+    url: `users/${userId}/playlists`,
+    data: {
+      name,
+    },
+  });
+
+export const addTracksToPlaylist = (
+  id: string,
+  tracks: SpotifyApi.TrackObjectFull[]
+) =>
+  fetch<SpotifyApi.PlaylistObjectFull>({
+    method: "post",
+    url: `playlists/${id}/tracks`,
+    data: {
+      uris: tracks.map((track) => track.uri),
+    },
+  });
+
 export const reorderTrack = (
   id: string,
   from: number,
@@ -82,11 +103,10 @@ export interface SortByAudioFeatureOptions {
   order: "ASC" | "DESC";
 }
 
-export const sortByAudioFeature = async ({
-  playlist,
-  key,
-  order,
-}: SortByAudioFeatureOptions) => {
+export const sortByAudioFeature = async (
+  options: SortByAudioFeatureOptions
+) => {
+  const { playlist, key, order } = options;
   const unordered = playlist.tracks.items.map((item) => item.track.id);
   const { data } = await tracksApi.getAudioFeatures(unordered);
   const ordered = data.audio_features

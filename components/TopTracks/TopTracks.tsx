@@ -48,7 +48,7 @@ const TopTracks = (props: Props) => {
   const toaster = useRef<Toaster>();
   const currTimeRange = (tracks.href.match(
     /time_range=(long_term|short_term)/
-  )?.[1] || "medium_term") as topApi.TopTracksTimeRange;
+  )?.[1] || "medium_term") as topApi.TimeRange;
 
   const handleCreatePlaylist = async () => {
     const range = Constants.TIME_RANGES[currTimeRange].toLowerCase();
@@ -56,7 +56,6 @@ const TopTracks = (props: Props) => {
     const name = `Top ${tracks.total} tracks of ${range} (${date})`;
 
     const resultAction = await props.createTopTracksPlaylist({
-      userId: user.id,
       name,
       tracks: tracks.items,
     });
@@ -83,9 +82,6 @@ const TopTracks = (props: Props) => {
     <Track key={i} track={track} />
   );
 
-  const handleTabChnage = (range: topApi.TopTracksTimeRange) =>
-    props.getTopTracks({ limit: 50, time_range: range });
-
   return (
     <div className="TopTracks">
       <Toaster
@@ -101,7 +97,7 @@ const TopTracks = (props: Props) => {
           id="top_tracks"
           className="TopTracks__tabs"
           renderActiveTabPanelOnly={true}
-          onChange={handleTabChnage}
+          onChange={props.getTopTracks}
         >
           <Tab
             id="long_term"

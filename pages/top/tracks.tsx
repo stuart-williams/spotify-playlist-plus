@@ -12,7 +12,7 @@ Page.getInitialProps = async (ctx: NextPageContext) => {
   authCheck(ctx);
 
   const [top] = await Promise.all([
-    topApi.getTopTracks(
+    topApi.getTop(
       "tracks",
       {
         limit: 50,
