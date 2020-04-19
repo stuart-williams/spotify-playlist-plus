@@ -9,8 +9,6 @@ import { Provider } from "react-redux";
 import withRedux, { ReduxWrapperAppProps } from "next-redux-wrapper";
 import { makeStore } from "../redux";
 import SEO from "../common/seo";
-import { actions as userActions } from "../redux/user";
-import * as userApi from "../api/user";
 
 const GA = dynamic(() => import("../components/GA"), { ssr: false });
 
@@ -32,20 +30,11 @@ const App = ({
   </>
 );
 
-App.getInitialProps = async ({ Component, ctx }: AppContext) => {
-  if (ctx.req) {
-    const user = await userApi.getUser(ctx);
-    ctx.store.dispatch(userActions.setUser(user.data));
-  }
-
-  return {
-    pageProps: {
-      ...(Component.getInitialProps
-        ? await Component.getInitialProps(ctx)
-        : {}),
-    },
-  };
-};
+App.getInitialProps = async ({ Component, ctx }: AppContext) => ({
+  pageProps: {
+    ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+  },
+});
 
 export default withRedux(makeStore, {
   debug: process.env.REDUX_DEBUG === "true",

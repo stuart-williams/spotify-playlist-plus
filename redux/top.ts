@@ -14,13 +14,13 @@ const initialState = {
 // Actions Creators
 export const getTopTracks = createAsyncThunk<
   SpotifyApi.UsersTopTracksResponse,
-  topApi.TimeRange,
+  topApi.TopTracksParams,
   {
     rejectValue: SpotifyApi.ErrorObject;
   }
->("tracks/getTopTracks", async (timeRange, thunkApi) => {
+>("tracks/getTopTracks", async (params, thunkApi) => {
   try {
-    const { data } = await topApi.getTopTracks(timeRange);
+    const { data } = await topApi.getTopTracks("tracks", params);
     return data;
   } catch (error) {
     return thunkApi.rejectWithValue(

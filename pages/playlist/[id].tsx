@@ -1,7 +1,6 @@
 import React from "react";
 import { NextPage, NextPageContext } from "next";
-import { parseCookies } from "nookies";
-import redirect from "../../common/redirect";
+import { authCheck, commonUpstream } from "../../common/gip";
 import { actions as playlistActions } from "../../redux/playlists";
 import * as playlistApi from "../../api/playlists";
 import Layout from "../../components/Layout";
@@ -16,25 +15,18 @@ const Page: NextPage<Props> = ({ title }) => (
 );
 
 Page.getInitialProps = async (ctx: NextPageContext): Promise<Props> => {
-  const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);
+  authCheck(ctx);
 
-  if (!token) {
-    redirect("/", ctx);
-  } else {
-    const [list, playlist] = await Promise.all([
-      playlistApi.getListOfPlaylists(ctx),
-      playlistApi.getPlaylistById(String(ctx.query.id), ctx),
-    ]);
+  const [playlist] = await Promise.all([
+    playlistApi.getPlaylistById(String(ctx.query.id), ctx),
+    commonUpstream(ctx),
+  ]);
 
-    ctx.store.dispatch(playlistActions.setListOfPlaylists(list.data));
-    ctx.store.dispatch(playlistActions.setPlaylist(playlist.data));
+  ctx.store.dispatch(playlistActions.setPlaylist(playlist.data));
 
-    return {
-      title: playlist.data.name,
-    };
-  }
-
-  return {};
+  return {
+    title: playlist.data.name,
+  };
 };
 
 export default Page;

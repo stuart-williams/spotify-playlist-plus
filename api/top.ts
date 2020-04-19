@@ -1,18 +1,24 @@
 import { NextPageContext } from "next";
 import fetch from "../common/fetch";
 
-export type TimeRange = "long_term" | "medium_term" | "short_term";
+export type TopTracksTimeRange = "long_term" | "medium_term" | "short_term";
+
+export interface TopTracksParams {
+  limit?: number;
+  time_range: TopTracksTimeRange;
+}
 
 export const getTopTracks = (
-  timeRange: TimeRange,
+  type: "tracks" | "artists",
+  params: TopTracksParams,
   ctx?: Pick<NextPageContext, "req" | "res">
 ) =>
   fetch<SpotifyApi.UsersTopTracksResponse>(
     {
-      url: "me/top/tracks",
+      url: `me/top/${type}`,
       params: {
-        limit: 50,
-        time_range: timeRange,
+        limit: params.limit,
+        time_range: params.time_range,
       },
     },
     ctx
