@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import { selectUser } from "../../redux/user";
-import redirect from "../../common/redirect";
 import {
   getTopTracks,
   createTopTracksPlaylist,
@@ -22,6 +21,8 @@ import {
   Intent,
   Classes,
 } from "@blueprintjs/core";
+import Router from "next/router";
+import Constants from "../../common/constants";
 
 const mapState = (state: RootState) => ({
   user: selectUser(state),
@@ -42,12 +43,6 @@ type Props = PropsFromRedux & {
   tracks: SpotifyApi.UsersTopTracksResponse;
 };
 
-const timeRangeMap = {
-  long_term: "All time",
-  medium_term: "The last 6 months",
-  short_term: "The last month",
-};
-
 const TopTracks = (props: Props) => {
   const { user, tracks } = props;
   const toaster = useRef<Toaster>();
@@ -55,12 +50,8 @@ const TopTracks = (props: Props) => {
     /time_range=(long_term|short_term)/
   )?.[1] || "medium_term") as topApi.TimeRange;
 
-  const renderTrack = (track: SpotifyApi.TrackObjectFull, i: number) => (
-    <Track key={i} track={track} />
-  );
-
   const handleCreatePlaylist = async () => {
-    const range = timeRangeMap[currTimeRange].toLowerCase();
+    const range = Constants.TIME_RANGES[currTimeRange].toLowerCase();
     const date = dayjs().format("MMM YYYY");
     const name = `Top ${tracks.total} tracks of ${range} (${date})`;
 
@@ -78,7 +69,7 @@ const TopTracks = (props: Props) => {
       });
 
       trackCreatedTopTracksPlaylist(range);
-      redirect(`/playlist/${resultAction.payload.id}`);
+      Router.push("/playlist/[id]", `/playlist/${resultAction.payload.id}`);
     } else {
       toaster.current?.show({
         icon: "warning-sign",
@@ -88,9 +79,9 @@ const TopTracks = (props: Props) => {
     }
   };
 
-  const handleTabChange = (timeRange: topApi.TimeRange) => {
-    props.getTopTracks(timeRange);
-  };
+  const renderTrack = (track: SpotifyApi.TrackObjectFull, i: number) => (
+    <Track key={i} track={track} />
+  );
 
   return (
     <div className="TopTracks">
@@ -107,24 +98,24 @@ const TopTracks = (props: Props) => {
           id="top_tracks"
           className="TopTracks__tabs"
           renderActiveTabPanelOnly={true}
-          onChange={handleTabChange}
+          onChange={props.getTopTracks}
         >
           <Tab
             id="long_term"
             className="TopTracks__tab"
-            title={timeRangeMap.long_term}
+            title={Constants.TIME_RANGES.long_term}
             panel={<div />}
           />
           <Tab
             id="medium_term"
             className="TopTracks__tab"
-            title={timeRangeMap.medium_term}
+            title={Constants.TIME_RANGES.medium_term}
             panel={<div />}
           />
           <Tab
             id="short_term"
             className="TopTracks__tab"
-            title={timeRangeMap.short_term}
+            title={Constants.TIME_RANGES.short_term}
             panel={<div />}
           />
         </Tabs>
