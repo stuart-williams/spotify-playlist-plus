@@ -103,6 +103,10 @@ const { reducer, actions } = createSlice({
     builder.addCase(getTopTracks.fulfilled, (state, action) => {
       state.tracks = action.payload;
     });
+
+    builder.addCase(getTopArtists.fulfilled, (state, action) => {
+      state.artists = action.payload;
+    });
   },
 });
 
@@ -114,6 +118,14 @@ export const selectTopTracks = (
   state: RootState
 ): SpotifyApi.UsersTopTracksResponse => state.top.tracks;
 
+export const selectTopTracksTimeRange = (state: RootState) =>
+  (state.top.tracks.href.match(/time_range=(long_term|short_term)/)?.[1] ||
+    "medium_term") as topApi.TimeRange;
+
 export const selectTopArtistsTracks = (
   state: RootState
 ): SpotifyApi.TrackObjectFull[] => state.top.artists?.items;
+
+export const selectTopArtistsTimeRange = (state: RootState) =>
+  (state.top.artists.href.match(/time_range=(long_term|short_term)/)?.[1] ||
+    "medium_term") as topApi.TimeRange;

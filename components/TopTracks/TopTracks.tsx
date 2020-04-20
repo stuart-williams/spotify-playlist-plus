@@ -7,6 +7,7 @@ import {
   getTopTracks,
   createTopTracksPlaylist,
   selectTopTracks,
+  selectTopTracksTimeRange,
 } from "../../redux/top";
 import { trackCreatedTopTracksPlaylist } from "../../common/analytics";
 import * as topApi from "../../api/top";
@@ -25,6 +26,7 @@ import Constants from "../../common/constants";
 
 const mapState = (state: RootState) => ({
   tracks: selectTopTracks(state),
+  timeRange: selectTopTracksTimeRange(state),
 });
 
 const mapDispatch = {
@@ -38,19 +40,17 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   tracks: SpotifyApi.UsersTopTracksResponse;
+  timeRange: topApi.TimeRange;
 };
 
 const TopTracks = (props: Props) => {
-  const { tracks } = props;
+  const { tracks, timeRange } = props;
   const toaster = useRef<Toaster>();
-  const currTimeRange = (tracks.href.match(
-    /time_range=(long_term|short_term)/
-  )?.[1] || "medium_term") as topApi.TimeRange;
 
   const handleCreatePlaylist = async () => {
-    const range = Constants.TIME_RANGES[currTimeRange].toLowerCase();
+    const range = Constants.TIME_RANGES[timeRange].toLowerCase();
     const date = dayjs().format("MMM YYYY");
-    const name = `Top ${tracks.total} tracks of ${range} (${date})`;
+    const name = `Top tracks of ${range} (${date})`;
 
     const resultAction = await props.createTopTracksPlaylist({
       name,
