@@ -58,7 +58,7 @@ export const getTopArtistsTopTopTracks = async (
   return {
     ...artists,
     items: tracks.reduce(
-      (accum, { data }) => [...accum, ...data.tracks.slice(0, 3)],
+      (accum, { data }) => [...accum, ...data.tracks.slice(0, 5)],
       [] as SpotifyApi.TrackObjectFull[]
     ),
   };

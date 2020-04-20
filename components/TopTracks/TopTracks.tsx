@@ -86,14 +86,16 @@ const TopTracks = (props: Props) => {
         position={Position.TOP}
       />
       <div className="TopTracks__head">
-        <h3 className={Classes.HEADING}>Top Tracks</h3>
-        <Button icon="plus" onClick={handleCreatePlaylist}>
+        <h3 className={Classes.HEADING}>Your top tracks</h3>
+        <Button small={true} onClick={handleCreatePlaylist}>
           Create Playlist
         </Button>
         <Tabs
           id="top_tracks"
           className="TopTracks__tabs"
+          animate={false}
           renderActiveTabPanelOnly={true}
+          defaultSelectedTabId={Constants.DEFAULT_TOP_TRACKS_PARAMS.time_range}
           onChange={props.getTopTracks}
         >
           <Tab

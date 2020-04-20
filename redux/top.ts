@@ -3,6 +3,7 @@ import { RootState } from ".";
 import { selectUser } from "./user";
 import * as playlistsApi from "../api/playlists";
 import * as topApi from "../api/top";
+import Constants from "../common/constants";
 
 // State
 export interface State {
@@ -25,7 +26,27 @@ export const getTopTracks = createAsyncThunk<
 >("tracks/getTopTracks", async (range, thunkApi) => {
   try {
     const { data } = await topApi.getTopTracks({
-      limit: 50,
+      ...Constants.DEFAULT_TOP_TRACKS_PARAMS,
+      time_range: range,
+    });
+    return data;
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
+});
+
+export const getTopArtists = createAsyncThunk<
+  topApi.TopArtistsTopTopTracksResponse,
+  topApi.TimeRange,
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("tracks/getTopArtists", async (range, thunkApi) => {
+  try {
+    const data = await topApi.getTopArtistsTopTopTracks({
+      ...Constants.DEFAULT_TOP_ARTISTS_PARAMS,
       time_range: range,
     });
     return data;
