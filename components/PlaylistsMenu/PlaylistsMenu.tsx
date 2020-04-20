@@ -23,11 +23,10 @@ type Props = PropsFromRedux & {
 
 const PlaylistsMenu = (props: Props) => {
   const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
-    if (playlist.owner.id !== props.user.id) {
-      return null;
-    }
-
-    const classes = classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, Classes.FILL);
+    const isOwner = playlist.owner.id === props.user.id;
+    const classes = classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, Classes.FILL, {
+      [Classes.TEXT_MUTED]: !isOwner,
+    });
 
     return (
       <li key={playlist.id}>
