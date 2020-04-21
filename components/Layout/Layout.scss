@@ -13,3 +13,8 @@
 .Layout__primary-panel {
   flex: 1;
 }
+
+.Layout__toast-progress {
+  margin-top: $pt-grid-size / 2;
+  margin-bottom: 0;
+}

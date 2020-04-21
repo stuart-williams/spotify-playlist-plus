@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
+import { useToast } from "../../common/toast";
 import {
   getTopArtists,
   selectTopArtistsTracks,
@@ -11,15 +12,7 @@ import {
 import { createPlaylist } from "../../redux/playlists";
 import * as topApi from "../../api/top";
 import Track from "../Track";
-import {
-  Tabs,
-  Tab,
-  Button,
-  Toaster,
-  Position,
-  Intent,
-  Classes,
-} from "@blueprintjs/core";
+import { Tabs, Tab, Button, Classes } from "@blueprintjs/core";
 import Router from "next/router";
 import Constants from "../../common/constants";
 
@@ -44,7 +37,7 @@ type Props = PropsFromRedux & {
 
 const TopArtists = (props: Props) => {
   const { tracks, timeRange } = props;
-  const toaster = useRef<Toaster>();
+  const toast = useToast();
 
   const handleCreatePlaylist = async () => {
     const range = Constants.TIME_RANGES[timeRange].toLowerCase();
@@ -57,19 +50,9 @@ const TopArtists = (props: Props) => {
     });
 
     if (createPlaylist.fulfilled.match(resultAction)) {
-      toaster.current?.show({
-        icon: "tick",
-        message: "Playlist Created",
-        intent: Intent.SUCCESS,
-      });
-
       Router.push("/playlist/[id]", `/playlist/${resultAction.payload.id}`);
     } else {
-      toaster.current?.show({
-        icon: "warning-sign",
-        message: resultAction?.payload?.message || "Unknown Error",
-        intent: Intent.DANGER,
-      });
+      toast?.showError({ message: resultAction?.payload?.message });
     }
   };
 
@@ -79,10 +62,6 @@ const TopArtists = (props: Props) => {
 
   return (
     <div className="TopArtists">
-      <Toaster
-        ref={(ref: Toaster) => (toaster.current = ref)}
-        position={Position.TOP}
-      />
       <div className="TopArtists__head">
         <h3 className={Classes.HEADING}>Popular tracks by your top artists</h3>
         <Button small={true} onClick={handleCreatePlaylist}>

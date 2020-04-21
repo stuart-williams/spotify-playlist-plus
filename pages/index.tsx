@@ -4,7 +4,7 @@ import redirect from "../common/redirect";
 import Layout from "../components/Layout";
 import Entry from "../components/Entry";
 
-const Page = () => <Layout primaryPanel={<Entry />} />;
+const Page = () => <Layout primaryComponent={Entry} />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   const { [process.env.TOKEN_COOKIE]: token } = parseCookies(ctx);

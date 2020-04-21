@@ -31,4 +31,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default () => <Layout primaryPanel={<Entry />} />;
+export default () => <Layout primaryComponent={Entry} />;

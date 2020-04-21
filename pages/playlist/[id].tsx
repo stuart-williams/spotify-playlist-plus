@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Page: NextPage<Props> = ({ title }) => (
-  <Layout title={title} primaryPanel={<Playlist />} />
+  <Layout title={title} primaryComponent={Playlist} />
 );
 
 Page.getInitialProps = async (ctx: NextPageContext): Promise<Props> => {

@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { connect, ConnectedProps } from "react-redux";
 import classNames from "classnames";
 import { RootState } from "../../redux";
+import { useToast } from "../../common/toast";
 import {
   randomise,
   sortByAudioFeature,
@@ -10,17 +11,7 @@ import {
   selectSortState,
 } from "../../redux/playlists";
 import { SortByAudioFeatureOptions } from "../../api/playlists";
-import {
-  Button,
-  Toaster,
-  IToastProps,
-  ProgressBar,
-  Position,
-  Intent,
-  Menu,
-  MenuItem,
-  Popover,
-} from "@blueprintjs/core";
+import { Button, Position, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import Router from "next/router";
 
 const mapState = (state: RootState) => ({
@@ -46,51 +37,18 @@ type Props = PropsFromRedux & {
 
 const PlaylistControls = (props: Props) => {
   const { playlist, isOwned, sortState } = props;
-  const toaster = useRef<Toaster>();
-
-  const pendingToast = ({ icon }: Pick<IToastProps, "icon">) => {
-    toaster.current?.show(
-      {
-        timeout: 0,
-        icon,
-        message: (
-          <ProgressBar
-            className="PlaylistControls__toast-progress"
-            intent={Intent.PRIMARY}
-            value={100}
-          />
-        ),
-      },
-      "pending"
-    );
-  };
-
-  const successToast = ({ message }: Pick<IToastProps, "message">) => {
-    toaster.current?.show({
-      icon: "tick",
-      message,
-      intent: Intent.SUCCESS,
-    });
-  };
-
-  const errorToast = ({ message }: Pick<IToastProps, "message">) => {
-    toaster.current?.show({
-      icon: "warning-sign",
-      message: message || "Unknown Error",
-      intent: Intent.DANGER,
-    });
-  };
+  const toast = useToast();
 
   const handleRandomise = async () => {
-    pendingToast({ icon: "random" });
+    toast?.showPending({ icon: "random" });
     const resultAction = await props.randomise(playlist);
-    toaster.current?.dismiss("pending");
+    toast?.clear();
 
     if (randomise.fulfilled.match(resultAction)) {
-      successToast({ message: "Randomise Complete" });
+      toast?.showSuccess({ message: "Randomise Complete" });
       props.getPlaylistById(playlist.id);
     } else {
-      errorToast({ message: resultAction?.payload?.message });
+      toast?.showError({ message: resultAction?.payload?.message });
     }
   };
 
@@ -105,41 +63,41 @@ const PlaylistControls = (props: Props) => {
     });
 
     if (sortByAudioFeature.fulfilled.match(resultAction)) {
-      toaster.current?.dismiss("pending");
+      toast?.clear();
       props.getPlaylistById(playlist.id);
-      successToast({ message: "Sort Complete" });
+      toast?.showSuccess({ message: "Sort Complete" });
     } else {
-      errorToast({ message: resultAction?.payload?.message });
+      toast?.showError({ message: resultAction?.payload?.message });
     }
   };
 
   const handleSortTempoAsc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "tempo", order: "ASC" });
   };
 
   const handleSortTempoDesc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "tempo", order: "DESC" });
   };
 
   const handleSortDanceabilityAsc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "danceability", order: "ASC" });
   };
 
   const handleSortDanceabilityDesc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "danceability", order: "DESC" });
   };
 
   const handleSortMoodAsc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "valence", order: "ASC" });
   };
 
   const handleSortMoodDesc = async () => {
-    pendingToast({ icon: "sort" });
+    toast?.showPending({ icon: "sort" });
     handleSortByAudioFeature({ key: "valence", order: "DESC" });
   };
 
@@ -150,10 +108,10 @@ const PlaylistControls = (props: Props) => {
     });
 
     if (createPlaylist.fulfilled.match(resultAction)) {
-      successToast({ message: "Playlist Created" });
+      toast?.showSuccess({ message: "Playlist Created" });
       Router.push("/playlist/[id]", `/playlist/${resultAction.payload.id}`);
     } else {
-      errorToast({ message: resultAction?.payload?.message });
+      toast?.showError({ message: resultAction?.payload?.message });
     }
   };
 
@@ -213,10 +171,6 @@ const PlaylistControls = (props: Props) => {
 
   return (
     <div className={classNames("PlaylistControls", props.className)}>
-      <Toaster
-        ref={(ref: Toaster) => (toaster.current = ref)}
-        position={Position.TOP}
-      />
       <Popover
         content={menu}
         position={Position.RIGHT_BOTTOM}

@@ -7,7 +7,7 @@ import Layout from "../../components/Layout";
 import TopArtists from "../../components/TopArtists";
 import Constants from "../../common/constants";
 
-const Page = () => <Layout title="Top Artists" primaryPanel={<TopArtists />} />;
+const Page = () => <Layout title="Top Artists" primaryComponent={TopArtists} />;
 
 Page.getInitialProps = async (ctx: NextPageContext) => {
   authCheck(ctx);
