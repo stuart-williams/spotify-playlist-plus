@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import * as playlistApi from "../api/playlists";
+import { selectUser } from "./user";
+import * as playlistsApi from "../api/playlists";
 
 // State
 export interface State {
@@ -19,7 +20,7 @@ const initialState = {
 export const getListOfPlaylists = createAsyncThunk<
   SpotifyApi.ListOfCurrentUsersPlaylistsResponse
 >("playlists/getListOfPlaylists", async () => {
-  const { data } = await playlistApi.getListOfPlaylists();
+  const { data } = await playlistsApi.getListOfPlaylists();
   return data;
 });
 
@@ -31,7 +32,7 @@ export const getPlaylistById = createAsyncThunk<
   }
 >("playlists/getPlaylistById", async (id, thunkApi) => {
   try {
-    const { data } = await playlistApi.getPlaylistById(id);
+    const { data } = await playlistsApi.getPlaylistById(id);
     return data;
   } catch (error) {
     return thunkApi.rejectWithValue(
@@ -48,7 +49,7 @@ export const randomise = createAsyncThunk<
   }
 >("playlists/randomise", async (playlist, thunkApi) => {
   try {
-    await playlistApi.randomise(playlist);
+    await playlistsApi.randomise(playlist);
   } catch (error) {
     return thunkApi.rejectWithValue(
       error.response.data.error as SpotifyApi.ErrorObject
@@ -58,13 +59,37 @@ export const randomise = createAsyncThunk<
 
 export const sortByAudioFeature = createAsyncThunk<
   void,
-  playlistApi.SortByAudioFeatureOptions,
+  playlistsApi.SortByAudioFeatureOptions,
   {
     rejectValue: SpotifyApi.ErrorObject;
   }
 >("playlists/sortByAudioFeature", async (options, thunkApi) => {
   try {
-    await playlistApi.sortByAudioFeature(options);
+    await playlistsApi.sortByAudioFeature(options);
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
+});
+
+export const createPlaylist = createAsyncThunk<
+  SpotifyApi.PlaylistObjectFull,
+  {
+    name: string;
+    tracks: SpotifyApi.TrackObjectFull[];
+  },
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("tracks/createPlaylist", async ({ name, tracks }, thunkApi) => {
+  try {
+    const state = thunkApi.getState() as RootState;
+    const user = selectUser(state);
+    const { data: playlist } = await playlistsApi.createPlaylist(user.id, name);
+    await playlistsApi.addTracksToPlaylist(playlist.id, tracks);
+
+    return playlist;
   } catch (error) {
     return thunkApi.rejectWithValue(
       error.response.data.error as SpotifyApi.ErrorObject

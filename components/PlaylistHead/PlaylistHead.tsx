@@ -61,8 +61,12 @@ const PlaylistHead = (props: Props) => {
     </div>
   );
 
-  const controls = isOwner && !isEmpty && (
-    <PlaylistControls className="PlaylistHead__controls" playlist={playlist} />
+  const controls = !isEmpty && (
+    <PlaylistControls
+      className="PlaylistHead__controls"
+      playlist={playlist}
+      isOwned={isOwner}
+    />
   );
 
   return (

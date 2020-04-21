@@ -5,10 +5,10 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../redux";
 import {
   getTopTracks,
-  createTopTracksPlaylist,
   selectTopTracks,
   selectTopTracksTimeRange,
 } from "../../redux/top";
+import { createPlaylist } from "../../redux/playlists";
 import { trackCreatedTopTracksPlaylist } from "../../common/analytics";
 import * as topApi from "../../api/top";
 import Track from "../Track";
@@ -31,7 +31,7 @@ const mapState = (state: RootState) => ({
 
 const mapDispatch = {
   getTopTracks,
-  createTopTracksPlaylist,
+  createPlaylist,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -52,12 +52,12 @@ const TopTracks = (props: Props) => {
     const date = dayjs().format("MMM YYYY");
     const name = `Top tracks of ${range} (${date})`;
 
-    const resultAction = await props.createTopTracksPlaylist({
+    const resultAction = await props.createPlaylist({
       name,
       tracks: tracks.items,
     });
 
-    if (createTopTracksPlaylist.fulfilled.match(resultAction)) {
+    if (createPlaylist.fulfilled.match(resultAction)) {
       toaster.current?.show({
         icon: "tick",
         message: "Playlist Created",

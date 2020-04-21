@@ -5,6 +5,7 @@ import { RootState } from "../../redux";
 import {
   randomise,
   sortByAudioFeature,
+  createPlaylist,
   getPlaylistById,
   selectSortState,
 } from "../../redux/playlists";
@@ -18,9 +19,9 @@ import {
   Intent,
   Menu,
   MenuItem,
-  MenuDivider,
   Popover,
 } from "@blueprintjs/core";
+import Router from "next/router";
 
 const mapState = (state: RootState) => ({
   sortState: selectSortState(state),
@@ -29,6 +30,7 @@ const mapState = (state: RootState) => ({
 const mapDispatch = {
   randomise,
   sortByAudioFeature,
+  createPlaylist,
   getPlaylistById,
 };
 
@@ -39,10 +41,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & {
   className?: string;
   playlist: SpotifyApi.PlaylistObjectFull;
+  isOwned: boolean;
 };
 
 const PlaylistControls = (props: Props) => {
-  const { playlist, sortState } = props;
+  const { playlist, isOwned, sortState } = props;
   const toaster = useRef<Toaster>();
 
   const pendingToast = ({ icon }: Pick<IToastProps, "icon">) => {
@@ -140,45 +143,70 @@ const PlaylistControls = (props: Props) => {
     handleSortByAudioFeature({ key: "valence", order: "DESC" });
   };
 
+  const handleCopy = async () => {
+    const resultAction = await props.createPlaylist({
+      name: `${playlist.name} (copy)`,
+      tracks: playlist.tracks.items.map((item) => item.track),
+    });
+
+    if (createPlaylist.fulfilled.match(resultAction)) {
+      successToast({ message: "Playlist Created" });
+      Router.push("/playlist/[id]", `/playlist/${resultAction.payload.id}`);
+    } else {
+      errorToast({ message: resultAction?.payload?.message });
+    }
+  };
+
   const menu = (
     <Menu>
-      <MenuDivider title="Sort" />
-      <MenuItem icon="random" text="Randomise" onClick={handleRandomise} />
-      <MenuItem icon="sort" text="Tempo">
-        <MenuItem
-          icon="sort-asc"
-          text="Slow to Fast"
-          onClick={handleSortTempoAsc}
-        />
-        <MenuItem
-          icon="sort-desc"
-          text="Fast to Slow"
-          onClick={handleSortTempoDesc}
-        />
-      </MenuItem>
-      <MenuItem icon="sort" text="Danceability">
-        <MenuItem
-          icon="sort-asc"
-          text="Low to High"
-          onClick={handleSortDanceabilityAsc}
-        />
-        <MenuItem
-          icon="sort-desc"
-          text="High to Low"
-          onClick={handleSortDanceabilityDesc}
-        />
-      </MenuItem>
-      <MenuItem icon="sort" text="Mood">
-        <MenuItem
-          icon="sort-asc"
-          text="Sad to Happy"
-          onClick={handleSortMoodAsc}
-        />
-        <MenuItem
-          icon="sort-desc"
-          text="Happy to Sad"
-          onClick={handleSortMoodDesc}
-        />
+      <MenuItem icon="duplicate" text="Copy" onClick={handleCopy} />
+      <MenuItem
+        icon="random"
+        text="Randomise"
+        disabled={!isOwned || sortState === "pending"}
+        onClick={handleRandomise}
+      />
+      <MenuItem
+        icon="sort"
+        text="Sort"
+        disabled={!isOwned || sortState === "pending"}
+      >
+        <MenuItem text="Tempo">
+          <MenuItem
+            icon="sort-asc"
+            text="Slow to Fast"
+            onClick={handleSortTempoAsc}
+          />
+          <MenuItem
+            icon="sort-desc"
+            text="Fast to Slow"
+            onClick={handleSortTempoDesc}
+          />
+        </MenuItem>
+        <MenuItem text="Danceability">
+          <MenuItem
+            icon="sort-asc"
+            text="Low to High"
+            onClick={handleSortDanceabilityAsc}
+          />
+          <MenuItem
+            icon="sort-desc"
+            text="High to Low"
+            onClick={handleSortDanceabilityDesc}
+          />
+        </MenuItem>
+        <MenuItem text="Mood">
+          <MenuItem
+            icon="sort-asc"
+            text="Sad to Happy"
+            onClick={handleSortMoodAsc}
+          />
+          <MenuItem
+            icon="sort-desc"
+            text="Happy to Sad"
+            onClick={handleSortMoodDesc}
+          />
+        </MenuItem>
       </MenuItem>
     </Menu>
   );
@@ -194,7 +222,7 @@ const PlaylistControls = (props: Props) => {
         position={Position.RIGHT_BOTTOM}
         autoFocus={false}
       >
-        <Button icon="more" minimal={true} disabled={sortState === "pending"} />
+        <Button icon="more" minimal={true} />
       </Popover>
     </div>
   );
