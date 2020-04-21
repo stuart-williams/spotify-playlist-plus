@@ -59,7 +59,7 @@ const Layout = ({ user, title, primaryComponent }: Props) => {
   );
 
   const toast: Toast = {
-    showPending: (props: Pick<IToastProps, "icon">) => {
+    showPending: (props: Pick<IToastProps, "icon"> = {}) => {
       toaster.current?.show({
         timeout: 0,
         message: (

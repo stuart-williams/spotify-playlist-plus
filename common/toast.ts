@@ -2,7 +2,7 @@ import React from "react";
 import { IToastProps } from "@blueprintjs/core";
 
 export interface Toast {
-  showPending(props: Pick<IToastProps, "icon">): void;
+  showPending(props?: Pick<IToastProps, "icon">): void;
   showSuccess(props: Pick<IToastProps, "message">): void;
   showError(props: Pick<IToastProps, "message">): void;
   clear(): void;

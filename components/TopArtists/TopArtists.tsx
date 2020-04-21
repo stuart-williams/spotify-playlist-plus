@@ -44,6 +44,7 @@ const TopArtists = (props: Props) => {
     const date = dayjs().format("MMM YYYY");
     const name = `Top artists of ${range} (${date})`;
 
+    toast?.showPending();
     const resultAction = await props.createPlaylist({
       name,
       tracks,
