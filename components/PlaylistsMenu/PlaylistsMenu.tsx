@@ -22,6 +22,8 @@ type Props = PropsFromRedux & {
 };
 
 const PlaylistsMenu = (props: Props) => {
+  const { playlists } = props;
+
   const renderMenuItem = (playlist: SpotifyApi.PlaylistObjectSimplified) => {
     const isOwner = playlist.owner.id === props.user.id;
     const classes = classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, Classes.FILL, {
@@ -39,10 +41,31 @@ const PlaylistsMenu = (props: Props) => {
     );
   };
 
+  const list = !!playlists.length ? (
+    playlists.map(renderMenuItem)
+  ) : (
+    <li>
+      <a
+        className={Classes.MENU_ITEM}
+        href="https://open.spotify.com/collection/playlists"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span
+          className={classNames(Classes.TEXT_OVERFLOW_ELLIPSIS, Classes.FILL)}
+        >
+          Create your first playlist
+        </span>
+      </a>
+    </li>
+  );
+
   return (
-    <div className="Playlists">
-      <ul className={classNames("Playlists__scroll", Classes.LIST_UNSTYLED)}>
-        {props.playlists.map(renderMenuItem)}
+    <div className="PlaylistsMenu">
+      <ul
+        className={classNames("PlaylistsMenu__scroll", Classes.LIST_UNSTYLED)}
+      >
+        {list}
       </ul>
     </div>
   );

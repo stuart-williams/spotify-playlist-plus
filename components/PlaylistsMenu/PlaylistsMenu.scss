@@ -1,9 +1,9 @@
-.Playlists {
+.PlaylistsMenu {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.Playlists__scroll {
+.PlaylistsMenu__scroll {
   overflow-y: auto;
 }
