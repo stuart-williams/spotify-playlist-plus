@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { connect, ConnectedProps } from "react-redux";
+import spotifyIcon from "simple-icons/icons/spotify";
 import { RootState } from "../../redux";
 import { useToast } from "../../common/toast";
 import {
@@ -12,7 +13,15 @@ import {
 import { createPlaylist } from "../../redux/playlists";
 import * as topApi from "../../api/top";
 import Track from "../Track";
-import { Tabs, Tab, Button, Classes } from "@blueprintjs/core";
+import Icon, { notesIcon } from "../Icon";
+import {
+  Tabs,
+  Tab,
+  Button,
+  NonIdealState,
+  AnchorButton,
+  Classes,
+} from "@blueprintjs/core";
 import Router from "next/router";
 import Constants from "../../common/constants";
 
@@ -37,6 +46,7 @@ type Props = PropsFromRedux & {
 
 const TopArtists = (props: Props) => {
   const { tracks, timeRange } = props;
+  const isEmpty = !tracks.length;
   const toast = useToast();
 
   const handleCreatePlaylist = async () => {
@@ -61,8 +71,8 @@ const TopArtists = (props: Props) => {
     <Track key={i} track={track} />
   );
 
-  return (
-    <div className="TopArtists">
+  const ideal = !isEmpty && (
+    <>
       <div className="TopArtists__head">
         <h3 className={Classes.HEADING}>Popular tracks by your top artists</h3>
         <Button small={true} onClick={handleCreatePlaylist}>
@@ -99,6 +109,33 @@ const TopArtists = (props: Props) => {
       <ul className={classNames("TopArtists__tracks", Classes.LIST_UNSTYLED)}>
         {tracks.map(renderTrack)}
       </ul>
+    </>
+  );
+
+  const action = (
+    <AnchorButton
+      icon={<Icon path={spotifyIcon.path} />}
+      href={process.env.OPEN_SPOTIFY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Open Spotify
+    </AnchorButton>
+  );
+
+  const nonIdeal = isEmpty && (
+    <NonIdealState
+      icon={<Icon {...notesIcon} width={60} height={60} />}
+      title="We couldn't find your top artists"
+      description="You may not have sufficient play history to generate this list. Come back when you've listened to some more music!"
+      action={action}
+    />
+  );
+
+  return (
+    <div className="TopArtists">
+      {ideal}
+      {nonIdeal}
     </div>
   );
 };

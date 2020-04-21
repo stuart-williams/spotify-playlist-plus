@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { connect, ConnectedProps } from "react-redux";
+import spotifyIcon from "simple-icons/icons/spotify";
 import { RootState } from "../../redux";
 import { useToast } from "../../common/toast";
 import {
@@ -13,7 +14,15 @@ import { createPlaylist } from "../../redux/playlists";
 import { trackCreatedTopTracksPlaylist } from "../../common/analytics";
 import * as topApi from "../../api/top";
 import Track from "../Track";
-import { Tabs, Tab, Button, Classes } from "@blueprintjs/core";
+import Icon, { notesIcon } from "../Icon";
+import {
+  Tabs,
+  Tab,
+  Button,
+  NonIdealState,
+  AnchorButton,
+  Classes,
+} from "@blueprintjs/core";
 import Router from "next/router";
 import Constants from "../../common/constants";
 
@@ -38,6 +47,7 @@ type Props = PropsFromRedux & {
 
 const TopTracks = (props: Props) => {
   const { tracks, timeRange } = props;
+  const isEmpty = !tracks.items.length;
   const toast = useToast();
 
   const handleCreatePlaylist = async () => {
@@ -63,8 +73,8 @@ const TopTracks = (props: Props) => {
     <Track key={i} track={track} />
   );
 
-  return (
-    <div className="TopTracks">
+  const ideal = !isEmpty && (
+    <>
       <div className="TopTracks__head">
         <h3 className={Classes.HEADING}>Your top tracks</h3>
         <Button small={true} onClick={handleCreatePlaylist}>
@@ -101,6 +111,33 @@ const TopTracks = (props: Props) => {
       <ul className={classNames("TopTracks__tracks", Classes.LIST_UNSTYLED)}>
         {tracks.items.map(renderTrack)}
       </ul>
+    </>
+  );
+
+  const action = (
+    <AnchorButton
+      icon={<Icon path={spotifyIcon.path} />}
+      href={process.env.OPEN_SPOTIFY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Open Spotify
+    </AnchorButton>
+  );
+
+  const nonIdeal = isEmpty && (
+    <NonIdealState
+      icon={<Icon {...notesIcon} width={60} height={60} />}
+      title="We couldn't find your top tracks"
+      description="You may not have sufficient play history to generate this list. Come back when you've listened to some more music!"
+      action={action}
+    />
+  );
+
+  return (
+    <div className="TopTracks">
+      {ideal}
+      {nonIdeal}
     </div>
   );
 };

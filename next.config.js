@@ -30,6 +30,7 @@ module.exports = withPlugins([withSass], {
     })}`,
     TOKEN_COOKIE: "spp_token",
     API_URL: "https://api.spotify.com/v1",
+    OPEN_SPOTIFY_URL: "https://open.spotify.com",
     ACCOUNTS_API_URL: `${ACCOUNTS_URL}/api`,
     GA_TRACKING_ID: "UA-163843172-1",
     GA_DEBUG: process.env.GA_DEBUG,

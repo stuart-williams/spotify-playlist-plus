@@ -47,7 +47,7 @@ const PlaylistsMenu = (props: Props) => {
     <li>
       <a
         className={Classes.MENU_ITEM}
-        href="https://open.spotify.com/collection/playlists"
+        href={`${process.env.OPEN_SPOTIFY_URL}/collection/playlists`}
         target="_blank"
         rel="noopener noreferrer"
       >
