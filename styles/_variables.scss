@@ -1,20 +1,4 @@
 @import "~@blueprintjs/core/src/common/variables.scss";
 
-// Colours
-$dark-gray5: #282828;
-$spotify-primary: #1db954;
-
-// Framework
-$pt-dark-app-background-color: #121212;
-$pt-dark-text-color-muted: #b3b3b3;
-$pt-dark-icon-color: $white;
-$dark-menu-background-color: $dark-gray5;
-$dark-popover-background-color: $dark-gray5;
-$dark-navbar-background-color: $dark-gray5;
-$dark-tab-color-selected: $spotify-primary;
-$dark-button-background-color: $spotify-primary;
-$dark-button-background-color-hover: darken($dark-button-background-color, 5%);
-$dark-button-background-color-active: darken($dark-button-background-color, 5%);
-
 // App components
-$dark-playlist-background-color: lighten($pt-dark-app-background-color, 4%);
+$playlist-background-color: lighten($pt-dark-app-background-color, 4%);

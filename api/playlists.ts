@@ -28,7 +28,23 @@ export const getPlaylistById = (
     ctx
   );
 
-export const createPlaylist = (userId: string, name: string) =>
+export const rename = (
+  id: string,
+  name: string,
+  ctx?: Pick<NextPageContext, "req" | "res">
+) =>
+  fetch(
+    {
+      method: "put",
+      url: `playlists/${id}`,
+      data: {
+        name,
+      },
+    },
+    ctx
+  );
+
+export const create = (userId: string, name: string) =>
   fetch<SpotifyApi.PlaylistObjectFull>({
     method: "post",
     url: `users/${userId}/playlists`,

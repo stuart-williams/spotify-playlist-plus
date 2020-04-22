@@ -73,6 +73,25 @@ export const sortByAudioFeature = createAsyncThunk<
   }
 });
 
+export const renamePlaylist = createAsyncThunk<
+  void,
+  {
+    id: string;
+    name: string;
+  },
+  {
+    rejectValue: SpotifyApi.ErrorObject;
+  }
+>("tracks/renamePlaylist", async ({ id, name }, thunkApi) => {
+  try {
+    await playlistsApi.rename(id, name);
+  } catch (error) {
+    return thunkApi.rejectWithValue(
+      error.response.data.error as SpotifyApi.ErrorObject
+    );
+  }
+});
+
 export const createPlaylist = createAsyncThunk<
   SpotifyApi.PlaylistObjectFull,
   {
@@ -86,7 +105,7 @@ export const createPlaylist = createAsyncThunk<
   try {
     const state = thunkApi.getState() as RootState;
     const user = selectUser(state);
-    const { data: playlist } = await playlistsApi.createPlaylist(user.id, name);
+    const { data: playlist } = await playlistsApi.create(user.id, name);
     await playlistsApi.addTracksToPlaylist(playlist.id, tracks);
 
     return playlist;

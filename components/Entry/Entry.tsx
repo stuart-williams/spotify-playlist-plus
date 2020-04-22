@@ -1,12 +1,13 @@
 import React from "react";
 import spotifyIcon from "simple-icons/icons/spotify";
-import { NonIdealState, AnchorButton } from "@blueprintjs/core";
+import { NonIdealState, AnchorButton, Intent } from "@blueprintjs/core";
 import Icon, { notesIcon } from "../Icon";
 
 export default () => {
   const action = (
     <AnchorButton
       icon={<Icon path={spotifyIcon.path} />}
+      intent={Intent.SUCCESS}
       href={process.env.AUTHORIZE_URL}
     >
       Connect with Spotify

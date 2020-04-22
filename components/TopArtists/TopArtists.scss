@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: $dark-playlist-background-color;
+  background-color: $playlist-background-color;
 }
 
 .TopArtists__head {
@@ -19,8 +19,8 @@
   right: 0px;
   background: linear-gradient(
     to bottom,
-    $dark-playlist-background-color,
-    rgba($dark-playlist-background-color, 0)
+    $playlist-background-color,
+    rgba($playlist-background-color, 0)
   );
 }
 

@@ -21,6 +21,7 @@ import {
   Button,
   NonIdealState,
   AnchorButton,
+  Intent,
   Classes,
 } from "@blueprintjs/core";
 import Router from "next/router";
@@ -77,7 +78,11 @@ const TopTracks = (props: Props) => {
     <>
       <div className="TopTracks__head">
         <h3 className={Classes.HEADING}>Your top tracks</h3>
-        <Button small={true} onClick={handleCreatePlaylist}>
+        <Button
+          small={true}
+          intent={Intent.SUCCESS}
+          onClick={handleCreatePlaylist}
+        >
           Create Playlist
         </Button>
         <Tabs
@@ -117,6 +122,7 @@ const TopTracks = (props: Props) => {
   const action = (
     <AnchorButton
       icon={<Icon path={spotifyIcon.path} />}
+      intent={Intent.SUCCESS}
       href={process.env.OPEN_SPOTIFY_URL}
       target="_blank"
       rel="noopener noreferrer"

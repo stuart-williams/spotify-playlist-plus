@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import classNames from "classnames";
 import { RootState } from "../../redux";
@@ -7,10 +7,13 @@ import {
   randomise,
   sortByAudioFeature,
   createPlaylist,
+  renamePlaylist,
   getPlaylistById,
+  getListOfPlaylists,
   selectSortState,
 } from "../../redux/playlists";
 import { SortByAudioFeatureOptions } from "../../api/playlists";
+import PlaylistRenameDialog from "./PlaylistRenameDialog";
 import { Button, Position, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import Router from "next/router";
 
@@ -22,7 +25,9 @@ const mapDispatch = {
   randomise,
   sortByAudioFeature,
   createPlaylist,
+  renamePlaylist,
   getPlaylistById,
+  getListOfPlaylists,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -37,6 +42,7 @@ type Props = PropsFromRedux & {
 
 const PlaylistControls = (props: Props) => {
   const { playlist, isOwned, sortState } = props;
+  const [isRenaming, setIsRenaming] = useState(false);
   const toast = useToast();
 
   const handleRandomise = async () => {
@@ -108,8 +114,25 @@ const PlaylistControls = (props: Props) => {
     });
 
     if (createPlaylist.fulfilled.match(resultAction)) {
-      toast?.showSuccess({ message: "Playlist Created" });
       Router.push("/playlist/[id]", `/playlist/${resultAction.payload.id}`);
+    } else {
+      toast?.showError({ message: resultAction?.payload?.message });
+    }
+  };
+
+  const handleRenameToggle = () => setIsRenaming(!isRenaming);
+
+  const handleRename = async (value: string) => {
+    const resultAction = await props.renamePlaylist({
+      id: playlist.id,
+      name: value,
+    });
+
+    setIsRenaming(false);
+
+    if (renamePlaylist.fulfilled.match(resultAction)) {
+      props.getPlaylistById(playlist.id);
+      props.getListOfPlaylists();
     } else {
       toast?.showError({ message: resultAction?.payload?.message });
     }
@@ -117,6 +140,12 @@ const PlaylistControls = (props: Props) => {
 
   const menu = (
     <Menu>
+      <MenuItem
+        icon="edit"
+        text="Rename"
+        disabled={!isOwned}
+        onClick={handleRenameToggle}
+      />
       <MenuItem icon="duplicate" text="Copy" onClick={handleCopy} />
       <MenuItem
         icon="random"
@@ -171,6 +200,12 @@ const PlaylistControls = (props: Props) => {
 
   return (
     <div className={classNames("PlaylistControls", props.className)}>
+      <PlaylistRenameDialog
+        isOpen={isRenaming}
+        name={playlist.name}
+        onSubmit={handleRename}
+        onRequestClose={handleRenameToggle}
+      />
       <Popover
         content={menu}
         position={Position.RIGHT_BOTTOM}
