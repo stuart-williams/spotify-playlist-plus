@@ -78,7 +78,7 @@ const TopArtists = (props: Props) => {
         <h3 className={Classes.HEADING}>Popular tracks by your top artists</h3>
         <Button
           small={true}
-          intent={Intent.SUCCESS}
+          intent={Intent.PRIMARY}
           onClick={handleCreatePlaylist}
         >
           Create Playlist

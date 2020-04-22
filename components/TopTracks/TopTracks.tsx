@@ -80,7 +80,7 @@ const TopTracks = (props: Props) => {
         <h3 className={Classes.HEADING}>Your top tracks</h3>
         <Button
           small={true}
-          intent={Intent.SUCCESS}
+          intent={Intent.PRIMARY}
           onClick={handleCreatePlaylist}
         >
           Create Playlist

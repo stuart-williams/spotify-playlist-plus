@@ -4,7 +4,7 @@ import {
   Button,
   Dialog,
   EditableText,
-  H1,
+  H2,
   Intent,
   Classes,
 } from "@blueprintjs/core";
@@ -50,19 +50,19 @@ export default ({ isOpen, name, onRequestClose, onSubmit }: Props) => {
       onClose={handleClose}
     >
       <div className={Classes.DIALOG_BODY}>
-        <H1 className={classes}>
+        <H2 className={classes}>
           <EditableText
             placeholder="Playlist Name"
             value={value}
             isEditing={true}
             onChange={setValue}
           />
-        </H1>
+        </H2>
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button intent={Intent.SUCCESS} onClick={handleSubmit}>
+          <Button intent={Intent.PRIMARY} onClick={handleSubmit}>
             Confirm
           </Button>
         </div>
