@@ -14,7 +14,7 @@
     "@reduxjs/toolkit": "^1.3.4",
     "@zeit/next-sass": "^1.0.1",
     "array-move": "^2.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "dayjs": "^1.8.24",
     "debug": "^4.1.1",
