@@ -19,7 +19,7 @@
     "dayjs": "^1.8.24",
     "debug": "^4.1.1",
     "lodash.shuffle": "^4.2.0",
-    "next": "^9.3.5",
+    "next": "^11.1.0",
     "next-compose-plugins": "^2.2.0",
     "next-redux-wrapper": "^5.0.0",
     "next-seo": "^4.4.0",
