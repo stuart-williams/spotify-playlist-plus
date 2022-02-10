@@ -50,7 +50,7 @@
     "@types/simple-icons": "^2.5.0",
     "@types/spotify-api": "0.0.3",
     "dotenv": "^8.2.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "redux-devtools-extension": "^2.13.8",
     "tslint": "^6.1.1",
     "tslint-react": "^4.2.0",
